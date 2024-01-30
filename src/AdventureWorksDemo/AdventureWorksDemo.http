@@ -1,0 +1,6 @@
+@AdventureWorksDemo_HostAddress = http://localhost:5129
+
+GET {{AdventureWorksDemo_HostAddress}}/api/Address/
+Accept: application/json
+
+###
