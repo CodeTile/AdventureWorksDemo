@@ -39,7 +39,6 @@ namespace AdventureWorksDemo.Data.Paging
     public class PageingFilter
     {
         private int _pageSize = 25;
-        public int MaxPageSize { get; set; } = 100;
         public int PageNumber { get; set; } = 1;
 
         public int PageSize
@@ -47,5 +46,7 @@ namespace AdventureWorksDemo.Data.Paging
             get => _pageSize;
             set => _pageSize = (value > MaxPageSize) ? MaxPageSize : value;
         }
+
+        internal int MaxPageSize { get; set; } = 100;
     }
 }

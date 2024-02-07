@@ -1,6 +1,6 @@
 using AdventureWorksDemo.Data.StartUp;
 
-namespace AdventureWorksDemo
+namespace AdventureWorksDemo.API
 {
     public class Program
     {

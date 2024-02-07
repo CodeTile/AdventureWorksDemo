@@ -8,9 +8,9 @@ namespace AdventureWorksDemo.Data.Services
 {
     public interface IAddressService
     {
-        Task<PagedList<AddressDTO>> GetAllAsync(PageingFilter pageingFilter);
+        Task<PagedList<AddressDTO>> FindAllAsync(PageingFilter pageingFilter);
 
-        Task<AddressDTO?> GetAsync(int addressId);
+        Task<AddressDTO?> FindAsync(int addressId);
     }
 
     public class AddressService : BaseService<Address, AddressDTO>
@@ -21,7 +21,7 @@ namespace AdventureWorksDemo.Data.Services
         {
         }
 
-        public async Task<AddressDTO?> GetAsync(int addressId)
+        public async Task<AddressDTO?> FindAsync(int addressId)
         {
             return await FindDTOAsync(m => m.AddressId == addressId);
         }

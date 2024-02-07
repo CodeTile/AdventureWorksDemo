@@ -17,7 +17,7 @@ namespace AdventureWorksDemo.Data.Services
 
         internal IMapper _mapper = mapper;
 
-        public async Task<PagedList<TDto>> GetAllAsync(PageingFilter paging)
+        public async Task<PagedList<TDto>> FindAllAsync(PageingFilter paging)
         {
             PagedList<TEntity> result = await PagedList<TEntity>.CreateAsync(await FindEntitiesAsync()
                                                         , paging.PageNumber

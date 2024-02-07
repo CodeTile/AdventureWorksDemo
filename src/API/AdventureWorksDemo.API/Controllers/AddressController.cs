@@ -4,7 +4,7 @@ using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Services;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AdventureWorksDemo.Controllers
+namespace AdventureWorksDemo.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -25,8 +25,8 @@ namespace AdventureWorksDemo.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> GetAllAsync([FromQuery] PageingFilter pageingFilter)
         {
-            _logger.LogTrace($"{nameof(AdventureWorksDemo.Controllers.AddressController)}.{nameof(GetAllAsync)}()");
-            var result = await _service.GetAllAsync(pageingFilter);
+            _logger.LogTrace($"{nameof(AddressController)}.{nameof(GetAllAsync)}()");
+            var result = await _service.FindAllAsync(pageingFilter);
             return Ok(result);
         }
 
@@ -35,8 +35,8 @@ namespace AdventureWorksDemo.Controllers
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<AddressDTO?> GetAsync(int id)
         {
-            _logger.LogTrace($"{nameof(AdventureWorksDemo.Controllers.AddressController)}.{nameof(GetAsync)}()");
-            return await _service.GetAsync(id);
+            _logger.LogTrace($"{nameof(AddressController)}.{nameof(GetAsync)}()");
+            return await _service.FindAsync(id);
         }
     }
 }
