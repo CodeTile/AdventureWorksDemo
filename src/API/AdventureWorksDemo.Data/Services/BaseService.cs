@@ -1,4 +1,5 @@
 ﻿using AdventureWorksDemo.Data.DbContexts;
+using AdventureWorksDemo.Data.Entities;
 using AdventureWorksDemo.Data.Paging;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace AdventureWorksDemo.Data.Services
 
         public async Task<PagedList<TDto>> FindAllAsync(PageingFilter paging)
         {
+            var debug = await FindEntitiesAsync();
             PagedList<TEntity> result = await PagedList<TEntity>.CreateAsync(await FindEntitiesAsync()
                                                         , paging.PageNumber
                                                         , paging.PageSize);
@@ -48,6 +50,8 @@ namespace AdventureWorksDemo.Data.Services
                 query = _dbContext.Set<TEntity>();
             else
                 query = _dbContext.Set<TEntity>().Where(predictate);
+            var debug = _dbContext.Addresses?.ToList();
+            var debug2 = query?.ToList();
             return ApplyIncludes(query, includes);
         }
 
@@ -59,6 +63,7 @@ namespace AdventureWorksDemo.Data.Services
 
         private IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, params string[] includes)
         {
+            if (!includes.Any()) return query;
             return includes.Aggregate(query, (current, include) => current.Include(include));
         }
     }

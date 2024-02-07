@@ -9,6 +9,8 @@ namespace AdventureWorksDemo.Data.DbContexts;
 
 public partial class dbContext : DbContext
 {
+    public dbContext()
+    { }
     public dbContext(DbContextOptions<dbContext> options)
         : base(options)
     {

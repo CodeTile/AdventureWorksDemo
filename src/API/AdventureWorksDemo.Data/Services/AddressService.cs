@@ -14,7 +14,7 @@ namespace AdventureWorksDemo.Data.Services
     }
 
     public class AddressService : BaseService<Address, AddressDTO>
-                             , IAddressService
+                                  , IAddressService
     {
         public AddressService(dbContext context, IMapper mapper) :
                         base(context, mapper)

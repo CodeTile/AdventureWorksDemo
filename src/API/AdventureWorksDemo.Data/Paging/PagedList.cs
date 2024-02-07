@@ -30,6 +30,8 @@ namespace AdventureWorksDemo.Data.Paging
 
         public static async Task<PagedList<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)
         {
+            if (source == null)
+                return new PagedList<T>(new List<T>(), 0, pageNumber, pageSize);
             var count = await source.CountAsync();
             var items = await source.Skip(pageNumber * pageSize).Take(pageSize).ToListAsync();
             return new PagedList<T>(items, count, pageNumber, pageSize);
