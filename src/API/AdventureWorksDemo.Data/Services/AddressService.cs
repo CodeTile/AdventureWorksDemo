@@ -1,27 +1,28 @@
 ﻿using AdventureWorksDemo.Data.DbContexts;
-using AdventureWorksDemo.Data.DTO;
 using AdventureWorksDemo.Data.Entities;
+using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Paging;
+using AdventureWorksDemo.Data.Repository;
 using AutoMapper;
 
 namespace AdventureWorksDemo.Data.Services
 {
     public interface IAddressService
     {
-        Task<PagedList<AddressDTO>> FindAllAsync(PageingFilter pageingFilter);
+        Task<PagedList<AddressModel>> FindAllAsync(PageingFilter pageingFilter);
 
-        Task<AddressDTO?> FindAsync(int addressId);
+        Task<AddressModel?> FindAsync(int addressId);
     }
 
-    public class AddressService : BaseService<Address, AddressDTO>
+    public class AddressService : BaseService<Address, AddressModel>
                                   , IAddressService
     {
-        public AddressService(dbContext context, IMapper mapper) :
-                        base(context, mapper)
+        public AddressService(dbContext context, IMapper mapper, IGenericCRUDRepository<AddressModel, Address> genericRepo) :
+                        base(context, mapper, genericRepo)
         {
         }
 
-        public async Task<AddressDTO?> FindAsync(int addressId)
+        public async Task<AddressModel?> FindAsync(int addressId)
         {
             return await FindDTOAsync(m => m.AddressId == addressId);
         }

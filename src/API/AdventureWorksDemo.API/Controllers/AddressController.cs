@@ -1,4 +1,3 @@
-using AdventureWorksDemo.Data.DTO;
 using AdventureWorksDemo.Data.Entities;
 using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Services;
@@ -33,10 +32,10 @@ namespace AdventureWorksDemo.API.Controllers
         [HttpGet("id")]
         [ProducesResponseType<Product>(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<AddressDTO?> GetAsync(int id)
+        public async Task<IActionResult?> GetAsync(int id)
         {
             _logger.LogTrace($"{nameof(AddressController)}.{nameof(GetAsync)}()");
-            return await _service.FindAsync(id);
+            return Ok(await _service.FindAsync(id));
         }
     }
 }

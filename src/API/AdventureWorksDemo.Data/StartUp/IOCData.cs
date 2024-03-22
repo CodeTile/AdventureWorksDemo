@@ -4,25 +4,25 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using AutoMapper;
+using AdventureWorksDemo.Data.Repository;
+using AdventureWorksDemo.Data.Models;
+using AdventureWorksDemo.Data.Entities;
 
 namespace AdventureWorksDemo.Data.StartUp
 {
-    public class IOCData
+    public class IOCData(IConfiguration configuration)
 
     {
-        public IOCData(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
-
-        private IConfiguration Configuration;
+        private readonly IConfiguration Configuration = configuration;
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<dbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("AdventureWorks")));
+            services.AddDbContext<dbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MainDatabase")));
             services.AddAutoMapper(typeof(MappingProfile));
             //Add Transient services to the container.
             services.AddTransient<IAddressService, AddressService>();
+            //Add Repositories
+            services.AddTransient<IGenericCRUDRepository<AddressModel, Address>, GenericCRUDRepository<AddressModel, Address>>();
         }
     }
 }

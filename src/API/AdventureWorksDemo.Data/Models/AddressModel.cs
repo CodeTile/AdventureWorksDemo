@@ -1,8 +1,8 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace AdventureWorksDemo.Data.DTO
+namespace AdventureWorksDemo.Data.Models
 {
-    public class AddressDTO
+    public class AddressModel
     {
         /// <summary>
         /// Primary key for Address records.

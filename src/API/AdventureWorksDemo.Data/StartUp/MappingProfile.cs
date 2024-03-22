@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using AdventureWorksDemo.Data.Entities;
-using AdventureWorksDemo.Data.DTO;
 
 using AdventureWorksDemo.Data.Paging;
+using AdventureWorksDemo.Data.Models;
 
 namespace AdventureWorksDemo.Data.StartUp
 {
@@ -10,8 +10,9 @@ namespace AdventureWorksDemo.Data.StartUp
     {
         public MappingProfile()
         {
-            CreateMap<Address, AddressDTO>();
-            CreateMap<PagedList<Address>, PagedList<AddressDTO>>().ForMember("Item", opt => opt.Ignore());
+            CreateMap<Address, AddressModel>();
+            CreateMap<AddressModel, Address>();
+            CreateMap<PagedList<Address>, PagedList<AddressModel>>().ForMember("Item", opt => opt.Ignore());
         }
     }
 }

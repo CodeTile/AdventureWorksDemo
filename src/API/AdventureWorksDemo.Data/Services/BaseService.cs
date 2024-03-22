@@ -1,24 +1,28 @@
 ﻿using AdventureWorksDemo.Data.DbContexts;
 using AdventureWorksDemo.Data.Entities;
+using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Paging;
+using AdventureWorksDemo.Data.Repository;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
 namespace AdventureWorksDemo.Data.Services
 {
-    public abstract class BaseService<TEntity, TDto>(dbContext context,
-                                                       IMapper mapper
+    public abstract class BaseService<TEntity, TModel>(dbContext context,
+                                                       IMapper mapper,
+                                                       IGenericCRUDRepository<TModel, TEntity> genericRepo
                                                        ) where TEntity : class
     {
         /// <summary>
         /// based on:- https://medium.com/@abdulwariis/building-a-generic-service-for-crud-operations-in-c-net-core-3db40c2c8c8a
         /// </summary>
-        internal dbContext _dbContext = context;
+        internal readonly dbContext _dbContext = context;
 
-        internal IMapper _mapper = mapper;
+        internal readonly IMapper _mapper = mapper;
+        internal readonly IGenericCRUDRepository<TModel, TEntity> genericRepo = genericRepo;
 
-        public async Task<PagedList<TDto>> FindAllAsync(PageingFilter paging)
+        public async Task<PagedList<TModel>> FindAllAsync(PageingFilter paging)
         {
             var debug = await FindEntitiesAsync();
             PagedList<TEntity> result = await PagedList<TEntity>.CreateAsync(await FindEntitiesAsync()
@@ -27,19 +31,19 @@ namespace AdventureWorksDemo.Data.Services
             return EntityPagedListToDtoPagedList(result);
         }
 
-        internal PagedList<TDto> EntityPagedListToDtoPagedList(PagedList<TEntity> source)
+        internal PagedList<TModel> EntityPagedListToDtoPagedList(PagedList<TEntity> source)
         {
-            var mappedItems = _mapper.Map<TDto[]>(source.ToArray());
-            return new PagedList<TDto>(mappedItems, source.TotalCount, source.CurrentPage, source.PageSize)
+            var mappedItems = _mapper.Map<TModel[]>(source.ToArray());
+            return new PagedList<TModel>(mappedItems, source.TotalCount, source.CurrentPage, source.PageSize)
             {
                 TotalPages = source.TotalPages,
             };
         }
 
-        internal async Task<TDto?> FindDTOAsync(Expression<Func<TEntity, bool>> predictate, params string[] includes)
+        internal async Task<TModel?> FindDTOAsync(Expression<Func<TEntity, bool>> predictate, params string[] includes)
         {
             var result = await FindEntityAsync(predictate, includes);
-            return result == null ? default : _mapper.Map<TDto>(result);
+            return result == null ? default : _mapper.Map<TModel>(result);
         }
 
         internal async Task<IQueryable<TEntity>> FindEntitiesAsync(Expression<Func<TEntity, bool>>? predictate = null, params string[] includes)
@@ -50,8 +54,6 @@ namespace AdventureWorksDemo.Data.Services
                 query = _dbContext.Set<TEntity>();
             else
                 query = _dbContext.Set<TEntity>().Where(predictate);
-            var debug = _dbContext.Addresses?.ToList();
-            var debug2 = query?.ToList();
             return ApplyIncludes(query, includes);
         }
 
