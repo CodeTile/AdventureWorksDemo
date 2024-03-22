@@ -1,100 +1,94 @@
 ﻿using System.Linq.Expressions;
 using AdventureWorksDemo.Data.DbContexts;
-using AutoMapper;
+using AdventureWorksDemo.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdventureWorksDemo.Data.Repository
 {
-    public interface IGenericCRUDRepository<TModel, TEntity>
+    public interface IGenericCRUDRepository<TEntity>
     {
-        Task<TEntity> Add(TEntity dto, params Expression<Func<TModel, object>>[] references);
+        Task<TEntity> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references);
 
-        Task<bool> Delete(int id);
+        Task<bool> DeleteAsync(int id);
 
-        Task<IEnumerable<TEntity>> GetAll(Expression<Func<TModel, bool>>? where = null, params string[] includes);
+        IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null, params string[] includes);
 
-        Task<TEntity?> GetById(Expression<Func<TModel, bool>> predicateToGetId, params string[] includes);
-
-        Task<TEntity> Update(TEntity dto, Expression<Func<TModel, bool>>? where = null, params Expression<Func<TModel, object>>[] references);
+        Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicateToGetId, params string[] includes);
     }
 
-    public class GenericCRUDRepository<TModel, TEntity>(IMapper mapper, dbContext context) : IGenericCRUDRepository<TModel, TEntity>
-    where TModel : class
-    where TEntity : class
+    public class GenericCRUDRepository<TEntity>(dbContext context) : IGenericCRUDRepository<TEntity> where TEntity : class
     {
-        private readonly DbContext _dbContext = context;
-        private readonly IMapper _mapper = mapper;
+        // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // Class is based on https://medium.com/@abdulwariis/building-a-generic-service-for-crud-operations-in-c-net-core-3db40c2c8c8a
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // //
 
-        public async Task<TEntity> Add(TEntity dto, params Expression<Func<TModel, object>>[] references)
+        private readonly DbContext _dbContext = context;
+        //    return result == 1;
+        //}
+
+        public async Task<TEntity> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references)
         {
-            var entity = _mapper.Map<TModel>(dto);
-            _dbContext.Set<TModel>().Add(entity);
+            _dbContext.Set<TEntity>().Add(entity);
 
             await LoadReferences(entity, references);
             await _dbContext.SaveChangesAsync();
-
-            return _mapper.Map<TEntity>(entity);
+            return entity;
         }
 
-        public async Task<bool> Delete(int id)
+        public async Task<bool> DeleteAsync(int id)
         {
-            var entity = await _dbContext.Set<TModel>().FindAsync(id);
+            var entity = await _dbContext.Set<TEntity>().FindAsync(id);
             if (entity == null)
             {
                 return false;
             }
 
-            _dbContext.Set<TModel>().Remove(entity);
-            await _dbContext.SaveChangesAsync();
-
-            return true;
+            _dbContext.Set<TEntity>().Remove(entity);
+            var result = await _dbContext.SaveChangesAsync();
+            return result == 1;
         }
 
-        public async Task<IEnumerable<TEntity>> GetAll(Expression<Func<TModel, bool>>? where = null,
-                            params string[] includes)
+        public IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null,
+                                                params string[] includes)
         {
-            var query = ApplyIncludes(_dbContext.Set<TModel>(), includes);
+            var debug = _dbContext.Set<Address>();
 
-            if (where != null)
+            var query = ApplyIncludes(_dbContext.Set<TEntity>(), includes);
+
+            if (predictate != null)
             {
-                query = query.Where(where);
+                query = query.Where(predictate);
             }
-
-            var entities = await query.ToListAsync();
-            return _mapper.Map<IEnumerable<TEntity>>(entities);
+            return query;
         }
 
-        public async Task<TEntity?> GetById(Expression<Func<TModel, bool>> predicateToGetId,
-            params string[] includes)
+        public async Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicateToGetId,
+                                                 params string[] includes)
         {
-            var query = ApplyIncludes(_dbContext.Set<TModel>(), includes);
+            var query = ApplyIncludes(_dbContext.Set<TEntity>(), includes);
 
-            var entity = await query.FirstOrDefaultAsync(predicateToGetId);
-            return entity == null ? null : _mapper.Map<TEntity>(entity);
+            return await query.FirstOrDefaultAsync(predicateToGetId);
         }
 
-        public async Task<TEntity> Update(TEntity dto, Expression<Func<TModel, bool>>? where = null,
-            params Expression<Func<TModel, object>>[] references)
-        {
-            var query = _dbContext.Set<TModel>().AsQueryable();
+        //public async Task<TEntity> UpdateAsync(TEntity entityIn,
+        //                                  Expression<Func<TEntity, bool>>? predictate = null,
+        //                                  params Expression<Func<TEntity, object>>[] references)
+        //{
+        //    var query = _dbContext.Set<TEntity>().AsQueryable();
 
-            if (where != null)
-            {
-                query = query.Where(where);
-            }
+        //    var entityOut = await query.FirstOrDefaultAsync() ?? throw new Exception("Entity not found");
+        //    await LoadReferences(entityOut, references);
+        //    await _dbContext.SaveChangesAsync();
+        //    return entityOut;
+        //}
 
-            var entity = await query.FirstOrDefaultAsync() ?? throw new Exception("Entity not found");
-            await LoadReferences(entity, references);
-            await _dbContext.SaveChangesAsync();
-            return _mapper.Map<TEntity>(entity);
-        }
-
-        private IQueryable<TModel> ApplyIncludes(IQueryable<TModel> query, IEnumerable<string> includes)
+        private IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
         {
             return includes.Aggregate(query, (current, include) => current.Include(include));
         }
 
-        private async Task LoadReferences(TModel entity, IEnumerable<Expression<Func<TModel, object>>> references)
+        private async Task LoadReferences(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> references)
         {
             foreach (var reference in references)
             {

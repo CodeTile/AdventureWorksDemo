@@ -1,4 +1,4 @@
-﻿using AdventureWorksDemo.Data.DbContexts;
+﻿using System.Linq.Expressions;
 using AdventureWorksDemo.Data.Entities;
 using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Paging;
@@ -9,7 +9,9 @@ namespace AdventureWorksDemo.Data.Services
 {
     public interface IAddressService
     {
-        Task<PagedList<AddressModel>> FindAllAsync(PageingFilter pageingFilter);
+        Task<PagedList<AddressModel>?> FindAllAsync(PageingFilter pageingFilter);
+
+        Task<PagedList<AddressModel>?> FindAllAsync(PageingFilter paging, Expression<Func<Address, bool>>? predictate);
 
         Task<AddressModel?> FindAsync(int addressId);
     }
@@ -17,14 +19,14 @@ namespace AdventureWorksDemo.Data.Services
     public class AddressService : BaseService<Address, AddressModel>
                                   , IAddressService
     {
-        public AddressService(dbContext context, IMapper mapper, IGenericCRUDRepository<AddressModel, Address> genericRepo) :
-                        base(context, mapper, genericRepo)
+        public AddressService(IMapper mapper, IGenericCRUDRepository<Address> genericRepo) :
+                        base(mapper, genericRepo)
         {
         }
 
         public async Task<AddressModel?> FindAsync(int addressId)
         {
-            return await FindDTOAsync(m => m.AddressId == addressId);
+            return await base.FindByIdAsync(m => m.AddressId == addressId);
         }
     }
 }

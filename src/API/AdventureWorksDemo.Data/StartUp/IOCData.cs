@@ -22,7 +22,7 @@ namespace AdventureWorksDemo.Data.StartUp
             //Add Transient services to the container.
             services.AddTransient<IAddressService, AddressService>();
             //Add Repositories
-            services.AddTransient<IGenericCRUDRepository<AddressModel, Address>, GenericCRUDRepository<AddressModel, Address>>();
+            services.AddTransient<IGenericCRUDRepository<Address>, GenericCRUDRepository<Address>>();
         }
     }
 }

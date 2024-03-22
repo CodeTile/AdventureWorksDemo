@@ -90,6 +90,14 @@ namespace AdventureWorksDemo.Data.Tests.nUnit.Helpers
             }
         }
 
-        internal static IQueryable<Address> FakeAddressesQueryable => FakeAddresses.AsQueryable<Address>();
+        internal static Address NewAddress1() => new()
+        {
+            AddressLine1 = "Ping",
+            AddressLine2 = "Pong",
+            City = "Ping Pong",
+            StateProvince = "Foo",
+            CountryRegion = "Bar",
+            PostalCode = "98765",
+        };
     }
 }
