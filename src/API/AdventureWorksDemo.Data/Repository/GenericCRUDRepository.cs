@@ -27,6 +27,24 @@ namespace AdventureWorksDemo.Data.Repository
         //    return result == 1;
         //}
 
+        private IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
+        {
+            return includes.Aggregate(query, (current, include) => current.Include(include));
+        }
+
+        //    var entityOut = await query.FirstOrDefaultAsync() ?? throw new Exception("Entity not found");
+        //    await LoadReferences(entityOut, references);
+        //    await _dbContext.SaveChangesAsync();
+        //    return entityOut;
+        //}
+        private async Task LoadReferences(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> references)
+        {
+            foreach (var reference in references)
+            {
+                await _dbContext.Entry(entity).Reference(reference!).LoadAsync();
+            }
+        }
+
         public async Task<TEntity> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references)
         {
             _dbContext.Set<TEntity>().Add(entity);
@@ -76,24 +94,5 @@ namespace AdventureWorksDemo.Data.Repository
         //                                  params Expression<Func<TEntity, object>>[] references)
         //{
         //    var query = _dbContext.Set<TEntity>().AsQueryable();
-
-        //    var entityOut = await query.FirstOrDefaultAsync() ?? throw new Exception("Entity not found");
-        //    await LoadReferences(entityOut, references);
-        //    await _dbContext.SaveChangesAsync();
-        //    return entityOut;
-        //}
-
-        private IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
-        {
-            return includes.Aggregate(query, (current, include) => current.Include(include));
-        }
-
-        private async Task LoadReferences(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> references)
-        {
-            foreach (var reference in references)
-            {
-                await _dbContext.Entry(entity).Reference(reference!).LoadAsync();
-            }
-        }
     }
 }

@@ -11,17 +11,28 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         //private IMapper _mapper;
 
         [Test]
-        public void AddAddress()
+        public async Task AddAddressAsync()
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
             var uot = new GenericCRUDRepository<Address>(dbContext.Object);
-            var newAddress = new Address() { AddressLine1 = "Ping", };
             // Act
-            var actual = uot.FindEntities(null)?.ToArray();
+            var actual = await uot.AddAsync(FakeDbContext.NewAddress1());
             //Assert
             actual.Should().NotBeNull();
-            actual?.Length.Should().Be(FakeDbContext.FakeAddresses.Count);
+            actual.Should().BeEquivalentTo(FakeDbContext.NewAddress1());
+        }
+
+        [Test]
+        public async Task AddAddressNullAsync()
+        {
+            // Arrange
+            var dbContext = MockedDbContext.MockedDbContextAllData();
+            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            // Act
+            var actual = await uot.AddAsync(null);
+            //Assert
+            actual.Should().BeNull();
         }
 
         [Test]
