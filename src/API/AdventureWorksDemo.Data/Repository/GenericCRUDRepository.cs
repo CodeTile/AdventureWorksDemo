@@ -9,7 +9,7 @@ namespace AdventureWorksDemo.Data.Repository
     {
         Task<TEntity> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references);
 
-        Task<bool> DeleteAsync(int id);
+        Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predictate);
 
         IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null, params string[] includes);
 
@@ -45,18 +45,8 @@ namespace AdventureWorksDemo.Data.Repository
             }
         }
 
-        public async Task<TEntity> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references)
+        internal async Task<bool> DeleteAsync(TEntity? entity)
         {
-            _dbContext.Set<TEntity>().Add(entity);
-
-            await LoadReferences(entity, references);
-            await _dbContext.SaveChangesAsync();
-            return entity;
-        }
-
-        public async Task<bool> DeleteAsync(int id)
-        {
-            var entity = await _dbContext.Set<TEntity>().FindAsync(id);
             if (entity == null)
             {
                 return false;
@@ -67,11 +57,29 @@ namespace AdventureWorksDemo.Data.Repository
             return result == 1;
         }
 
+        public async Task<TEntity> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references)
+        {
+            _dbContext.Set<TEntity>().Add(entity);
+
+            await LoadReferences(entity, references);
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
+
+        public async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predictate)
+        {
+            var entities = FindEntities(predictate);
+            if (entities == null || !entities.Any())
+                return false;
+
+            _dbContext.RemoveRange(entities);
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
         public IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null,
                                                 params string[] includes)
         {
-            var debug = _dbContext.Set<Address>();
-
             var query = ApplyIncludes(_dbContext.Set<TEntity>(), includes);
 
             if (predictate != null)

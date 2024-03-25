@@ -36,6 +36,35 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         }
 
         [Test]
+        public async Task DeleteAddressAsync1234()
+        {
+            // Arrange
+            var dbContext = MockedDbContext.MockedDbContextAllData();
+            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            // Act
+            var actual = await uot.DeleteAsync(m => m.AddressId == 1234);
+            //Assert
+            actual.Should().BeFalse();
+        }
+
+        [Test]
+        public async Task DeleteAddressAsync3()
+        {
+            // Arrange
+            var dbContext = MockedDbContext.MockedDbContextAllData();
+            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            // Act
+
+            var entitiesBefore = uot.FindEntities().ToArray();
+            var actual = await uot.DeleteAsync(m => m.AddressId == 3);
+            //Assert
+            actual.Should().BeTrue();
+            var deletedEntity = uot.FindEntities(m => m.AddressId == 3);
+
+            var entitiesRemaining = uot.FindEntities().ToArray();
+        }
+
+        [Test]
         public void FindEntities()
         {
             // Arrange
