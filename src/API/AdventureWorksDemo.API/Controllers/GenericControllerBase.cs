@@ -61,7 +61,7 @@ namespace AdventureWorksDemo.API.Controllers
         public virtual async Task<IActionResult> UpdateAsync([FromBody] TModel model)
         {
             _logger.LogTrace($"{nameof(GenericControllerBase<TModel>)}.{nameof(AddAsync)}(model)");
-            var result = await _service.AddAsync(model);
+            var result = await _service.UpdateAsync(model);
             if (result != null)
                 return Ok(result);
             else

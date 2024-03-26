@@ -42,6 +42,14 @@ namespace AdventureWorksDemo.Data.Services
             return EntityPagedListToModelPagedList(result);
         }
 
+        public virtual async Task<TModel> UpdateAsync(TModel model)
+        {
+            //TODO: Add modify record validation
+            var entity = _mapper.Map<TEntity>(model);
+            var result = await genericRepo.UpdateAsync(entity);
+            return _mapper.Map<TModel>(result);
+        }
+
         internal virtual async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predictate)
         {
             //TODO: Add validation on delete.

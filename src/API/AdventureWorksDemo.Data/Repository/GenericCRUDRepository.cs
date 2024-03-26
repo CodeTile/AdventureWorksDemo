@@ -14,6 +14,8 @@ namespace AdventureWorksDemo.Data.Repository
         IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null, params string[] includes);
 
         Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicateToGetId, params string[] includes);
+
+        Task<TEntity> UpdateAsync(TEntity entity);
     }
 
     public class GenericCRUDRepository<TEntity>(dbContext context) : IGenericCRUDRepository<TEntity> where TEntity : class
