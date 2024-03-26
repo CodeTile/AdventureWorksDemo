@@ -24,38 +24,6 @@ namespace AdventureWorksDemo.Data.Repository
         // //
 
         private readonly DbContext _dbContext = context;
-        //    return result == 1;
-        //}
-
-        private IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
-        {
-            return includes.Aggregate(query, (current, include) => current.Include(include));
-        }
-
-        //    var entityOut = await query.FirstOrDefaultAsync() ?? throw new Exception("Entity not found");
-        //    await LoadReferences(entityOut, references);
-        //    await _dbContext.SaveChangesAsync();
-        //    return entityOut;
-        //}
-        private async Task LoadReferences(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> references)
-        {
-            foreach (var reference in references)
-            {
-                await _dbContext.Entry(entity).Reference(reference!).LoadAsync();
-            }
-        }
-
-        internal async Task<bool> DeleteAsync(TEntity? entity)
-        {
-            if (entity == null)
-            {
-                return false;
-            }
-
-            _dbContext.Set<TEntity>().Remove(entity);
-            var result = await _dbContext.SaveChangesAsync();
-            return result == 1;
-        }
 
         public async Task<TEntity> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references)
         {
@@ -97,10 +65,36 @@ namespace AdventureWorksDemo.Data.Repository
             return await query.FirstOrDefaultAsync(predicateToGetId);
         }
 
-        //public async Task<TEntity> UpdateAsync(TEntity entityIn,
-        //                                  Expression<Func<TEntity, bool>>? predictate = null,
-        //                                  params Expression<Func<TEntity, object>>[] references)
-        //{
-        //    var query = _dbContext.Set<TEntity>().AsQueryable();
+        public async Task<TEntity> UpdateAsync(TEntity entity)
+        {
+            _dbContext.Update(entity);
+            await _dbContext.SaveChangesAsync();
+            return entity;
+        }
+
+        internal async Task<bool> DeleteAsync(TEntity? entity)
+        {
+            if (entity == null)
+            {
+                return false;
+            }
+
+            _dbContext.Set<TEntity>().Remove(entity);
+            var result = await _dbContext.SaveChangesAsync();
+            return result == 1;
+        }
+
+        private IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
+        {
+            return includes.Aggregate(query, (current, include) => current.Include(include));
+        }
+
+        private async Task LoadReferences(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> references)
+        {
+            foreach (var reference in references)
+            {
+                await _dbContext.Entry(entity).Reference(reference!).LoadAsync();
+            }
+        }
     }
 }

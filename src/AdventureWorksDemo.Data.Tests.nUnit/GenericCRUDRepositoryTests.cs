@@ -8,8 +8,6 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
     // //https://code-maze.com/ef-core-mock-dbcontext/
     public class GenericCRUDRepositoryTests
     {
-        //private IMapper _mapper;
-
         [Test]
         public async Task AddAddressAsync()
         {
@@ -116,11 +114,45 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
             actual?.Length.Should().Be(0);
         }
 
-        [SetUp]
-        public void Setup()
+        [Test]
+        public async Task GetByIdAsync_1234()
         {
-            //var config = new MapperConfiguration(cfg => cfg.AddProfile<MappingProfile>());
-            //_mapper = config.CreateMapper();
+            // Arrange
+            var dbContext = MockedDbContext.MockedDbContextAllData();
+            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            // Act
+            var actual = await uot.GetByIdAsync(m => m.AddressId == 1234);
+            //Assert
+            actual.Should().BeNull();
+        }
+
+        [Test]
+        public async Task GetByIdAsync_3()
+        {
+            // Arrange
+            var dbContext = MockedDbContext.MockedDbContextAllData();
+            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            // Act
+            var actual = await uot.GetByIdAsync(m => m.AddressId == 3);
+            //Assert
+            actual.Should().NotBeNull();
+        }
+
+        [Test]
+        public async Task Update_1()
+        {
+            // Arrange
+            var dbContext = MockedDbContext.MockedDbContextAllData();
+            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            var entity = await uot.GetByIdAsync(m => m.AddressId == 1);
+            // Act
+            entity.PostalCode = "11111";
+            entity.ModifiedDate = DateTime.Now;
+            var actual = await uot.UpdateAsync(entity);
+            //Assert
+            actual.Should().NotBeNull();
+            actual.PostalCode.Should().Be(entity.PostalCode);
+            actual.ModifiedDate.Should().BeAfter(DateTime.Today);
         }
     }
 }
