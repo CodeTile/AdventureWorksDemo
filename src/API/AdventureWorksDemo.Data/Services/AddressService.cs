@@ -9,6 +9,10 @@ namespace AdventureWorksDemo.Data.Services
 {
     public interface IAddressService
     {
+        Task<AddressModel> AddAsync(AddressModel model);
+
+        Task<bool> DeleteAsync(int addressId);
+
         Task<PagedList<AddressModel>?> FindAllAsync(PageingFilter pageingFilter);
 
         Task<PagedList<AddressModel>?> FindAllAsync(PageingFilter paging, Expression<Func<Address, bool>>? predictate);
@@ -24,9 +28,8 @@ namespace AdventureWorksDemo.Data.Services
         {
         }
 
-        public async Task<AddressModel?> FindAsync(int addressId)
-        {
-            return await base.FindByIdAsync(m => m.AddressId == addressId);
-        }
+        public async Task<bool> DeleteAsync(int addressId) => await base.DeleteAsync(m => m.AddressId == addressId);
+
+        public async Task<AddressModel?> FindAsync(int addressId) => await base.FindByIdAsync(m => m.AddressId == addressId);
     }
 }

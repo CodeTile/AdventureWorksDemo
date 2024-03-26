@@ -18,6 +18,14 @@ namespace AdventureWorksDemo.Data.Services
         internal readonly IMapper _mapper = mapper;
         internal readonly IGenericCRUDRepository<TEntity> genericRepo = genericRepo;
 
+        public virtual async Task<TModel> AddAsync(TModel model)
+        {
+            //TODO: Add new record validation
+            var entity = _mapper.Map<TEntity>(model);
+            var result = await genericRepo.AddAsync(entity);
+            return _mapper.Map<TModel>(result);
+        }
+
         public virtual async Task<PagedList<TModel>?> FindAllAsync(PageingFilter pageingFilter)
         {
             return await FindAllAsync(pageingFilter, null);
@@ -34,6 +42,12 @@ namespace AdventureWorksDemo.Data.Services
             return EntityPagedListToModelPagedList(result);
         }
 
+        internal virtual async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predictate)
+        {
+            //TODO: Add validation on delete.
+            return await genericRepo.DeleteAsync(predictate);
+        }
+
         internal virtual PagedList<TModel> EntityPagedListToModelPagedList(PagedList<TEntity> source)
         {
             var mappedItems = _mapper.Map<TModel[]>(source.ToArray());
@@ -43,10 +57,10 @@ namespace AdventureWorksDemo.Data.Services
             };
         }
 
-        internal virtual async Task<AddressModel?> FindByIdAsync(Expression<Func<TEntity, bool>> predictate)
+        internal virtual async Task<TModel?> FindByIdAsync(Expression<Func<TEntity, bool>> predictate)
         {
             var result = (await genericRepo.GetByIdAsync(predictate));
-            return _mapper.Map<AddressModel>(result);
+            return _mapper.Map<TModel>(result);
         }
     }
 }
