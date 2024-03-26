@@ -1,3 +1,4 @@
+using AdventureWorksDemo.API.Exceptions;
 using AdventureWorksDemo.Data.StartUp;
 
 namespace AdventureWorksDemo.API
@@ -8,7 +9,9 @@ namespace AdventureWorksDemo.API
         {
             var builder = WebApplication.CreateBuilder(args);
             var connectionString = builder.Configuration.GetConnectionString("AdventureWorks");
-
+            //Exception handling
+            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+            builder.Services.AddProblemDetails();
             // Add controllers
             builder.Services.AddControllers();
             // Add child projects
@@ -32,6 +35,8 @@ namespace AdventureWorksDemo.API
             app.UseAuthorization();
 
             app.MapControllers();
+
+            app.UseExceptionHandler();
 
             app.Run();
         }
