@@ -1,7 +1,16 @@
 # AdventureWorksDemo
-Demo of a system connecting to the Microsofts demo database AdventureWorks.
-This project will provide a Restful API to connect to the database along with tests.
+Demo of a system connecting to the Microsofts demo database AdventureWorks.  
+This project will provide a Restful API to connect to the database along with tests.  
+This project is meant as a proving ground for ideas and to remind me how implement clean code/ design practices etc...  
+  
+I will inevitably get some of these ideas wrong, so please point me in the right direction.  
 
-At the moment this is only the API with no security or front end.  
-I plan to implement these at a later date.
-I will try to use the latest features of the .net environment, although I will inveitable miss some.
+## Testing
+#### Standard TDD testing
+For standard TDD testing this project will use nUnit.  
+#### Integration testing
+For integration testing this project will use the SpecFlow replacment [reqnroll](https://reqnroll.net/).  
+It will also require a database and access to a MS-SQL database with a backup file that can be accessed by both the project and the database.  
+
+
+

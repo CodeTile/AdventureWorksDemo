@@ -1,12 +1,10 @@
 ﻿using AdventureWorksDemo.Data.DbContexts;
+using AdventureWorksDemo.Data.Entities;
+using AdventureWorksDemo.Data.Repository;
 using AdventureWorksDemo.Data.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using AutoMapper;
-using AdventureWorksDemo.Data.Repository;
-using AdventureWorksDemo.Data.Models;
-using AdventureWorksDemo.Data.Entities;
 
 namespace AdventureWorksDemo.Data.StartUp
 {

@@ -1,5 +1,4 @@
 ﻿using System.Linq.Expressions;
-using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Repository;
 using AutoMapper;

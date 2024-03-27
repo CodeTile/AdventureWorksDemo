@@ -1,5 +1,4 @@
 ﻿using AdventureWorksDemo.Data.Entities;
-using Microsoft.EntityFrameworkCore;
 using MockQueryable.Moq;
 using Moq;
 

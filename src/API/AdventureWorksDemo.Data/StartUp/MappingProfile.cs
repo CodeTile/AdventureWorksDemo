@@ -1,8 +1,10 @@
-﻿using AutoMapper;
-using AdventureWorksDemo.Data.Entities;
+﻿using AdventureWorksDemo.Data.Entities;
+
+using AdventureWorksDemo.Data.Models;
 
 using AdventureWorksDemo.Data.Paging;
-using AdventureWorksDemo.Data.Models;
+
+using AutoMapper;
 
 namespace AdventureWorksDemo.Data.StartUp
 {

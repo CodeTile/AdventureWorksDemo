@@ -1,6 +1,5 @@
 ﻿using System.Linq.Expressions;
 using AdventureWorksDemo.Data.DbContexts;
-using AdventureWorksDemo.Data.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AdventureWorksDemo.Data.Repository
