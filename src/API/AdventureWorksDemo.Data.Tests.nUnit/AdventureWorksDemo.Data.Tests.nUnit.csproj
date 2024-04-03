@@ -28,7 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\API\AdventureWorksDemo.Data\AdventureWorksDemo.Data.csproj" />
+    <ProjectReference Include="..\AdventureWorksDemo.Data\AdventureWorksDemo.Data.csproj" />
   </ItemGroup>
 
 </Project>
