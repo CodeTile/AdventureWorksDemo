@@ -21,7 +21,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
             DatabaseName = databaseName;
         }
 
-        internal IConfiguration configuration;
+        internal IConfiguration? configuration;
         private const string Image = "mcr.microsoft.com/mssql/server";
         private const string Password = "!Passw0rd";
         private const string Tag = "latest";
@@ -32,8 +32,9 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
         private SemaphoreSlim semaphore = new(1, 1);
 
         public string ConnectionString =>
-            $"server=localhost,{PublicPort};database={DatabaseName};User Id=sa;Password={Password};Encrypt=false";
+                    $"server=localhost,{PublicPort};database={DatabaseName};User Id=sa;Password={Password};Encrypt=false";
 
+        internal static DockerMsSqlServerDatabase? Current { get; set; }
         internal Microsoft.Extensions.Configuration.IConfiguration AppSettings => Helper.GetConfiguration;
         private static int PublicPort => _sqlServerContainer.GetMappedPublicPort(ContainerPort);
 
@@ -151,10 +152,6 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 
         private async Task CreateDatabase(CancellationToken cancellationToken = default)
         {
-            SqlConnection.ClearAllPools();
-
-            await using var connection = CreateConnection();
-            await connection.OpenAsync(cancellationToken);
             string filename = AppSettings["Database:RestoreScriptName"]?
                                                         .Replace("<<sln>>", Helper.TryGetSolutionDirectoryInfo()?.FullName)
                                                         ?? string.Empty;
@@ -165,6 +162,10 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
             var restoreQuery = File.ReadAllText(filename)
                                 .Replace("$BackupFileName", AppSettings["Database:FileName"])
                                 .Replace("$TARGET_DB_NAME", DatabaseName);
+            SqlConnection.ClearAllPools();
+
+            await using var connection = CreateConnection();
+            await connection.OpenAsync(cancellationToken);
 
             await using var command = new SqlCommand(restoreQuery, connection);
 
