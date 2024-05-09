@@ -49,6 +49,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 
             await db.CreateAndStartContainer();
             await db.CreateDatabase(cancellationToken);
+            await db.RestoreData(cancellationToken);
             return db;
         }
 
@@ -62,6 +63,26 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
             DeleteDatabase();
 
             return new ValueTask();
+        }
+
+        internal async Task RestoreData(CancellationToken cancellationToken)
+        {
+            string filename = AppSettings["Database:ResetDataScriptName"]?
+                                                        .Replace("<<sln>>", Helper.TryGetSolutionDirectoryInfo()?.FullName)
+                                                        ?? string.Empty;
+            if (!File.Exists(filename))
+            {
+                throw new FileNotFoundException(filename);
+            }
+            string query = File.ReadAllText(filename);
+
+            SqlConnection.ClearAllPools();
+
+            await using var connection = CreateConnection();
+            await connection.OpenAsync(cancellationToken);
+
+            await using var command = new SqlCommand(query, connection);
+            await command.ExecuteNonQueryAsync(cancellationToken);
         }
 
         private static SqlConnection CreateConnection()

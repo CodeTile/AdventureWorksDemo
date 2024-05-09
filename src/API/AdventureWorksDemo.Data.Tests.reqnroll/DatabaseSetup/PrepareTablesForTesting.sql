@@ -8,7 +8,7 @@ Print '
 ';
 
 
-use [AdventureWorks]
+use [$TARGET_DB_NAME]
 PRINT '---------------------------
     Delete all records in database
 ---------------------------'
@@ -72,8 +72,6 @@ GO
 PRINT '---------------------------
    Insert records into database.
 ---------------------------'
-USE [AdventureWorks]
-GO
 SET IDENTITY_INSERT [SalesLT].[Address] ON 
 GO
 INSERT [SalesLT].[Address] ([AddressID], [AddressLine1], [AddressLine2], [City], [StateProvince], [CountryRegion], [PostalCode], [rowguid], [ModifiedDate]) 
