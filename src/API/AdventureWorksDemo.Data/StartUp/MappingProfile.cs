@@ -1,4 +1,5 @@
-﻿using AdventureWorksDemo.Data.Entities;
+﻿using System.Diagnostics.CodeAnalysis;
+using AdventureWorksDemo.Data.Entities;
 
 using AdventureWorksDemo.Data.Models;
 
@@ -8,6 +9,7 @@ using AutoMapper;
 
 namespace AdventureWorksDemo.Data.StartUp
 {
+    [ExcludeFromCodeCoverage]
     public class MappingProfile : Profile
     {
         public MappingProfile()

@@ -1,4 +1,5 @@
-﻿using AdventureWorksDemo.Data.DbContexts;
+﻿using System.Diagnostics.CodeAnalysis;
+using AdventureWorksDemo.Data.DbContexts;
 using AdventureWorksDemo.Data.Entities;
 using AdventureWorksDemo.Data.Repository;
 using AdventureWorksDemo.Data.Services;
@@ -8,6 +9,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace AdventureWorksDemo.Data.StartUp
 {
+    [ExcludeFromCodeCoverage]
     public class IOCData(IConfiguration configuration)
 
     {
