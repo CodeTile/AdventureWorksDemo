@@ -50,6 +50,7 @@ namespace AdventureWorksDemo.API.Controllers
         [HttpGet("id")]
         [ProducesResponseType<Product>(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public virtual async Task<IActionResult?> GetAsync(int id)
         {
             WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(GetAsync));
@@ -71,8 +72,8 @@ namespace AdventureWorksDemo.API.Controllers
 
         internal void WriteToTraceLog(string namespaceName, string className, string parmeterNames = "")
         {
-            var msg = $"{namespaceName}.{className}({parmeterNames})";
-            _logger.LogTrace(msg);
+            string Message = $"{namespaceName}.{className}({parmeterNames})";
+            _logger.LogTrace("{Message}", Message);
         }
     }
 }

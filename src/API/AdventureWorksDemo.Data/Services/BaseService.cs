@@ -6,7 +6,7 @@ using AutoMapper;
 namespace AdventureWorksDemo.Data.Services
 {
     public abstract class BaseService<TEntity, TModel>(IMapper mapper,
-                                                       IGenericCRUDRepository<TEntity> genericRepo)
+                                                       IGenericCrudRepository<TEntity> genericRepo)
         where TEntity : class
         where TModel : class
     {
@@ -15,7 +15,7 @@ namespace AdventureWorksDemo.Data.Services
         /// </summary>
 
         internal readonly IMapper _mapper = mapper;
-        internal readonly IGenericCRUDRepository<TEntity> genericRepo = genericRepo;
+        internal readonly IGenericCrudRepository<TEntity> genericRepo = genericRepo;
 
         public virtual async Task<TModel> AddAsync(TModel model)
         {
@@ -30,7 +30,8 @@ namespace AdventureWorksDemo.Data.Services
             return await FindAllAsync(pageingFilter, null);
         }
 
-        public virtual async Task<PagedList<TModel>?> FindAllAsync(PageingFilter paging, Expression<Func<TEntity, bool>>? predictate = null)
+        public virtual async Task<PagedList<TModel>?> FindAllAsync(PageingFilter paging,
+                                                                   Expression<Func<TEntity, bool>>? predictate = null)
         {
             IQueryable<TEntity>? query = genericRepo.FindEntities(predictate);
             if (query == null)

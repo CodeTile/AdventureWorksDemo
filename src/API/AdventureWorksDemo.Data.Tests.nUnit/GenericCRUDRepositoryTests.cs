@@ -13,7 +13,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object);
             // Act
             var actual = await uot.AddAsync(FakeDbContext.NewAddress1());
             //Assert
@@ -26,7 +26,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object);
             // Act
             var actual = await uot.AddAsync(null);
             //Assert
@@ -38,7 +38,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object);
             // Act
             var actual = await uot.DeleteAsync(m => m.AddressId == 1234);
             //Assert
@@ -50,10 +50,10 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object);
             // Act
 
-            var entitiesBefore = uot.FindEntities().ToArray();
+            // var entitiesBefore = uot.FindEntities().ToArray();
             var actual = await uot.DeleteAsync(m => m.AddressId == 3);
             //Assert
             actual.Should().BeTrue();
@@ -67,7 +67,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object);
             // Act
             var actual = uot.FindEntities(null)?.ToArray();
             //Assert
@@ -80,7 +80,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object);
             // Act
             var actual = uot.FindEntities(m => m.AddressId == 0)?.ToArray();
             //Assert
@@ -93,7 +93,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object);
             // Act
             var actual = uot.FindEntities(m => m.AddressId == 2)?.ToArray();
             //Assert
@@ -106,7 +106,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object);
             // Act
             var actual = uot.FindEntities(m => m.AddressId == 5678)?.ToArray();
             //Assert
@@ -119,7 +119,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object);
             // Act
             var actual = await uot.GetByIdAsync(m => m.AddressId == 1234);
             //Assert
@@ -131,7 +131,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object);
             // Act
             var actual = await uot.GetByIdAsync(m => m.AddressId == 3);
             //Assert
@@ -143,10 +143,10 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCRUDRepository<Address>(dbContext.Object);
-            var entity = await uot.GetByIdAsync(m => m.AddressId == 1);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object);
+            Address? entity = await uot.GetByIdAsync(m => m.AddressId == 1);
             // Act
-            entity.PostalCode = "11111";
+            entity!.PostalCode = "11111";
             entity.ModifiedDate = DateTime.Now;
             var actual = await uot.UpdateAsync(entity);
             //Assert

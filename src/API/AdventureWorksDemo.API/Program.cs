@@ -8,14 +8,14 @@ namespace AdventureWorksDemo.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            var connectionString = builder.Configuration.GetConnectionString("AdventureWorks");
+
             //Exception handling
             builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
             builder.Services.AddProblemDetails();
             // Add controllers
             builder.Services.AddControllers();
             // Add child projects
-            new IOCData(builder.Configuration).ConfigureServices(builder.Services);
+            new IocData(builder.Configuration).ConfigureServices(builder.Services);
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();

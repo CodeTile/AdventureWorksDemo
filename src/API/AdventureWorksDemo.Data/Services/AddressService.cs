@@ -20,14 +20,9 @@ namespace AdventureWorksDemo.Data.Services
         Task<AddressModel?> FindAsync(int addressId);
     }
 
-    public class AddressService : BaseService<Address, AddressModel>
+    public class AddressService(IMapper mapper, IGenericCrudRepository<Address> genericRepo) : BaseService<Address, AddressModel>(mapper, genericRepo)
                                   , IAddressService
     {
-        public AddressService(IMapper mapper, IGenericCRUDRepository<Address> genericRepo) :
-                        base(mapper, genericRepo)
-        {
-        }
-
         public async Task<bool> DeleteAsync(int addressId) => await base.DeleteAsync(m => m.AddressId == addressId);
 
         public async Task<AddressModel?> FindAsync(int addressId) => await base.FindByIdAsync(m => m.AddressId == addressId);

@@ -13,7 +13,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
     {
         public DockerMsSqlServerDatabase()
         {
-            DatabaseName = AppSettings["Database:TestDbPrefix"] + Guid.NewGuid(); ;
+            DatabaseName = AppSettings["Database:TestDbPrefix"] + Guid.NewGuid();
         }
 
         public DockerMsSqlServerDatabase(string databaseName)
@@ -26,19 +26,19 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
         private const string Password = "!Passw0rd";
         private const string Tag = "latest";
         private static readonly int ContainerPort = 1433;
-        private static IContainer _sqlServerContainer;
+        private static IContainer? _sqlServerContainer;
         private readonly string DatabaseName;
+        private readonly SemaphoreSlim semaphore = new(1, 1);
         private bool _deleted;
-        private SemaphoreSlim semaphore = new(1, 1);
 
         public string ConnectionString =>
                     $"server=localhost,{PublicPort};database={DatabaseName};User Id=sa;Password={Password};Encrypt=false";
 
         internal static DockerMsSqlServerDatabase? Current { get; set; }
         internal Microsoft.Extensions.Configuration.IConfiguration AppSettings => Helper.GetConfiguration;
-        private static int PublicPort => _sqlServerContainer.GetMappedPublicPort(ContainerPort);
+        private static int PublicPort => _sqlServerContainer!.GetMappedPublicPort(ContainerPort);
 
-        private string? GetBackupFullName => Path.Combine(GetBackupLocation, AppSettings["Database:FileName"]);
+        private string? GetBackupFullName => Path.Combine(GetBackupLocation!, AppSettings["Database:FileName"]!);
 
         private string? GetBackupLocation => AppSettings["Database:Location"]?
                                                         .Replace("<<sln>>", Helper.TryGetSolutionDirectoryInfo()?.FullName);
@@ -115,18 +115,16 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
         private void CloneBackUpFile()
         {
             var url = AppSettings["GitHub:BackUpFile"];
-            if (!Directory.Exists(GetBackupLocation)) { Directory.CreateDirectory(GetBackupLocation); }
-            using (var wc = new WebClient())
+            if (!Directory.Exists(GetBackupLocation)) { Directory.CreateDirectory(GetBackupLocation!); }
+            using WebClient wc = new WebClient();
+            wc.Headers.Add("a", "a");
+            try
             {
-                wc.Headers.Add("a", "a");
-                try
-                {
-                    wc.DownloadFile(url, GetBackupFullName);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.ToString());
-                }
+                wc.DownloadFile(url!, GetBackupFullName!);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
             }
         }
 

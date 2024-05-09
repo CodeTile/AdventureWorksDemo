@@ -10,7 +10,7 @@ using Microsoft.Extensions.DependencyInjection;
 namespace AdventureWorksDemo.Data.StartUp
 {
     [ExcludeFromCodeCoverage]
-    public class IOCData(IConfiguration configuration)
+    public class IocData(IConfiguration configuration)
 
     {
         private readonly IConfiguration Configuration = configuration;
@@ -22,7 +22,7 @@ namespace AdventureWorksDemo.Data.StartUp
             //Add Transient services to the container.
             services.AddTransient<IAddressService, AddressService>();
             //Add Repositories
-            services.AddTransient<IGenericCRUDRepository<Address>, GenericCRUDRepository<Address>>();
+            services.AddTransient<IGenericCrudRepository<Address>, GenericCrudRepository<Address>>();
         }
     }
 }

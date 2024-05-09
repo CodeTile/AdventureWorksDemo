@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Configuration;
+﻿using Microsoft.Extensions.Configuration;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll
 {
@@ -12,7 +6,10 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll
     {
         internal static IConfiguration GetConfiguration => new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
 
-        internal static DirectoryInfo TryGetSolutionDirectoryInfo(string currentPath = null)
+        internal static DirectoryInfo? TryGetSolutionDirectoryInfo()
+        { return TryGetSolutionDirectoryInfo(currentPath: string.Empty); }
+
+        internal static DirectoryInfo? TryGetSolutionDirectoryInfo(string currentPath)
         {
             var directory = new DirectoryInfo(
                 currentPath ?? Directory.GetCurrentDirectory());

@@ -15,24 +15,24 @@ namespace AdventureWorksDemo.Data.Models
         /// </summary>
         [Required]
         [StringLength(60)]
-        public string AddressLine1 { get; set; }
+        public string? AddressLine1 { get; set; }
 
         /// <summary>
         /// Second street address line.
         /// </summary>
         [StringLength(60)]
-        public string AddressLine2 { get; set; }
+        public string? AddressLine2 { get; set; }
 
         /// <summary>
         /// Name of the city.
         /// </summary>
         [Required]
         [StringLength(30)]
-        public string City { get; set; }
+        public string? City { get; set; }
 
         [Required]
         [StringLength(50)]
-        public string CountryRegion { get; set; }
+        public string? CountryRegion { get; set; }
 
         /// <summary>
         /// Date and time the record was last updated.
@@ -44,7 +44,7 @@ namespace AdventureWorksDemo.Data.Models
         /// </summary>
         [Required]
         [StringLength(15)]
-        public string PostalCode { get; set; }
+        public string? PostalCode { get; set; }
 
         /// <summary>
         /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
@@ -56,7 +56,7 @@ namespace AdventureWorksDemo.Data.Models
         /// </summary>
         [Required]
         [StringLength(50)]
-        public string StateProvince { get; set; }
+        public string? StateProvince { get; set; }
 
         ////////[InverseProperty("Address")]
         ////////public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; } = new List<CustomerAddress>();

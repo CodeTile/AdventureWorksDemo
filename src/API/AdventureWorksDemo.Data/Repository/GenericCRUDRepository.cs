@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdventureWorksDemo.Data.Repository
 {
-    public interface IGenericCRUDRepository<TEntity>
+    public interface IGenericCrudRepository<TEntity>
     {
         Task<TEntity> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references);
 
@@ -17,7 +17,7 @@ namespace AdventureWorksDemo.Data.Repository
         Task<TEntity> UpdateAsync(TEntity entity);
     }
 
-    public class GenericCRUDRepository<TEntity>(dbContext context) : IGenericCRUDRepository<TEntity> where TEntity : class
+    public class GenericCrudRepository<TEntity>(dbContext context) : IGenericCrudRepository<TEntity> where TEntity : class
     {
         // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         // Class is based on https://medium.com/@abdulwariis/building-a-generic-service-for-crud-operations-in-c-net-core-3db40c2c8c8a
