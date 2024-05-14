@@ -21,8 +21,10 @@ namespace AdventureWorksDemo.Data.StartUp
             services.AddAutoMapper(typeof(MappingProfile));
             //Add Transient services to the container.
             services.AddTransient<IAddressService, AddressService>();
+            services.AddTransient<IProductCategoryService, ProductCategoryService>();
             //Add Repositories
             services.AddTransient<IGenericCrudRepository<Address>, GenericCrudRepository<Address>>();
+            services.AddTransient<IGenericCrudRepository<ProductCategory>, GenericCrudRepository<ProductCategory>>();
         }
     }
 }

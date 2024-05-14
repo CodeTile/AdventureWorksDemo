@@ -5,6 +5,8 @@ using FluentAssertions;
 
 namespace AdventureWorksDemo.Data.Tests.nUnit
 {
+#nullable disable
+
     // //https://code-maze.com/ef-core-mock-dbcontext/
     public class GenericCRUDRepositoryTests
     {
@@ -144,7 +146,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
             var uot = new GenericCrudRepository<Address>(dbContext.Object);
-            Address? entity = await uot.GetByIdAsync(m => m.AddressId == 1);
+            var entity = await uot.GetByIdAsync(m => m.AddressId == 1);
             // Act
             entity!.PostalCode = "11111";
             entity.ModifiedDate = DateTime.Now;

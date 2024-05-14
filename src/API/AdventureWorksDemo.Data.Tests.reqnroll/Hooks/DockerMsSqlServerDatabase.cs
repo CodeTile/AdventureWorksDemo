@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Net;
 using Docker.DotNet;
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
@@ -9,6 +10,7 @@ using Polly;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 {
+    [ExcludeFromCodeCoverage]
     internal class DockerMsSqlServerDatabase : IAsyncDisposable
     {
         public DockerMsSqlServerDatabase()
@@ -28,8 +30,8 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
         private static readonly int ContainerPort = 1433;
         private static IContainer? _sqlServerContainer;
         private readonly string DatabaseName;
-        private readonly SemaphoreSlim semaphore = new(1, 1);
         private bool _deleted;
+        private SemaphoreSlim semaphore = new(1, 1);
 
         public string ConnectionString =>
                     $"server=localhost,{PublicPort};database={DatabaseName};User Id=sa;Password={Password};Encrypt=false";
@@ -75,6 +77,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
                 throw new FileNotFoundException(filename);
             }
             string query = File.ReadAllText(filename);
+            System.Diagnostics.Debug.WriteLine(query);
 
             SqlConnection.ClearAllPools();
 
@@ -161,6 +164,9 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
                 {
                     throw new InvalidOperationException(
                         "SQL Server docker image not found. Did you run \"build.ps1 BuildSqlServerWithFtsImage\"");
+                }
+                catch (Exception ex)
+                {
                 }
                 finally
                 {

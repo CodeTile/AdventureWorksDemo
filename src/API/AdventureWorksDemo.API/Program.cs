@@ -1,8 +1,10 @@
+using System.Diagnostics.CodeAnalysis;
 using AdventureWorksDemo.API.Exceptions;
 using AdventureWorksDemo.Data.StartUp;
 
 namespace AdventureWorksDemo.API
 {
+    [ExcludeFromCodeCoverage]
     public class Program
     {
         public static void Main(string[] args)

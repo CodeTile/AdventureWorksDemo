@@ -44,7 +44,10 @@ namespace AdventureWorksDemo.API.Controllers
             WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(GetAllAsync), "pageingFilter");
 
             var result = await _service.FindAllAsync(pageingFilter);
-            return Ok(result);
+            if (result != null && result!.Count() > 0)
+                return Ok(result);
+            else
+                return NotFound(result);
         }
 
         [HttpGet("id")]
@@ -62,7 +65,7 @@ namespace AdventureWorksDemo.API.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public virtual async Task<IActionResult> UpdateAsync([FromBody] TModel model)
         {
-            WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(AddAsync), "model");
+            WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(UpdateAsync), "model");
             var result = await _service.UpdateAsync(model);
             if (result != null)
                 return Ok(result);

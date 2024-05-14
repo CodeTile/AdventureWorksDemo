@@ -12,7 +12,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll
         internal static DirectoryInfo? TryGetSolutionDirectoryInfo(string currentPath)
         {
             var directory = new DirectoryInfo(
-                currentPath ?? Directory.GetCurrentDirectory());
+                !string.IsNullOrEmpty(currentPath) ? currentPath : Directory.GetCurrentDirectory());
             while (directory != null && !directory.GetFiles("*.sln").Any())
             {
                 directory = directory.Parent;

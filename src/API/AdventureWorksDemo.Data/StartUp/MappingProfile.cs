@@ -17,6 +17,10 @@ namespace AdventureWorksDemo.Data.StartUp
             CreateMap<Address, AddressModel>();
             CreateMap<AddressModel, Address>();
             CreateMap<PagedList<Address>, PagedList<AddressModel>>().ForMember("Item", opt => opt.Ignore());
+
+            CreateMap<ProductCategory, ProductCategoryModel>();
+            CreateMap<ProductCategoryModel, ProductCategory>();
+            CreateMap<PagedList<ProductCategory>, PagedList<ProductCategoryModel>>().ForMember("Item", opt => opt.Ignore());
         }
     }
 }
