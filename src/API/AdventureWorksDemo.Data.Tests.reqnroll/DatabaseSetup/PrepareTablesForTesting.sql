@@ -33,8 +33,8 @@ EXEC sys.sp_executesql @sql;
 GO
 -------
 
-Declare @TableName nvarchar(256) 
-SET @TableName = ''
+Declare @TableName nvarchar(256) ;
+SET @TableName = '';
 
 WHILE @TableName IS NOT NULL
 BEGIN

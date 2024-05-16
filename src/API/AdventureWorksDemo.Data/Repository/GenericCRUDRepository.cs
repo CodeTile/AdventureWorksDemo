@@ -62,7 +62,6 @@ namespace AdventureWorksDemo.Data.Repository
                                                  params string[] includes)
         {
             var query = ApplyIncludes(_dbContext.Set<TEntity>(), includes);
-
             return await query.FirstOrDefaultAsync(predicateToGetId);
         }
 

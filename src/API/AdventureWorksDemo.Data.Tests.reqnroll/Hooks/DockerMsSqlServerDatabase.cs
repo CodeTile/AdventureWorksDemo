@@ -23,13 +23,13 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
             DatabaseName = databaseName;
         }
 
+        public readonly string DatabaseName;
         internal IConfiguration? configuration;
         private const string Image = "mcr.microsoft.com/mssql/server";
         private const string Password = "!Passw0rd";
         private const string Tag = "latest";
         private static readonly int ContainerPort = 1433;
         private static IContainer? _sqlServerContainer;
-        private readonly string DatabaseName;
         private bool _deleted;
         private SemaphoreSlim semaphore = new(1, 1);
 
@@ -37,7 +37,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
                     $"server=localhost,{PublicPort};database={DatabaseName};User Id=sa;Password={Password};Encrypt=false";
 
         internal static DockerMsSqlServerDatabase? Current { get; set; }
-        internal Microsoft.Extensions.Configuration.IConfiguration AppSettings => Helper.GetConfiguration;
+        internal Microsoft.Extensions.Configuration.IConfiguration AppSettings => Helper.Configuration.GetConfiguration;
         private static int PublicPort => _sqlServerContainer!.GetMappedPublicPort(ContainerPort);
 
         private string? GetBackupFullName => Path.Combine(GetBackupLocation!, AppSettings["Database:FileName"]!);
@@ -52,11 +52,13 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
             await db.CreateAndStartContainer();
             await db.CreateDatabase(cancellationToken);
             await db.RestoreData(cancellationToken);
+            Helper.Configuration.DatabaseConnectionString = db.ConnectionString;
             return db;
         }
 
         public ValueTask DisposeAsync()
         {
+            // //
             if (_deleted)
             {
                 return new ValueTask();
@@ -76,23 +78,31 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
             {
                 throw new FileNotFoundException(filename);
             }
-            string query = File.ReadAllText(filename);
-            System.Diagnostics.Debug.WriteLine(query);
+            string query = File.ReadAllText(filename)
+                                .Replace("$TARGET_DB_NAME", DatabaseName);
 
             SqlConnection.ClearAllPools();
 
             await using var connection = CreateConnection();
             await connection.OpenAsync(cancellationToken);
 
-            await using var command = new SqlCommand(query, connection);
-            await command.ExecuteNonQueryAsync(cancellationToken);
+            await using var command = new SqlCommand("Print 'Hello World';", connection);
+
+            foreach (string commandText in Helper.Sql.SplitSqlQueryOnGo(query))
+            {
+                command.CommandText = commandText;
+                System.Diagnostics.Debug.WriteLine(command.CommandText);
+                await command.ExecuteNonQueryAsync(cancellationToken);
+            }
         }
 
         private static SqlConnection CreateConnection()
         {
             var masterConnectionString =
-                $"server=localhost,{PublicPort};User Id=sa;Password={Password};Initial Catalog=master;Encrypt=false";
+                     $"server=localhost,{PublicPort};User Id=sa;Password={Password};Initial Catalog=master;Encrypt=false";
             var connectionStringBuilder = new SqlConnectionStringBuilder(masterConnectionString);
+            System.Diagnostics.Debug.WriteLine($"\r\n\r\n\r\n{masterConnectionString}\r\n\r\n\r\n");
+
             return new SqlConnection(connectionStringBuilder.ConnectionString);
         }
 
@@ -142,12 +152,13 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 
                     if (_sqlServerContainer == null)
                     {
+                        bool withCleanUp = Convert.ToBoolean(AppSettings["TestContainers:RemoveTestContainersAfterTestRun"]);
                         _sqlServerContainer = new ContainerBuilder()
                             .WithImage($"{Image}:{Tag}")
                             .WithPortBinding(ContainerPort, assignRandomHostPort: true)
                             .WithEnvironment("ACCEPT_EULA", "Y")
                             .WithEnvironment("SA_PASSWORD", Password)
-                            //.WithCleanUp(cleanUp: true)
+                            .WithCleanUp(cleanUp: withCleanUp)
                             .WithWaitStrategy(Wait.ForUnixContainer()
                                 .UntilOperationIsSucceeded(
                                     () => HealthCheck(CancellationToken.None).GetAwaiter().GetResult(),
@@ -165,9 +176,9 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
                     throw new InvalidOperationException(
                         "SQL Server docker image not found. Did you run \"build.ps1 BuildSqlServerWithFtsImage\"");
                 }
-                catch (Exception ex)
-                {
-                }
+                //catch (Exception ex)
+                //{
+                //}
                 finally
                 {
                     semaphore.Release();

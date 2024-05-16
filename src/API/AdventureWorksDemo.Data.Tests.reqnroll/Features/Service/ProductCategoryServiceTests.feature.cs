@@ -10,7 +10,7 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
-namespace AdventureWorksDemo.Data.Tests.reqnroll.Features
+namespace AdventureWorksDemo.Data.Tests.reqnroll.Features.Service
 {
     using Reqnroll;
     using System;
@@ -20,7 +20,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Features
     [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "1.0.0.0")]
     [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
-    public partial class CalculatorFeature
+    public partial class ProductCategoryServiceTestsFeature
     {
         
         private static Reqnroll.ITestRunner testRunner;
@@ -29,7 +29,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Features
         
         private static string[] featureTags = ((string[])(null));
         
-#line 1 "Calculator.feature"
+#line 1 "ProductCategoryServiceTests.feature"
 #line hidden
         
         public virtual Microsoft.VisualStudio.TestTools.UnitTesting.TestContext TestContext
@@ -48,7 +48,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Features
         public static async System.Threading.Tasks.Task FeatureSetupAsync(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
             testRunner = Reqnroll.TestRunnerManager.GetTestRunnerForAssembly(null, System.Threading.Thread.CurrentThread.ManagedThreadId.ToString());
-            Reqnroll.FeatureInfo featureInfo = new Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features", "Calculator", null, ProgrammingLanguage.CSharp, featureTags);
+            Reqnroll.FeatureInfo featureInfo = new Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Service", "ProductCategoryServiceTests", "A short summary of the feature", ProgrammingLanguage.CSharp, featureTags);
             await testRunner.OnFeatureStartAsync(featureInfo);
         }
         
@@ -63,9 +63,9 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Features
         public async System.Threading.Tasks.Task TestInitializeAsync()
         {
             if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Title != "Calculator")))
+                        && (testRunner.FeatureContext.FeatureInfo.Title != "ProductCategoryServiceTests")))
             {
-                await global::AdventureWorksDemo.Data.Tests.reqnroll.Features.CalculatorFeature.FeatureSetupAsync(null);
+                await global::AdventureWorksDemo.Data.Tests.reqnroll.Features.Service.ProductCategoryServiceTestsFeature.FeatureSetupAsync(null);
             }
         }
         
@@ -91,15 +91,25 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Features
             await testRunner.CollectScenarioErrorsAsync();
         }
         
+        public virtual async System.Threading.Tasks.Task FeatureBackgroundAsync()
+        {
+#line 4
+#line hidden
+#line 5
+ await testRunner.GivenAsync("The service to test is \'AdventureWorksDemo.Data.Services.IProductCategoryService\'" +
+                    "", ((string)(null)), ((Reqnroll.Table)(null)), "Given ");
+#line hidden
+        }
+        
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Add two numbers")]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "Calculator")]
-        public async System.Threading.Tasks.Task AddTwoNumbers()
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceTests")]
+        public async System.Threading.Tasks.Task Debug()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            Reqnroll.ScenarioInfo scenarioInfo = new Reqnroll.ScenarioInfo("Add two numbers", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 3
+            Reqnroll.ScenarioInfo scenarioInfo = new Reqnroll.ScenarioInfo("Debug", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
@@ -110,7 +120,10 @@ this.ScenarioInitialize(scenarioInfo);
             {
                 await this.ScenarioStartAsync();
 #line 4
- await testRunner.GivenAsync("the first number is 50", ((string)(null)), ((Reqnroll.Table)(null)), "Given ");
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 7
+ await testRunner.WhenAsync("I call the method \'FindAsync\' with the parameter value 1", ((string)(null)), ((Reqnroll.Table)(null)), "When ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

@@ -17,7 +17,7 @@ namespace AdventureWorksDemo.Data.StartUp
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<dbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("MainDatabase")));
+            services.AddDbContext<dbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Target")));
             services.AddAutoMapper(typeof(MappingProfile));
             //Add Transient services to the container.
             services.AddTransient<IAddressService, AddressService>();
