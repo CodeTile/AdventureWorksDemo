@@ -125,6 +125,18 @@ await this.FeatureBackgroundAsync();
 #line 7
  await testRunner.WhenAsync("I call the method \'FindAsync\' with the parameter value 1", ((string)(null)), ((Reqnroll.Table)(null)), "When ");
 #line hidden
+                Reqnroll.Table table1 = new Reqnroll.Table(new string[] {
+                            "Ping",
+                            "Pong"});
+                table1.AddRow(new string[] {
+                            "---",
+                            "---"});
+                table1.AddRow(new string[] {
+                            "111",
+                            "2xxx"});
+#line 8
+ await testRunner.ThenAsync("the results is", ((string)(null)), table1, "Then ");
+#line hidden
             }
             await this.ScenarioCleanupAsync();
         }

@@ -4,6 +4,8 @@ using AdventureWorksDemo.Data;
 using AdventureWorksDemo.Data.StartUp;
 using Microsoft.Extensions.DependencyInjection;
 using AdventureWorksDemo.Data.Services;
+using AdventureWorksDemo.Data.Tests.reqnroll.enums;
+using SpecFlow.Internal.Json;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 {
@@ -20,7 +22,8 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
             {
                 case "AdventureWorksDemo.Data.Services.IProductCategoryService":
                 case "AdventureWorksDemo.Data.Services.ProductCategoryService":
-                    _featureContext.Add("UOT", Helper.Ioc.ResolveObject<IProductCategoryService>());
+
+                    _featureContext.Add(FeatureContextKey.UOT.ToString(), Helper.Ioc.ResolveObject<IProductCategoryService>());
                     break;
 
                 default:
@@ -29,23 +32,37 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
             }
         }
 
-        [When("I call the method {string} with the parameter value {int}")]
-        public async Task WhenICallTheMethodWithTheParameterValueAsync(string methodName, int id)
+        [Then("the results is")]
+        public void ThenTheResultsIs(DataTable dataTable)
         {
-            var uot = _featureContext.GetValueOrDefault("UOT");
+            var result = _scenarioContext.Get<object>(ScenarioContextKey.Result.ToString());
+            //throw new PendingStepException();
+        }
+
+        [When("I call the method {string} with the parameter value {int}")]
+        public async Task WhenICallTheMethodWithTheParameterValue(string methodName, int id)
+        {
+            var uot = _featureContext.GetValueOrDefault(FeatureContextKey.UOT.ToString());
             var methodInfo = uot.GetType().GetMethod(methodName);
             var parameters = new object[] { id };
             if (methodInfo.ReturnType.Name.StartsWith("Task"))
             {
-                var resultAsync = (Task)methodInfo?.Invoke(uot, parameters);
-                await resultAsync;
-                _scenarioContext.Add("Result", resultAsync);
+                var result = (Task)methodInfo?.Invoke(uot, parameters);
+                await result;
+                ;
+
+                //_scenarioContext.Add("Result", resultAsync);
             }
             else
             {
                 var resultSync = methodInfo?.Invoke(uot, parameters);
-                _scenarioContext.Add("Result", resultSync);
+                AddToScenarioContext(ScenarioContextKey.Result, resultSync);
             }
+        }
+
+        private void AddToScenarioContext(ScenarioContextKey key, object? value)
+        {
+            _scenarioContext.Add(key.ToString(), value);
         }
     }
 }
