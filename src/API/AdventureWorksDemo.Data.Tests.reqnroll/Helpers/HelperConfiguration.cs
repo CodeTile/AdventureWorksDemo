@@ -1,31 +1,9 @@
-﻿using AdventureWorksDemo.Data.StartUp;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Newtonsoft.Json.Linq;
-using static System.Formats.Asn1.AsnWriter;
+﻿using Microsoft.Extensions.Configuration;
 
-namespace AdventureWorksDemo.Data.Tests.reqnroll
+namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 {
-    internal static class Helper
+    internal static partial class Helper
     {
-        internal static readonly string[] separator = ["GO\r\n"];
-
-        internal static DirectoryInfo? TryGetSolutionDirectoryInfo()
-        { return TryGetSolutionDirectoryInfo(currentPath: string.Empty); }
-
-        internal static DirectoryInfo? TryGetSolutionDirectoryInfo(string currentPath)
-        {
-            var directory = new DirectoryInfo(
-                !string.IsNullOrEmpty(currentPath) ? currentPath : Directory.GetCurrentDirectory());
-            while (directory != null && !directory.GetFiles("*.sln").Any())
-            {
-                //var debug = directory.GetFiles("*.sln");
-                //var debug2 = directory.GetFiles();
-                directory = directory.Parent;
-            }
-            return directory;
-        }
-
         public static class Configuration
         {
             private static IConfiguration? _configuration;
@@ -66,7 +44,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll
 
             private static ConfigurationBuilder LoadAppSettingsFiles()
             {
-                var solutionFolder = Path.Combine(Helper.TryGetSolutionDirectoryInfo()!.FullName
+                var solutionFolder = Path.Combine(TryGetSolutionDirectoryInfo()!.FullName
                                                                             , "API\\AdventureWorksDemo.API"
                                                                             );
 
@@ -75,33 +53,6 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll
                 cb.AddJsonFile(Path.Combine(solutionFolder, "appsettings.Development.json"), false);
                 cb.AddJsonFile("appsettings.json", false);
                 return cb;
-            }
-        }
-
-        public static class Ioc
-        {
-            public static ServiceProvider BuildIoc()
-            {
-                var services = new ServiceCollection();
-                var config = Helper.Configuration.GetConfiguration;
-
-                new IocData(config).ConfigureServices(services);
-
-                return services.BuildServiceProvider();
-            }
-
-            public static T? ResolveObject<T>()
-            {
-                var service = BuildIoc().GetService(typeof(T));
-                return (T?)service;
-            }
-        }
-
-        public static class Sql
-        {
-            internal static string[] SplitSqlQueryOnGo(string query)
-            {
-                return query.Split(separator, StringSplitOptions.RemoveEmptyEntries);
             }
         }
     }

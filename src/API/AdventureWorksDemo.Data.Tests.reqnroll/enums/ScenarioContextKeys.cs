@@ -4,5 +4,6 @@
     {
         Unknown = 0,
         Result,
+        ResultType,
     }
 }

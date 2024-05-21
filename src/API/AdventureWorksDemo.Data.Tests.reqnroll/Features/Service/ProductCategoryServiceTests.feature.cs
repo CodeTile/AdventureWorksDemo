@@ -102,13 +102,13 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Features.Service
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("Debug")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAsync01")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceTests")]
-        public async System.Threading.Tasks.Task Debug()
+        public async System.Threading.Tasks.Task FindAsync01()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            Reqnroll.ScenarioInfo scenarioInfo = new Reqnroll.ScenarioInfo("Debug", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            Reqnroll.ScenarioInfo scenarioInfo = new Reqnroll.ScenarioInfo("FindAsync01", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 6
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -122,20 +122,142 @@ this.ScenarioInitialize(scenarioInfo);
 #line 4
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 7
- await testRunner.WhenAsync("I call the method \'FindAsync\' with the parameter value 1", ((string)(null)), ((Reqnroll.Table)(null)), "When ");
-#line hidden
                 Reqnroll.Table table1 = new Reqnroll.Table(new string[] {
-                            "Ping",
-                            "Pong"});
+                            "Key",
+                            "Value",
+                            "TypeName"});
                 table1.AddRow(new string[] {
-                            "---",
-                            "---"});
-                table1.AddRow(new string[] {
-                            "111",
-                            "2xxx"});
-#line 8
- await testRunner.ThenAsync("the results is", ((string)(null)), table1, "Then ");
+                            "productCategoryId",
+                            "1",
+                            "int"});
+#line 7
+ await testRunner.WhenAsync("I call the method \'FindAsync\' with the parameter values", ((string)(null)), table1, "When ");
+#line hidden
+                Reqnroll.Table table2 = new Reqnroll.Table(new string[] {
+                            "Expected"});
+                table2.AddRow(new string[] {
+                            "AdventureWorksDemo.Data.Models.ProductCategoryModel"});
+#line 10
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table2, "Then ");
+#line hidden
+                Reqnroll.Table table3 = new Reqnroll.Table(new string[] {
+                            "ModifiedDate",
+                            "Name",
+                            "ParentProductCategoryId",
+                            "ProductCategoryId",
+                            "Rowguid"});
+                table3.AddRow(new string[] {
+                            "6/1/2002 12:00:00 AM",
+                            "Bikes",
+                            "",
+                            "1",
+                            "cfbda25c-df71-47a7-b81b-64ee161aa37c"});
+#line 13
+ await testRunner.AndAsync("the result is", ((string)(null)), table3, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAsync04")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceTests")]
+        public async System.Threading.Tasks.Task FindAsync04()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            Reqnroll.ScenarioInfo scenarioInfo = new Reqnroll.ScenarioInfo("FindAsync04", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 16
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 4
+await this.FeatureBackgroundAsync();
+#line hidden
+                Reqnroll.Table table4 = new Reqnroll.Table(new string[] {
+                            "Key",
+                            "Value",
+                            "TypeName"});
+                table4.AddRow(new string[] {
+                            "productCategoryId",
+                            "4",
+                            "int"});
+#line 17
+ await testRunner.WhenAsync("I call the method \'FindAsync\' with the parameter values", ((string)(null)), table4, "When ");
+#line hidden
+                Reqnroll.Table table5 = new Reqnroll.Table(new string[] {
+                            "Expected"});
+                table5.AddRow(new string[] {
+                            "AdventureWorksDemo.Data.Models.ProductCategoryModel"});
+#line 20
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table5, "Then ");
+#line hidden
+                Reqnroll.Table table6 = new Reqnroll.Table(new string[] {
+                            "ModifiedDate",
+                            "Name",
+                            "ParentProductCategoryId",
+                            "ProductCategoryId",
+                            "Rowguid"});
+                table6.AddRow(new string[] {
+                            "6/1/2002 12:00:00 AM",
+                            "Accessories",
+                            "",
+                            "4",
+                            "2be3be36-d9a2-4eee-b593-ed895d97c2a6"});
+#line 23
+ await testRunner.AndAsync("the result is", ((string)(null)), table6, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAsync1234")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceTests")]
+        public async System.Threading.Tasks.Task FindAsync1234()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            Reqnroll.ScenarioInfo scenarioInfo = new Reqnroll.ScenarioInfo("FindAsync1234", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 27
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((TagHelper.ContainsIgnoreTag(tagsOfScenario) || TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 4
+await this.FeatureBackgroundAsync();
+#line hidden
+                Reqnroll.Table table7 = new Reqnroll.Table(new string[] {
+                            "Key",
+                            "Value",
+                            "TypeName"});
+                table7.AddRow(new string[] {
+                            "productCategoryId",
+                            "1234",
+                            "int"});
+#line 28
+ await testRunner.WhenAsync("I call the method \'FindAsync\' with the parameter values", ((string)(null)), table7, "When ");
+#line hidden
+                Reqnroll.Table table8 = new Reqnroll.Table(new string[] {
+                            "Expected"});
+                table8.AddRow(new string[] {
+                            "AdventureWorksDemo.Data.Models.ProductCategoryModel"});
+#line 32
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table8, "Then ");
+#line hidden
+#line 35
+ await testRunner.AndAsync("the result is null", ((string)(null)), ((Reqnroll.Table)(null)), "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
