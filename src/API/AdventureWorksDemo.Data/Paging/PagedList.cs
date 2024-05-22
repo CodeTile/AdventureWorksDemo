@@ -30,10 +30,14 @@ namespace AdventureWorksDemo.Data.Paging
 
         public static async Task<PagedList<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)
         {
+            if(pageNumber<=0)
+                throw new ArgumentOutOfRangeException(nameof(pageNumber),$"Parameter {nameof(pageNumber)} must be positive");
+            if (pageSize <= 0)
+                throw new ArgumentOutOfRangeException(nameof(pageSize), $"Parameter {nameof(pageSize)} must be positive");
             if (source == null)
-                return new PagedList<T>(new List<T>(), 0, pageNumber, pageSize);
+                return new PagedList<T>([], 0, pageNumber, pageSize);
             var count = await source.CountAsync();
-            var items = await source.Skip(pageNumber * pageSize).Take(pageSize).ToListAsync();
+            var items = await source.Skip((pageNumber-1) * pageSize).Take(pageSize).ToListAsync();
             return new PagedList<T>(items, count, pageNumber, pageSize);
         }
     }

@@ -1,30 +1,23 @@
-using System;
-using Reqnroll;
-using AdventureWorksDemo.Data;
-using AdventureWorksDemo.Data.StartUp;
-using Microsoft.Extensions.DependencyInjection;
+using System.Collections;
+using System.Reflection;
+using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Services;
 using AdventureWorksDemo.Data.Tests.reqnroll.enums;
-using SpecFlow.Internal.Json;
-using System.Reflection;
-using System.Net.WebSockets;
-using AdventureWorksDemo.Data.Models;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using AdventureWorksDemo.Data.Tests.reqnroll.Models;
 using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
-using System.Collections;
-
+using AdventureWorksDemo.Data.Tests.reqnroll.Models;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Linq;
+using System.Xml.Linq;
 namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 {
     [Binding]
-    public class StepDefinitions(
-            //FeatureContext featureContext,
-            ScenarioContext scenarioContext
-        )
+    public class StepDefinitions
     {
-        //private FeatureContext _featureContext = featureContext;
+        public StepDefinitions(ScenarioContext scenarioContext)
+        {
+            Helper.ScenarioContexts.Context = scenarioContext;
+        }
 
-        private ScenarioContext _scenarioContext = scenarioContext;
 
         [Given("The service to test is {string}")]
         public void GivenTheServiceToTestIs(string uotName)
@@ -33,8 +26,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
             {
                 case "AdventureWorksDemo.Data.Services.IProductCategoryService":
                 case "AdventureWorksDemo.Data.Services.ProductCategoryService":
-
-                    _scenarioContext.Add(FeatureContextKey.UOT.ToString(), Helper.Ioc.ResolveObject<IProductCategoryService>());
+                    Helper.ScenarioContexts.AddToContext(ScenarioContextKey.UOT, Helper.Ioc.ResolveObject<IProductCategoryService>());
                     break;
 
                 default:
@@ -46,7 +38,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
         [Then("the result is")]
         public void ThenTheResultIs(DataTable table)
         {
-            var contextResult = _scenarioContext.Get<object>(ScenarioContextKey.Result.ToString());
+            var contextResult = Helper.ScenarioContexts.GetResult;
 
             string? resultTypeName = contextResult.GetType().FullName;
             switch (resultTypeName)
@@ -64,83 +56,15 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
             }
         }
 
-        [Then("the results are")]
-        public void ThenTheResultsAre(DataTable table)
+        [Then("the result is null")]
+        public void ThenTheResultIsNull()
         {
-            var contextResult = _scenarioContext.Get<object>(ScenarioContextKey.Result.ToString());
-
-            string? resultTypeName = contextResult.GetType()!.FullName;
-
-            //if (contextResult is Array)
-            //    resultTypeName = contextResult.ToString().Split('[')[0];
-            //else
-            resultTypeName = resultTypeName!.ToString().Replace("`1", "").Replace("[", "<").Replace("]", ">")
-                                                    .Replace(">", "")
-                                                    .Split('<')[1];
-
-            switch (resultTypeName)
-            {
-                case "System.Exception": table.CompareToSet(new List<string>() { resultTypeName }); break;
-                case "AdventureWorksDemo.Data.Models.ProductCategoryModel": table.CompareToSet(new List<ProductCategoryModel> { (ProductCategoryModel)contextResult }); break;
-                default: throw new NotImplementedException($"Type [{resultTypeName}] is not implemented!");
-            }
+            Assert.IsNull(Helper.ScenarioContexts.GetResult);
         }
-
-        //[When("I call the method {string} with the parameter value {int}")]
-        //public async Task WhenICallTheMethodWithTheParameterValueAsync(string methodName, int id)
-        //{
-        //    await Task.Delay(0);
-        //    var uot = _scenarioContext.GetValueOrDefault(FeatureContextKey.UOT.ToString());
-        //    var methodInfo = uot.GetType()?.GetMethod(methodName);
-        //    var parameters = new object[] { id };
-
-        // dynamic result = null;
-
-        //    if (IsMethodAsync(methodInfo))
-        //    {
-        //        dynamic? awaitable = methodInfo.Invoke(uot, parameters);
-        //        await awaitable;
-        //        result = awaitable?.GetAwaiter().GetResult();
-        //    }
-        //    else
-        //    {
-        //        result = methodInfo!.Invoke(uot, parameters);
-        //    }
-        //    AddToScenarioContext(ScenarioContextKey.ResultType, methodInfo.ReturnType);
-        //    AddToScenarioContext(ScenarioContextKey.Result, result);
-        //}
-
-        [When("I call the method {string} with the parameter values")]
-        public async Task WhenICallTheMethodWithTheParameterValuesAsync(string methodName, DataTable table)
-        {
-            await Task.Delay(0);
-            if (!table.Rows.Any())
-            {
-                throw new Exception("Table is empty");
-            }
-            var methodParameters = GetParametersFromDataTable(table);
-            var uot = _scenarioContext.GetValueOrDefault(FeatureContextKey.UOT.ToString());
-
-            var result = await GetMethodValueForObjectAsync(uot,
-                                                            methodName,
-                                                            methodParameters);
-            if (result.Item1.FullName.Contains("Task"))
-            { 
-                var t = result.Item1.GenericTypeArguments.FirstOrDefault();
-                AddToScenarioContext(ScenarioContextKey.ResultType, t);
-
-            }
-            else
-                AddToScenarioContext(ScenarioContextKey.ResultType, result.Item1);
-
-               AddToScenarioContext(ScenarioContextKey.Result, result.Item2);
-        }
-
 
         [Then(@"the result is of type")]
         public virtual void ThenTheResultIsOfType(DataTable table)
         {
-            var actual = (Type) _scenarioContext.GetValueOrDefault(ScenarioContextKey.ResultType.ToString());
             var expected = table.Rows.Single()["Expected"];
             if (!expected.Contains("."))
             {
@@ -149,21 +73,78 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
             var results = new List<ValueExpectedResult>()
             {
                 new ValueExpectedResult(){
-                Expected = actual.FullName ,
+                Expected = Helper.ScenarioContexts.GetContextResultTypeName() ,
                 }
             };
+           
             table.CompareToSet(results);
         }
-        private void AddToScenarioContext(ScenarioContextKey key, object? value)
+        [Then("the exception message is")]
+        public void ThenTheExceptionMessageIs(DataTable dataTable)
         {
-            _scenarioContext.Add(key.ToString(), value);
+            var actual = new List<ValueExpectedResult>()
+            {
+                new ValueExpectedResult(){
+                Expected = ((Exception)Helper.ScenarioContexts.GetResult).Message ,
+                }
+            };
+            dataTable.CompareToSet(actual);
         }
-        [Then("the result is null")]
-        public void ThenTheResultIsNull()
+
+        [Then("the results are")]
+        public void ThenTheResultsAre(DataTable table)
         {
-            var actual = _scenarioContext.GetValueOrDefault(ScenarioContextKey.Result.ToString());
-            Assert.IsNull(actual);
+            IEnumerable actual = (IEnumerable)Helper.ScenarioContexts.GetResult;
+
+            string? resultTypeName = Helper.ScenarioContexts.GetContextResultTypeName();
+
+            if (actual is Array)
+                resultTypeName = resultTypeName!.ToString().Split('[')[0];
+            else
+                resultTypeName = resultTypeName!.ToString().Replace("`1", "").Replace("[", "<").Replace("]", ">")
+                                                    .Replace(">", "")
+                                                    .Split('<')[1];
+
+            switch (resultTypeName)
+            {
+                case "System.Exception": table.CompareToSet(new List<string>() { resultTypeName }); break;
+                case "AdventureWorksDemo.Data.Models.ProductCategoryModel": table.CompareToSet((IEnumerable<ProductCategoryModel>)actual); break;
+                default: throw new NotImplementedException($"Type [{resultTypeName}] is not implemented!");
+            }
         }
+
+        [When("I call the method {string} with the parameter values")]
+        public async Task WhenICallTheMethodWithTheParameterValuesAsync(string methodName, DataTable table)
+        {
+            await Task.Delay(0);
+            if (table.Rows.Count == 0)
+            {
+                throw new Exception("Table is empty");
+            }
+            var methodParameters = GetParametersFromDataTable(table);
+            var uot = Helper.ScenarioContexts.GetUot;
+
+            var result = await GetMethodValueForObjectAsync(uot,
+                                                            methodName,
+                                                            methodParameters);
+            if (result.Item1.FullName.Contains("Task"))
+            {
+                var t = result.Item1.GenericTypeArguments.FirstOrDefault();
+                Helper.ScenarioContexts.AddToContext(ScenarioContextKey.ResultType, t);
+            }
+            else
+                Helper.ScenarioContexts.AddToContext(ScenarioContextKey.ResultType, result.Item1);
+
+            Helper.ScenarioContexts.AddToContext(ScenarioContextKey.Result, result.Item2);
+        }
+
+        [When("I populate the model {string}")]
+        public void WhenIPopulateTheModel(string modelTypeName, DataTable dataTable)
+        {
+            var model = Helper.Types.PopulateModelFromRow(modelTypeName, dataTable.Rows[0], null);
+            Helper.ScenarioContexts.AddToContext(ScenarioContextKey.Model, model);
+        }
+
 
         private object? GetArgumentValue(DataTableRow row)
         {
@@ -174,6 +155,18 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 
         private object? GetArgumentValue(string value, string typeName)
         {
+            if (value.StartsWith("{{"))
+            {
+                return value switch
+                {
+                    // "{{FilterParams}}" => (AdventureWorksDemo.Data.Paging.PagingFilter)Helper.GetContext(Helpers.StepsHelperBase.ContextKey.FilterParams),
+                    //"{{entity}}" => Helper.GetContextEfEntity(),
+                    //"{{ListOfObjects}}" => Helper.GetContextListOfObjects(),
+                    "{{model}}" => Helper.ScenarioContexts.GetModel,
+                    "{{null}}" => null,
+                    _ => throw new ArgumentOutOfRangeException($"Value '{value}' is unhandled!"),
+                };
+            }
             Type T = typeName switch
             {
                 "System.Int32" or "int" => typeof(Int32),
@@ -210,25 +203,32 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
             {
                 args.Add(arguments[i].Value);
             }
+            try
+            {
+                retval = await InvokeMethodReturnValue(target, args.ToArray(), method);
+            }
+            catch (Exception ex)
+            {
 
-
-            retval = await InvokeMethodReturnValue(target, args.ToArray(), method);
+                retval = new Tuple<Type, object>(ex.GetType(),ex);
+            }
             return retval;
         }
-        private async Task<Tuple<Type, object>> InvokeMethodReturnValue(object target, object[] args, dynamic method)
+
+        private KeyValueTypeName[] GetParametersFromDataTable(DataTable table)
         {
-            dynamic actionResult = await InvokeMethod(target, args, method);
-
-            if (actionResult == null)
+            var args = new List<KeyValueTypeName>();
+            foreach (DataTableRow? row in table.Rows)
             {
-                Type a = ((MethodInfo)method).ReturnType;
-                return new Tuple<Type, object>(a, null);
+                var local = new KeyValueTypeName()
+                {
+                    Key = row[nameof(KeyValueTypeName.Key)].Trim(),
+                    TypeName = row[nameof(KeyValueTypeName.TypeName)].Trim(),
+                    Value = GetArgumentValue(row)
+                };
+                args.Add(local);
             }
-            else
-            {
-                return new Tuple<Type, object>(actionResult.GetType(), actionResult);
-            }
-
+            return args.ToArray();
         }
 
         private async Task<dynamic> InvokeMethod(object target, object[] args, dynamic method)
@@ -260,27 +260,27 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
                     //}
                     //catch (Exception)
                     //{
-                        actionResult = nonAsyncResult;
-                   // }
+                    actionResult = nonAsyncResult;
+                    // }
                 }
             }
 
             return actionResult;
         }
-        private KeyValueTypeName[] GetParametersFromDataTable(DataTable table)
+
+        private async Task<Tuple<Type, object>> InvokeMethodReturnValue(object target, object[] args, dynamic method)
         {
-            var args = new List<KeyValueTypeName>();
-            foreach (DataTableRow? row in table.Rows)
+            dynamic actionResult = await InvokeMethod(target, args, method);
+
+            if (actionResult == null)
             {
-                var local = new KeyValueTypeName()
-                {
-                    Key = row[nameof(KeyValueTypeName.Key)].Trim(),
-                    TypeName = row[nameof(KeyValueTypeName.TypeName)].Trim(),
-                    Value = GetArgumentValue(row)
-                };
-                args.Add(local);
+                Type a = ((MethodInfo)method).ReturnType;
+                return new Tuple<Type, object>(a, null);
             }
-            return args.ToArray();
+            else
+            {
+                return new Tuple<Type, object>(actionResult.GetType(), actionResult);
+            }
         }
 
         private async Task<bool> IsMethodAsync(dynamic method)
@@ -289,5 +289,6 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
             IReadOnlyCollection<CustomAttributeData> r = method.CustomAttributes;
             return r.Any(w => w.AttributeType?.Name == "AsyncStateMachineAttribute");
         }
+
     }
 }
