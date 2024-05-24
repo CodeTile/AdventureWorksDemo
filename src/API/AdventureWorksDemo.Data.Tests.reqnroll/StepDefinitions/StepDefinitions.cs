@@ -8,6 +8,8 @@ using AdventureWorksDemo.Data.Tests.reqnroll.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using System.Linq;
 using System.Xml.Linq;
+using AdventureWorksDemo.Data.Paging;
+
 namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 {
     [Binding]
@@ -17,7 +19,6 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
         {
             Helper.ScenarioContexts.Context = scenarioContext;
         }
-
 
         [Given("The service to test is {string}")]
         public void GivenTheServiceToTestIs(string uotName)
@@ -33,6 +34,18 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
                     break;
                     throw new PendingStepException("Unknown service to Test");
             }
+        }
+
+        [Then("the exception message is")]
+        public void ThenTheExceptionMessageIs(DataTable dataTable)
+        {
+            var actual = new List<ValueExpectedResult>()
+            {
+                new ValueExpectedResult(){
+                Expected = ((Exception)Helper.ScenarioContexts.GetResult).Message ,
+                }
+            };
+            dataTable.CompareToSet(actual);
         }
 
         [Then("the result is")]
@@ -76,26 +89,22 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
                 Expected = Helper.ScenarioContexts.GetContextResultTypeName() ,
                 }
             };
-           
+
             table.CompareToSet(results);
         }
-        [Then("the exception message is")]
-        public void ThenTheExceptionMessageIs(DataTable dataTable)
+        [Then("the PagedList values are")]
+        public void ThenThePagedListValuesAre(DataTable expected)
         {
-            var actual = new List<ValueExpectedResult>()
-            {
-                new ValueExpectedResult(){
-                Expected = ((Exception)Helper.ScenarioContexts.GetResult).Message ,
-                }
-            };
-            dataTable.CompareToSet(actual);
-        }
 
+            IPagedList actual = (IPagedList)Helper.ScenarioContexts.GetResult;
+            expected.CompareToInstance(actual);
+        }
+        
         [Then("the results are")]
         public void ThenTheResultsAre(DataTable table)
         {
-            IEnumerable actual = (IEnumerable)Helper.ScenarioContexts.GetResult;
 
+            IEnumerable actual = (IEnumerable)Helper.ScenarioContexts.GetResult;
             string? resultTypeName = Helper.ScenarioContexts.GetContextResultTypeName();
 
             if (actual is Array)
@@ -144,7 +153,6 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
             var model = Helper.Types.PopulateModelFromRow(modelTypeName, dataTable.Rows[0], null);
             Helper.ScenarioContexts.AddToContext(ScenarioContextKey.Model, model);
         }
-
 
         private object? GetArgumentValue(DataTableRow row)
         {
@@ -209,8 +217,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
             }
             catch (Exception ex)
             {
-
-                retval = new Tuple<Type, object>(ex.GetType(),ex);
+                retval = new Tuple<Type, object>(ex.GetType(), ex);
             }
             return retval;
         }
@@ -289,6 +296,5 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
             IReadOnlyCollection<CustomAttributeData> r = method.CustomAttributes;
             return r.Any(w => w.AttributeType?.Name == "AsyncStateMachineAttribute");
         }
-
     }
 }
