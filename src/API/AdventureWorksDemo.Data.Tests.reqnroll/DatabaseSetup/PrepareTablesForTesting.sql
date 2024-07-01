@@ -164,6 +164,7 @@ INSERT [SalesLT].[ProductCategory] ([ProductCategoryID], [ParentProductCategoryI
                                                                      , (39, 4, N'Panniers', N'3002a5d5-fec3-464b-bef3-e0f81d35f431', CAST(N'2002-06-01T00:00:00.000' AS DateTime))
                                                                      , (40, 4, N'Pumps', N'fe4d46f2-c87c-48c5-a4a1-3f55712d80b1', CAST(N'2002-06-01T00:00:00.000' AS DateTime))
                                                                      , (41, 4, N'Tires and Tubes', N'3c17c9ae-e906-48b4-bdd3-60e28d47dcdf', CAST(N'2002-06-01T00:00:00.000' AS DateTime))
+                                                                     , (42, Null, N'Record to Delete', N'3c17c9ae-e906-48b4-bdd3-000000000001', CAST(N'2005-06-01T00:00:00.000' AS DateTime))
 GO
 SET IDENTITY_INSERT [SalesLT].[ProductCategory] OFF
 GO

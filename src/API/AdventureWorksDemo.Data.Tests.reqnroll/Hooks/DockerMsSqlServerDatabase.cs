@@ -1,12 +1,18 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
+
 using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
+
 using Docker.DotNet;
+
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
+
 using FluentAssertions.Extensions;
+
 using Microsoft.Data.SqlClient;
 using Microsoft.Testing.Platform.Configurations;
+
 using Polly;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
@@ -52,7 +58,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 
             await db.CreateAndStartContainer();
             await db.CreateDatabase(cancellationToken);
-            await db.RestoreData(cancellationToken);
+            await db.PrepareDataForTesting(cancellationToken);
             Helper.Configuration.DatabaseConnectionString = db.ConnectionString;
             return db;
         }
@@ -70,7 +76,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
             return new ValueTask();
         }
 
-        internal async Task RestoreData(CancellationToken cancellationToken)
+        public async Task PrepareDataForTesting(CancellationToken cancellationToken = default)
         {
             string filename = AppSettings["Database:ResetDataScriptName"]?
                                                         .Replace("<<sln>>", Helper.TryGetSolutionDirectoryInfo()?.FullName)

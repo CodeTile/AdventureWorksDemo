@@ -3,9 +3,10 @@
     internal enum ScenarioContextKey
     {
         Unknown = 0,
+        FlagResetDatabase,
+        Model,
         Result,
         ResultType,
-        Model,
         UOT,
     }
 }

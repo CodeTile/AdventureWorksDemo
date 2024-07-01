@@ -6,8 +6,6 @@ using AdventureWorksDemo.Data.Tests.reqnroll.enums;
 using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
 using AdventureWorksDemo.Data.Tests.reqnroll.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using System.Linq;
-using System.Xml.Linq;
 using AdventureWorksDemo.Data.Paging;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
@@ -48,6 +46,13 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
             dataTable.CompareToSet(actual);
         }
 
+        [Then("the PagedList values are")]
+        public void ThenThePagedListValuesAre(DataTable expected)
+        {
+            IPagedList actual = (IPagedList)Helper.ScenarioContexts.GetResult;
+            expected.CompareToInstance(actual);
+        }
+
         [Then("the result is")]
         public void ThenTheResultIs(DataTable table)
         {
@@ -56,6 +61,10 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
             string? resultTypeName = contextResult.GetType().FullName;
             switch (resultTypeName)
             {
+                case "System.Boolean":
+                    table.CompareToSet(new List<ValueExpectedResult>() { new ValueExpectedResult() { Expected = ((bool)contextResult).ToString() } });
+                    break;
+
                 case "System.Exception":
                     table.CompareToSet(new List<string>() { resultTypeName });
                     break;
@@ -92,18 +101,10 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 
             table.CompareToSet(results);
         }
-        [Then("the PagedList values are")]
-        public void ThenThePagedListValuesAre(DataTable expected)
-        {
 
-            IPagedList actual = (IPagedList)Helper.ScenarioContexts.GetResult;
-            expected.CompareToInstance(actual);
-        }
-        
         [Then("the results are")]
         public void ThenTheResultsAre(DataTable table)
         {
-
             IEnumerable actual = (IEnumerable)Helper.ScenarioContexts.GetResult;
             string? resultTypeName = Helper.ScenarioContexts.GetContextResultTypeName();
 
@@ -125,7 +126,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
         [When("I call the method {string} with the parameter values")]
         public async Task WhenICallTheMethodWithTheParameterValuesAsync(string methodName, DataTable table)
         {
-            await Task.Delay(0);
+            // await Task.Delay(0);
             if (table.Rows.Count == 0)
             {
                 throw new Exception("Table is empty");

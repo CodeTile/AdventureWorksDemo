@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AdventureWorksDemo.Data.Tests.reqnroll.enums;
+﻿using AdventureWorksDemo.Data.Tests.reqnroll.enums;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 {
@@ -48,14 +42,25 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
                     retval = retval.Replace("`1[[", "<").Split(',')[0] + ">";
                 }
 
-//#if DEBUG
-//                if (retval.EndsWith("Exception"))
-//                {
-//                    Debug.WriteLine(((Exception)GetResult).Message);
-//                    return ((Exception)GetResult).Message;
-//                }
-//#endif
                 return retval;
+            }
+
+            internal static bool GetFlag(ScenarioContextKey key)
+            {
+                if (Context == null)
+                    return false;
+
+                return Context!.ContainsKey(key.ToString());
+            }
+
+            internal static void UpdateFlag(ScenarioContextKey key, bool flag)
+            {
+                if (Context != null)
+                {
+                    Context!.Remove(key.ToString());
+
+                    AddToContext(key, flag);
+                }
             }
         }
     }
