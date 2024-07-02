@@ -21,6 +21,8 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
                 Context?.Add(key.ToString(), value);
             }
 
+            internal static dynamic Get(ScenarioContextKey key) => Context!.Get<dynamic>(key.ToString());
+
             internal static string GetContextResultTypeName()
             {
                 Type resultType = GetResultType;
@@ -50,6 +52,11 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
                 if (Context == null)
                     return false;
 
+                return Context!.ContainsKey(key.ToString());
+            }
+
+            internal static bool KeyExists(ScenarioContextKey key)
+            {
                 return Context!.ContainsKey(key.ToString());
             }
 

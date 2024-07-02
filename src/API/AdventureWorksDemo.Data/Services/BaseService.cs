@@ -1,6 +1,8 @@
 ﻿using System.Linq.Expressions;
+
 using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Repository;
+
 using AutoMapper;
 
 namespace AdventureWorksDemo.Data.Services
@@ -21,6 +23,7 @@ namespace AdventureWorksDemo.Data.Services
         {
             //TODO: Add new record validation
             var entity = _mapper.Map<TEntity>(model);
+            PreDataMutation(entity);
             var result = await genericRepo.AddAsync(entity);
             return _mapper.Map<TModel>(result);
         }
@@ -69,6 +72,10 @@ namespace AdventureWorksDemo.Data.Services
         {
             var result = (await genericRepo.GetByIdAsync(predictate));
             return _mapper.Map<TModel>(result);
+        }
+
+        internal virtual void PreDataMutation(TEntity entity)
+        {
         }
     }
 }

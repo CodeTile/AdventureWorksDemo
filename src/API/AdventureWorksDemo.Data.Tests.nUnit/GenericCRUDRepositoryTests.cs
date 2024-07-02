@@ -1,7 +1,10 @@
 using AdventureWorksDemo.Data.Entities;
 using AdventureWorksDemo.Data.Repository;
 using AdventureWorksDemo.Data.Tests.nUnit.Helpers;
+
 using FluentAssertions;
+
+using Microsoft.Extensions.Time.Testing;
 
 namespace AdventureWorksDemo.Data.Tests.nUnit
 {
@@ -10,12 +13,14 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
     // //https://code-maze.com/ef-core-mock-dbcontext/
     public class GenericCRUDRepositoryTests
     {
+        private FakeTimeProvider _fakeTimeProvider;
+
         [Test]
         public async Task AddAddressAsync()
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCrudRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object, _fakeTimeProvider);
             // Act
             var actual = await uot.AddAsync(FakeDbContext.NewAddress1());
             //Assert
@@ -28,7 +33,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCrudRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object, _fakeTimeProvider);
             // Act
             var actual = await uot.AddAsync(null);
             //Assert
@@ -40,7 +45,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCrudRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object, _fakeTimeProvider);
             // Act
             var actual = await uot.DeleteAsync(m => m.AddressId == 1234);
             //Assert
@@ -52,7 +57,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCrudRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object, _fakeTimeProvider);
             // Act
 
             // var entitiesBefore = uot.FindEntities().ToArray();
@@ -69,7 +74,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCrudRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object, _fakeTimeProvider);
             // Act
             var actual = uot.FindEntities(null)?.ToArray();
             //Assert
@@ -82,7 +87,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCrudRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object, _fakeTimeProvider);
             // Act
             var actual = uot.FindEntities(m => m.AddressId == 0)?.ToArray();
             //Assert
@@ -95,7 +100,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCrudRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object, _fakeTimeProvider);
             // Act
             var actual = uot.FindEntities(m => m.AddressId == 2)?.ToArray();
             //Assert
@@ -108,7 +113,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCrudRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object, _fakeTimeProvider);
             // Act
             var actual = uot.FindEntities(m => m.AddressId == 5678)?.ToArray();
             //Assert
@@ -121,7 +126,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCrudRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object, _fakeTimeProvider);
             // Act
             var actual = await uot.GetByIdAsync(m => m.AddressId == 1234);
             //Assert
@@ -133,11 +138,18 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCrudRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object, _fakeTimeProvider);
             // Act
             var actual = await uot.GetByIdAsync(m => m.AddressId == 3);
             //Assert
             actual.Should().NotBeNull();
+        }
+
+        [SetUp]
+        public void Setup()
+        {
+            _fakeTimeProvider = new FakeTimeProvider();
+            _fakeTimeProvider.SetUtcNow(new DateTimeOffset(new DateTime(2024, 8, 17, 12, 34, 56, DateTimeKind.Local)));
         }
 
         [Test]
@@ -145,16 +157,16 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
         {
             // Arrange
             var dbContext = MockedDbContext.MockedDbContextAllData();
-            var uot = new GenericCrudRepository<Address>(dbContext.Object);
+            var uot = new GenericCrudRepository<Address>(dbContext.Object, _fakeTimeProvider);
             var entity = await uot.GetByIdAsync(m => m.AddressId == 1);
             // Act
             entity!.PostalCode = "11111";
-            entity.ModifiedDate = DateTime.Now;
+            entity.ModifiedDate = _fakeTimeProvider.GetLocalNow().DateTime;
             var actual = await uot.UpdateAsync(entity);
             //Assert
             actual.Should().NotBeNull();
             actual.PostalCode.Should().Be(entity.PostalCode);
-            actual.ModifiedDate.Should().BeAfter(DateTime.Today);
+            actual.ModifiedDate.Should().Be(_fakeTimeProvider.GetLocalNow().DateTime);
         }
     }
 }

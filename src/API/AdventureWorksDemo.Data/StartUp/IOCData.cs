@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+
 using AdventureWorksDemo.Data.DbContexts;
 using AdventureWorksDemo.Data.Entities;
 using AdventureWorksDemo.Data.Repository;
 using AdventureWorksDemo.Data.Services;
+
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,6 +27,8 @@ namespace AdventureWorksDemo.Data.StartUp
             //Add Repositories
             services.AddTransient<IGenericCrudRepository<Address>, GenericCrudRepository<Address>>();
             services.AddTransient<IGenericCrudRepository<ProductCategory>, GenericCrudRepository<ProductCategory>>();
+            // Add Singleton's
+            services.AddSingleton(TimeProvider.System);
         }
     }
 }

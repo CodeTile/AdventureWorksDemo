@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using AdventureWorksDemo.Data.StartUp;
+
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 {
@@ -16,9 +19,12 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
             {
                 var services = new ServiceCollection();
                 var config = Configuration.GetConfiguration;
-
+                // normal services
                 new IocData(config).ConfigureServices(services);
-
+                // test specific services
+                services.RemoveAll<System.TimeProvider>();
+                services.AddSingleton(Helper.DateTimeHelpers.GetTimeProvider());
+                // build service provider
                 return services.BuildServiceProvider();
             }
 

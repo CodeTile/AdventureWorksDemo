@@ -11,8 +11,8 @@ Scenario: DeleteAsync1234
 
 
 	When I call the method 'DeleteAsync' with the parameter values
-		| Key               | Value | TypeName |
-		| productCategoryId | 1234  | int      |
+		| Key               | Value | TypeName | ModifiedDate         |
+		| productCategoryId | 1234  | int      | 21 Apr 2024 12:34:56 |
 	Then the result is of type
 		| Expected       |
 		| System.Boolean |
