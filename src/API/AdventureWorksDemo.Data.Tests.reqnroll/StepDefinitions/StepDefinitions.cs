@@ -126,7 +126,6 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
         [When("I call the method {string} with the parameter values")]
         public async Task WhenICallTheMethodWithTheParameterValuesAsync(string methodName, DataTable table)
         {
-            // await Task.Delay(0);
             if (table.Rows.Count == 0)
             {
                 throw new Exception("Table is empty");

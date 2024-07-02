@@ -20,7 +20,7 @@ Scenario: DeleteAsync1234
 		| Expected |
 		| False    |
 	
-	Then the table 'SalesLT.ProductCategory' filtered by 'ProductCategoryId > 40' contains
+	And the table 'SalesLT.ProductCategory' filtered by 'ProductCategoryId > 40' contains
 		| ProductCategoryId | ParentProductCategoryId | Name             | ModifiedDate         | Rowguid                              |
 		| 41                | 4                       | Tires and Tubes  | 6/1/2002 12:00:00 AM | 3c17c9ae-e906-48b4-bdd3-60e28d47dcdf |
 		| 42                |                         | Record to Delete | 6/1/2005 12:00:00 AM | 3c17c9ae-e906-48b4-bdd3-000000000001 |

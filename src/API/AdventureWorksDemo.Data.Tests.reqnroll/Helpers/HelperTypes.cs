@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Text;
+
 using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Services;
@@ -91,11 +92,12 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
                     case "addressmodel":
                         return typeof(AddressModel);
 
+                    case "adventureworksdemo.data.models.productcategorymodel":
                     case "productcategorymodel":
                         return typeof(ProductCategoryModel);
 
                     default:
-                        throw new NotImplementedException($"Type [{typeName}] is not implemented!");
+                        throw new NotImplementedException($"Type [{typeName.ToLower()}] is not implemented!");
                 }
             }
 
@@ -104,16 +106,6 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
             internal static IList PopulateListFromTable(string typeName, DataTable table, string? excludeFieldNames = null)
             {
                 return PopulateListFromTable(GetTypeByName(typeName), table, excludeFieldNames);
-            }
-
-            internal static dynamic PopulateModelFromRow(string entityName, DataTableRow row, string? excludeFieldNames = null)
-            {
-                return PopulateModelFromRow(CreateInstance(entityName), row, excludeFieldNames);
-            }
-
-            internal static dynamic PopulateModelFromRow(Type t, DataTableRow row, string? excludeFieldNames = null)
-            {
-                return PopulateModelFromRow(CreateInstance(t), row, excludeFieldNames);
             }
 
             internal static IList PopulateListFromTable(Type t, DataTable table, string? excludeFieldNames = null)
@@ -126,6 +118,17 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 
                 return retval;
             }
+
+            internal static dynamic PopulateModelFromRow(string entityName, DataTableRow row, string? excludeFieldNames = null)
+            {
+                return PopulateModelFromRow(CreateInstance(entityName), row, excludeFieldNames);
+            }
+
+            internal static dynamic PopulateModelFromRow(Type t, DataTableRow row, string? excludeFieldNames = null)
+            {
+                return PopulateModelFromRow(CreateInstance(t), row, excludeFieldNames);
+            }
+
             internal static dynamic PopulateModelFromRow(dynamic entity, DataTableRow row, string? excludeFieldNames = null)
             {
                 Type type = entity.GetType();
