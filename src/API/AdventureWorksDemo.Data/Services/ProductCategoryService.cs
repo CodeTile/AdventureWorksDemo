@@ -22,6 +22,8 @@ namespace AdventureWorksDemo.Data.Services
         Task<PagedList<ProductCategoryModel>?> FindAllAsync(PageingFilter paging, Expression<Func<ProductCategory, bool>>? predictate);
 
         Task<ProductCategoryModel?> FindAsync(int productCategoryId);
+
+        Task<ProductCategoryModel> UpdateAsync(ProductCategoryModel model);
     }
 
     public class ProductCategoryService(IMapper mapper, IGenericCrudRepository<ProductCategory> genericRepo, TimeProvider timeProvider) : BaseService<ProductCategory, ProductCategoryModel>(mapper, genericRepo)
@@ -30,6 +32,19 @@ namespace AdventureWorksDemo.Data.Services
         public async Task<bool> DeleteAsync(int productCategoryId) => await base.DeleteAsync(m => m.ProductCategoryId == productCategoryId);
 
         public async Task<ProductCategoryModel?> FindAsync(int productCategoryId) => await base.FindByIdAsync(m => m.ProductCategoryId == productCategoryId);
+
+        public override async Task<ProductCategoryModel> UpdateAsync(ProductCategoryModel model)
+        {
+            var original = await FindAsync(model.ProductCategoryId);
+            if (original == null || original.Equals(model))
+            {
+                return original;
+            }
+
+            original.Name = model.Name;
+            original.ParentProductCategoryId = model.ParentProductCategoryId;
+            return await base.UpdateAsync(original);
+        }
 
         internal override void PreDataMutation(ProductCategory entity)
         {

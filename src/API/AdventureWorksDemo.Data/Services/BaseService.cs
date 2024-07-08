@@ -59,6 +59,7 @@ namespace AdventureWorksDemo.Data.Services
         {
             //TODO: Add modify record validation
             var entity = _mapper.Map<TEntity>(model);
+            PreDataMutation(entity);
             var result = await genericRepo.UpdateAsync(entity);
             return _mapper.Map<TModel>(result);
         }
