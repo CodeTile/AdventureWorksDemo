@@ -10,5 +10,6 @@
         UOT,
         FakeDateTime,
         FakeTimeProvider,
+        ListOfObjects,
     }
 }

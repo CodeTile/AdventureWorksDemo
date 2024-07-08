@@ -7,6 +7,7 @@ using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
 using AdventureWorksDemo.Data.Tests.reqnroll.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using AdventureWorksDemo.Data.Paging;
+using Reqnroll;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 {
@@ -147,6 +148,13 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
             Helper.ScenarioContexts.AddToContext(ScenarioContextKey.Result, result.Item2);
         }
 
+        [When("I populate a list of the model {string}")]
+        public void WhenIPopulateAListOfTheModel(string modelTypeName, DataTable table)
+        {
+            var models = (IEnumerable<object>)Helper.Types.PopulateListFromTable(modelTypeName, table, null);
+            Helper.ScenarioContexts.AddToContext(ScenarioContextKey.ListOfObjects, models);
+        }
+
         [When("I populate the model {string}")]
         public void WhenIPopulateTheModel(string modelTypeName, DataTable dataTable)
         {
@@ -169,7 +177,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
                 {
                     // "{{FilterParams}}" => (AdventureWorksDemo.Data.Paging.PagingFilter)Helper.GetContext(Helpers.StepsHelperBase.ContextKey.FilterParams),
                     //"{{entity}}" => Helper.GetContextEfEntity(),
-                    //"{{ListOfObjects}}" => Helper.GetContextListOfObjects(),
+                    "{{ListOfObjects}}" => Helper.ScenarioContexts.Get(ScenarioContextKey.ListOfObjects),
                     "{{model}}" => Helper.ScenarioContexts.GetModel,
                     "{{null}}" => null,
                     _ => throw new ArgumentOutOfRangeException($"Value '{value}' is unhandled!"),

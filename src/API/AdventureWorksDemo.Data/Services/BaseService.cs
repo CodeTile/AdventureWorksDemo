@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 
+using AdventureWorksDemo.Data.Entities;
 using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Repository;
 
@@ -26,6 +27,15 @@ namespace AdventureWorksDemo.Data.Services
             PreDataMutation(entity);
             var result = await genericRepo.AddAsync(entity);
             return _mapper.Map<TModel>(result);
+        }
+
+        public virtual async Task<IEnumerable<TModel>> AddBatchAsync(IEnumerable<TModel> models)
+        {
+            //TODO: Add new record validation
+            var entities = _mapper.Map<IEnumerable<TEntity>>(models);
+            PreDataMutation(entities);
+            var result = await genericRepo.AddBatchAsync(entities);
+            return _mapper.Map<IEnumerable<TModel>>(result);
         }
 
         public virtual async Task<PagedList<TModel>?> FindAllAsync(PageingFilter pageingFilter)
@@ -76,6 +86,14 @@ namespace AdventureWorksDemo.Data.Services
 
         internal virtual void PreDataMutation(TEntity entity)
         {
+        }
+
+        internal virtual void PreDataMutation(IEnumerable<TEntity> entities)
+        {
+            foreach (TEntity entity in entities)
+            {
+                PreDataMutation(entity);
+            }
         }
     }
 }

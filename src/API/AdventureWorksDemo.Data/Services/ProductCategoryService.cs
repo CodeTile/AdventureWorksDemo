@@ -13,6 +13,8 @@ namespace AdventureWorksDemo.Data.Services
     {
         Task<ProductCategoryModel> AddAsync(ProductCategoryModel model);
 
+        Task<IEnumerable<ProductCategoryModel>> AddBatchAsync(IEnumerable<ProductCategoryModel> models);
+
         Task<bool> DeleteAsync(int productCategoryId);
 
         Task<PagedList<ProductCategoryModel>?> FindAllAsync(PageingFilter pageingFilter);

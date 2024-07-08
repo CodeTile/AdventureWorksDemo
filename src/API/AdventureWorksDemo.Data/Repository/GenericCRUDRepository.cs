@@ -10,6 +10,8 @@ namespace AdventureWorksDemo.Data.Repository
     {
         Task<TEntity> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references);
 
+        Task<IEnumerable<TEntity>> AddBatchAsync(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] references);
+
         Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predictate);
 
         IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null, params string[] includes);
@@ -37,11 +39,22 @@ namespace AdventureWorksDemo.Data.Repository
             return entity;
         }
 
+        public async Task<IEnumerable<TEntity>> AddBatchAsync(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] references)
+        {
+            await _dbContext.Set<TEntity>().AddRangeAsync(entities);
+
+            await LoadReferences(entities, references);
+            await _dbContext.SaveChangesAsync();
+            return (IEnumerable<TEntity>)entities;
+        }
+
         public async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predictate)
         {
             var entities = FindEntities(predictate);
             if (entities == null || !entities.Any())
+            {
                 return false;
+            }
 
             _dbContext.RemoveRange(entities);
             await _dbContext.SaveChangesAsync();
@@ -96,6 +109,14 @@ namespace AdventureWorksDemo.Data.Repository
             foreach (var reference in references)
             {
                 await _dbContext.Entry(entity).Reference(reference!).LoadAsync();
+            }
+        }
+
+        private async Task LoadReferences(IEnumerable<TEntity> entities, IEnumerable<Expression<Func<TEntity, object>>> references)
+        {
+            foreach (var entity in entities)
+            {
+                await LoadReferences(entity, references);
             }
         }
     }

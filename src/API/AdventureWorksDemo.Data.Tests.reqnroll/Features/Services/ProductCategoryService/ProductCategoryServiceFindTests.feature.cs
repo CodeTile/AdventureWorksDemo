@@ -123,38 +123,38 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-                global::Reqnroll.Table table19 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table24 = new global::Reqnroll.Table(new string[] {
                             "Key",
                             "Value",
                             "TypeName"});
-                table19.AddRow(new string[] {
+                table24.AddRow(new string[] {
                             "productCategoryId",
                             "1",
                             "int"});
 #line 11
- await testRunner.WhenAsync("I call the method \'FindAsync\' with the parameter values", ((string)(null)), table19, "When ");
+ await testRunner.WhenAsync("I call the method \'FindAsync\' with the parameter values", ((string)(null)), table24, "When ");
 #line hidden
-                global::Reqnroll.Table table20 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table25 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table20.AddRow(new string[] {
+                table25.AddRow(new string[] {
                             "AdventureWorksDemo.Data.Models.ProductCategoryModel"});
 #line 14
- await testRunner.ThenAsync("the result is of type", ((string)(null)), table20, "Then ");
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table25, "Then ");
 #line hidden
-                global::Reqnroll.Table table21 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table26 = new global::Reqnroll.Table(new string[] {
                             "ModifiedDate",
                             "Name",
                             "ParentProductCategoryId",
                             "ProductCategoryId",
                             "Rowguid"});
-                table21.AddRow(new string[] {
+                table26.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Bikes",
                             "",
                             "1",
                             "cfbda25c-df71-47a7-b81b-64ee161aa37c"});
 #line 17
- await testRunner.AndAsync("the result is", ((string)(null)), table21, "And ");
+ await testRunner.AndAsync("the result is", ((string)(null)), table26, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -181,38 +181,38 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-                global::Reqnroll.Table table22 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table27 = new global::Reqnroll.Table(new string[] {
                             "Key",
                             "Value",
                             "TypeName"});
-                table22.AddRow(new string[] {
+                table27.AddRow(new string[] {
                             "productCategoryId",
                             "4",
                             "int"});
 #line 22
- await testRunner.WhenAsync("I call the method \'FindAsync\' with the parameter values", ((string)(null)), table22, "When ");
+ await testRunner.WhenAsync("I call the method \'FindAsync\' with the parameter values", ((string)(null)), table27, "When ");
 #line hidden
-                global::Reqnroll.Table table23 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table28 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table23.AddRow(new string[] {
+                table28.AddRow(new string[] {
                             "AdventureWorksDemo.Data.Models.ProductCategoryModel"});
 #line 25
- await testRunner.ThenAsync("the result is of type", ((string)(null)), table23, "Then ");
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table28, "Then ");
 #line hidden
-                global::Reqnroll.Table table24 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table29 = new global::Reqnroll.Table(new string[] {
                             "ModifiedDate",
                             "Name",
                             "ParentProductCategoryId",
                             "ProductCategoryId",
                             "Rowguid"});
-                table24.AddRow(new string[] {
+                table29.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Accessories",
                             "",
                             "4",
                             "2be3be36-d9a2-4eee-b593-ed895d97c2a6"});
 #line 28
- await testRunner.AndAsync("the result is", ((string)(null)), table24, "And ");
+ await testRunner.AndAsync("the result is", ((string)(null)), table29, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -239,23 +239,23 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-                global::Reqnroll.Table table25 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table30 = new global::Reqnroll.Table(new string[] {
                             "Key",
                             "Value",
                             "TypeName"});
-                table25.AddRow(new string[] {
+                table30.AddRow(new string[] {
                             "productCategoryId",
                             "1234",
                             "int"});
 #line 33
- await testRunner.WhenAsync("I call the method \'FindAsync\' with the parameter values", ((string)(null)), table25, "When ");
+ await testRunner.WhenAsync("I call the method \'FindAsync\' with the parameter values", ((string)(null)), table30, "When ");
 #line hidden
-                global::Reqnroll.Table table26 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table31 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table26.AddRow(new string[] {
+                table31.AddRow(new string[] {
                             "AdventureWorksDemo.Data.Models.ProductCategoryModel"});
 #line 37
- await testRunner.ThenAsync("the result is of type", ((string)(null)), table26, "Then ");
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table31, "Then ");
 #line hidden
 #line 40
  await testRunner.AndAsync("the result is null", ((string)(null)), ((global::Reqnroll.Table)(null)), "And ");
@@ -285,42 +285,42 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-                global::Reqnroll.Table table27 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table32 = new global::Reqnroll.Table(new string[] {
                             "PageNumber",
                             "PageSize"});
-                table27.AddRow(new string[] {
+                table32.AddRow(new string[] {
                             "1",
                             "5"});
 #line 43
- await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table27, "When ");
+ await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table32, "When ");
 #line hidden
-                global::Reqnroll.Table table28 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table33 = new global::Reqnroll.Table(new string[] {
                             "Key",
                             "Value",
                             "TypeName"});
-                table28.AddRow(new string[] {
+                table33.AddRow(new string[] {
                             "pageingFilter",
                             "{{model}}",
                             "AdventureWorksDemo.Data.Paging.PagingFilter"});
 #line 46
- await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table28, "And ");
+ await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table33, "And ");
 #line hidden
-                global::Reqnroll.Table table29 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table34 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table29.AddRow(new string[] {
+                table34.AddRow(new string[] {
                             "AdventureWorksDemo.Data.Paging.PagedList<AdventureWorksDemo.Data.Models.ProductCa" +
                                 "tegoryModel>"});
 #line 49
- await testRunner.ThenAsync("the result is of type", ((string)(null)), table29, "Then ");
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table34, "Then ");
 #line hidden
-                global::Reqnroll.Table table30 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table35 = new global::Reqnroll.Table(new string[] {
                             "TotalPages",
                             "TotalCount",
                             "PageSize",
                             "CurrentPage",
                             "Count",
                             "Capacity"});
-                table30.AddRow(new string[] {
+                table35.AddRow(new string[] {
                             "9",
                             "42",
                             "5",
@@ -328,46 +328,46 @@ await this.FeatureBackgroundAsync();
                             "5",
                             "5"});
 #line 52
- await testRunner.AndAsync("the PagedList values are", ((string)(null)), table30, "And ");
+ await testRunner.AndAsync("the PagedList values are", ((string)(null)), table35, "And ");
 #line hidden
-                global::Reqnroll.Table table31 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table36 = new global::Reqnroll.Table(new string[] {
                             "ModifiedDate",
                             "Name",
                             "ParentProductCategoryId",
                             "ProductCategoryId",
                             "Rowguid"});
-                table31.AddRow(new string[] {
+                table36.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Accessories",
                             "",
                             "4",
                             "2be3be36-d9a2-4eee-b593-ed895d97c2a6"});
-                table31.AddRow(new string[] {
+                table36.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Bikes",
                             "",
                             "1",
                             "cfbda25c-df71-47a7-b81b-64ee161aa37c"});
-                table31.AddRow(new string[] {
+                table36.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Components",
                             "",
                             "2",
                             "c657828d-d808-4aba-91a3-af2ce02300e9"});
-                table31.AddRow(new string[] {
+                table36.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Clothing",
                             "",
                             "3",
                             "10a7c342-ca82-48d4-8a38-46a2eb089b74"});
-                table31.AddRow(new string[] {
+                table36.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Mountain Bikes",
                             "1",
                             "5",
                             "2d364ade-264a-433c-b092-4fcbf3804e01"});
 #line 55
- await testRunner.AndAsync("the results are", ((string)(null)), table31, "And ");
+ await testRunner.AndAsync("the results are", ((string)(null)), table36, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -394,42 +394,42 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-                global::Reqnroll.Table table32 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table37 = new global::Reqnroll.Table(new string[] {
                             "PageNumber",
                             "PageSize"});
-                table32.AddRow(new string[] {
+                table37.AddRow(new string[] {
                             "1",
                             "500"});
 #line 64
- await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table32, "When ");
+ await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table37, "When ");
 #line hidden
-                global::Reqnroll.Table table33 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table38 = new global::Reqnroll.Table(new string[] {
                             "Key",
                             "Value",
                             "TypeName"});
-                table33.AddRow(new string[] {
+                table38.AddRow(new string[] {
                             "pageingFilter",
                             "{{model}}",
                             "AdventureWorksDemo.Data.Paging.PagingFilter"});
 #line 67
- await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table33, "And ");
+ await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table38, "And ");
 #line hidden
-                global::Reqnroll.Table table34 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table39 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table34.AddRow(new string[] {
+                table39.AddRow(new string[] {
                             "AdventureWorksDemo.Data.Paging.PagedList<AdventureWorksDemo.Data.Models.ProductCa" +
                                 "tegoryModel>"});
 #line 70
- await testRunner.ThenAsync("the result is of type", ((string)(null)), table34, "Then ");
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table39, "Then ");
 #line hidden
-                global::Reqnroll.Table table35 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table40 = new global::Reqnroll.Table(new string[] {
                             "TotalPages",
                             "TotalCount",
                             "PageSize",
                             "CurrentPage",
                             "Count",
                             "Capacity"});
-                table35.AddRow(new string[] {
+                table40.AddRow(new string[] {
                             "1",
                             "42",
                             "100",
@@ -437,268 +437,268 @@ await this.FeatureBackgroundAsync();
                             "42",
                             "42"});
 #line 73
- await testRunner.AndAsync("the PagedList values are", ((string)(null)), table35, "And ");
+ await testRunner.AndAsync("the PagedList values are", ((string)(null)), table40, "And ");
 #line hidden
-                global::Reqnroll.Table table36 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table41 = new global::Reqnroll.Table(new string[] {
                             "ProductCategoryId",
                             "ParentProductCategoryId",
                             "Name",
                             "ModifiedDate",
                             "Rowguid"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "1",
                             "",
                             "Bikes",
                             "6/1/2002 12:00:00 AM",
                             "cfbda25c-df71-47a7-b81b-64ee161aa37c"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "2",
                             "",
                             "Components",
                             "6/1/2002 12:00:00 AM",
                             "c657828d-d808-4aba-91a3-af2ce02300e9"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "3",
                             "",
                             "Clothing",
                             "6/1/2002 12:00:00 AM",
                             "10a7c342-ca82-48d4-8a38-46a2eb089b74"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "4",
                             "",
                             "Accessories",
                             "6/1/2002 12:00:00 AM",
                             "2be3be36-d9a2-4eee-b593-ed895d97c2a6"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "5",
                             "1",
                             "Mountain Bikes",
                             "6/1/2002 12:00:00 AM",
                             "2d364ade-264a-433c-b092-4fcbf3804e01"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "6",
                             "1",
                             "Road Bikes",
                             "6/1/2002 12:00:00 AM",
                             "000310c0-bcc8-42c4-b0c3-45ae611af06b"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "7",
                             "1",
                             "Touring Bikes",
                             "6/1/2002 12:00:00 AM",
                             "02c5061d-ecdc-4274-b5f1-e91d76bc3f37"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "8",
                             "2",
                             "Handlebars",
                             "6/1/2002 12:00:00 AM",
                             "3ef2c725-7135-4c85-9ae6-ae9a3bdd9283"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "9",
                             "2",
                             "Bottom Brackets",
                             "6/1/2002 12:00:00 AM",
                             "a9e54089-8a1e-4cf5-8646-e3801f685934"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "10",
                             "2",
                             "Brakes",
                             "6/1/2002 12:00:00 AM",
                             "d43ba4a3-ef0d-426b-90eb-4be4547dd30c"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "11",
                             "2",
                             "Chains",
                             "6/1/2002 12:00:00 AM",
                             "e93a7231-f16c-4b0f-8c41-c73fdec62da0"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "12",
                             "2",
                             "Cranksets",
                             "6/1/2002 12:00:00 AM",
                             "4f644521-422b-4f19-974a-e3df6102567e"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "13",
                             "2",
                             "Derailleurs",
                             "6/1/2002 12:00:00 AM",
                             "1830d70c-aa2a-40c0-a271-5ba86f38f8bf"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "14",
                             "2",
                             "Forks",
                             "6/1/2002 12:00:00 AM",
                             "b5f9ba42-b69b-4fdd-b2ec-57fb7b42e3cf"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "15",
                             "2",
                             "Headsets",
                             "6/1/2002 12:00:00 AM",
                             "7c782bbe-5a16-495a-aa50-10afe5a84af2"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "16",
                             "2",
                             "Mountain Frames",
                             "6/1/2002 12:00:00 AM",
                             "61b21b65-e16a-4be7-9300-4d8e9db861be"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "17",
                             "2",
                             "Pedals",
                             "6/1/2002 12:00:00 AM",
                             "6d24ac07-7a84-4849-864a-865a14125bc9"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "18",
                             "2",
                             "Road Frames",
                             "6/1/2002 12:00:00 AM",
                             "5515f857-075b-4f9a-87b7-43b4997077b3"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "19",
                             "2",
                             "Saddles",
                             "6/1/2002 12:00:00 AM",
                             "049fffa3-9d30-46df-82f7-f20730ec02b3"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "20",
                             "2",
                             "Touring Frames",
                             "6/1/2002 12:00:00 AM",
                             "d2e3f1a8-56c4-4f36-b29d-5659fc0d2789"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "21",
                             "2",
                             "Wheels",
                             "6/1/2002 12:00:00 AM",
                             "43521287-4b0b-438e-b80e-d82d9ad7c9f0"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "22",
                             "3",
                             "Bib-Shorts",
                             "6/1/2002 12:00:00 AM",
                             "67b58d2b-5798-4a90-8c6c-5ddacf057171"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "23",
                             "3",
                             "Caps",
                             "6/1/2002 12:00:00 AM",
                             "430dd6a8-a755-4b23-bb05-52520107da5f"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "24",
                             "3",
                             "Gloves",
                             "6/1/2002 12:00:00 AM",
                             "92d5657b-0032-4e49-bad5-41a441a70942"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "25",
                             "3",
                             "Jerseys",
                             "6/1/2002 12:00:00 AM",
                             "09e91437-ba4f-4b1a-8215-74184fd95db8"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "26",
                             "3",
                             "Shorts",
                             "6/1/2002 12:00:00 AM",
                             "1a5ba5b3-03c3-457c-b11e-4fa85ede87da"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "27",
                             "3",
                             "Socks",
                             "6/1/2002 12:00:00 AM",
                             "701019c3-09fe-4949-8386-c6ce686474e5"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "28",
                             "3",
                             "Tights",
                             "6/1/2002 12:00:00 AM",
                             "5deb3e55-9897-4416-b18a-515e970bc2d1"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "29",
                             "3",
                             "Vests",
                             "6/1/2002 12:00:00 AM",
                             "9ad7fe93-5ba0-4736-b578-ff80a2071297"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "30",
                             "4",
                             "Bike Racks",
                             "6/1/2002 12:00:00 AM",
                             "4624b5ce-66d6-496b-9201-c053df3556cc"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "31",
                             "4",
                             "Bike Stands",
                             "6/1/2002 12:00:00 AM",
                             "43b445c8-b820-424e-a1d5-90d81da0b46f"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "32",
                             "4",
                             "Bottles and Cages",
                             "6/1/2002 12:00:00 AM",
                             "9b7dff41-9fa3-4776-8def-2c9a48c8b779"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "33",
                             "4",
                             "Cleaners",
                             "6/1/2002 12:00:00 AM",
                             "9ad3bcf0-244d-4ec4-a6a0-fb701351c6a3"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "34",
                             "4",
                             "Fenders",
                             "6/1/2002 12:00:00 AM",
                             "1697f8a2-0a08-4883-b7dd-d19117b4e9a7"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "35",
                             "4",
                             "Helmets",
                             "6/1/2002 12:00:00 AM",
                             "f5e07a33-c9e0-439c-b5f3-9f25fb65becc"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "36",
                             "4",
                             "Hydration Packs",
                             "6/1/2002 12:00:00 AM",
                             "646a8906-fc87-4267-a443-9c6d791e6693"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "37",
                             "4",
                             "Lights",
                             "6/1/2002 12:00:00 AM",
                             "954178ba-624f-42db-95f6-ca035f36d130"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "38",
                             "4",
                             "Locks",
                             "6/1/2002 12:00:00 AM",
                             "19646983-3fa0-4773-9a0c-f34c49df9bc8"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "39",
                             "4",
                             "Panniers",
                             "6/1/2002 12:00:00 AM",
                             "3002a5d5-fec3-464b-bef3-e0f81d35f431"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "40",
                             "4",
                             "Pumps",
                             "6/1/2002 12:00:00 AM",
                             "fe4d46f2-c87c-48c5-a4a1-3f55712d80b1"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "41",
                             "4",
                             "Tires and Tubes",
                             "6/1/2002 12:00:00 AM",
                             "3c17c9ae-e906-48b4-bdd3-60e28d47dcdf"});
-                table36.AddRow(new string[] {
+                table41.AddRow(new string[] {
                             "42",
                             "",
                             "Record to Delete",
                             "6/1/2005 12:00:00 AM",
                             "3c17c9ae-e906-48b4-bdd3-000000000001"});
 #line 76
- await testRunner.AndAsync("the results are", ((string)(null)), table36, "And ");
+ await testRunner.AndAsync("the results are", ((string)(null)), table41, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -725,42 +725,42 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-                global::Reqnroll.Table table37 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table42 = new global::Reqnroll.Table(new string[] {
                             "PageNumber",
                             "PageSize"});
-                table37.AddRow(new string[] {
+                table42.AddRow(new string[] {
                             "2",
                             "5"});
 #line 121
- await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table37, "When ");
+ await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table42, "When ");
 #line hidden
-                global::Reqnroll.Table table38 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table43 = new global::Reqnroll.Table(new string[] {
                             "Key",
                             "Value",
                             "TypeName"});
-                table38.AddRow(new string[] {
+                table43.AddRow(new string[] {
                             "pageingFilter",
                             "{{model}}",
                             "AdventureWorksDemo.Data.Paging.PagingFilter"});
 #line 124
- await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table38, "And ");
+ await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table43, "And ");
 #line hidden
-                global::Reqnroll.Table table39 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table44 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table39.AddRow(new string[] {
+                table44.AddRow(new string[] {
                             "AdventureWorksDemo.Data.Paging.PagedList<AdventureWorksDemo.Data.Models.ProductCa" +
                                 "tegoryModel>"});
 #line 127
- await testRunner.ThenAsync("the result is of type", ((string)(null)), table39, "Then ");
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table44, "Then ");
 #line hidden
-                global::Reqnroll.Table table40 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table45 = new global::Reqnroll.Table(new string[] {
                             "TotalPages",
                             "TotalCount",
                             "PageSize",
                             "CurrentPage",
                             "Count",
                             "Capacity"});
-                table40.AddRow(new string[] {
+                table45.AddRow(new string[] {
                             "9",
                             "42",
                             "5",
@@ -768,46 +768,46 @@ await this.FeatureBackgroundAsync();
                             "5",
                             "5"});
 #line 130
- await testRunner.AndAsync("the PagedList values are", ((string)(null)), table40, "And ");
+ await testRunner.AndAsync("the PagedList values are", ((string)(null)), table45, "And ");
 #line hidden
-                global::Reqnroll.Table table41 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table46 = new global::Reqnroll.Table(new string[] {
                             "ModifiedDate",
                             "Name",
                             "ParentProductCategoryId",
                             "ProductCategoryId",
                             "Rowguid"});
-                table41.AddRow(new string[] {
+                table46.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Road Bikes",
                             "1",
                             "6",
                             "000310c0-bcc8-42c4-b0c3-45ae611af06b"});
-                table41.AddRow(new string[] {
+                table46.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Touring Bikes",
                             "1",
                             "7",
                             "02c5061d-ecdc-4274-b5f1-e91d76bc3f37"});
-                table41.AddRow(new string[] {
+                table46.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Handlebars",
                             "2",
                             "8",
                             "3ef2c725-7135-4c85-9ae6-ae9a3bdd9283"});
-                table41.AddRow(new string[] {
+                table46.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Bottom Brackets",
                             "2",
                             "9",
                             "a9e54089-8a1e-4cf5-8646-e3801f685934"});
-                table41.AddRow(new string[] {
+                table46.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Brakes",
                             "2",
                             "10",
                             "d43ba4a3-ef0d-426b-90eb-4be4547dd30c"});
 #line 133
- await testRunner.AndAsync("the results are", ((string)(null)), table41, "And ");
+ await testRunner.AndAsync("the results are", ((string)(null)), table46, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -834,42 +834,42 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-                global::Reqnroll.Table table42 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table47 = new global::Reqnroll.Table(new string[] {
                             "PageNumber",
                             "PageSize"});
-                table42.AddRow(new string[] {
+                table47.AddRow(new string[] {
                             "2",
                             "8"});
 #line 142
- await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table42, "When ");
+ await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table47, "When ");
 #line hidden
-                global::Reqnroll.Table table43 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table48 = new global::Reqnroll.Table(new string[] {
                             "Key",
                             "Value",
                             "TypeName"});
-                table43.AddRow(new string[] {
+                table48.AddRow(new string[] {
                             "pageingFilter",
                             "{{model}}",
                             "AdventureWorksDemo.Data.Paging.PagingFilter"});
 #line 145
- await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table43, "And ");
+ await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table48, "And ");
 #line hidden
-                global::Reqnroll.Table table44 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table49 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table44.AddRow(new string[] {
+                table49.AddRow(new string[] {
                             "AdventureWorksDemo.Data.Paging.PagedList<AdventureWorksDemo.Data.Models.ProductCa" +
                                 "tegoryModel>"});
 #line 148
- await testRunner.ThenAsync("the result is of type", ((string)(null)), table44, "Then ");
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table49, "Then ");
 #line hidden
-                global::Reqnroll.Table table45 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table50 = new global::Reqnroll.Table(new string[] {
                             "TotalPages",
                             "TotalCount",
                             "PageSize",
                             "CurrentPage",
                             "Count",
                             "Capacity"});
-                table45.AddRow(new string[] {
+                table50.AddRow(new string[] {
                             "6",
                             "42",
                             "8",
@@ -877,64 +877,64 @@ await this.FeatureBackgroundAsync();
                             "8",
                             "8"});
 #line 151
- await testRunner.AndAsync("the PagedList values are", ((string)(null)), table45, "And ");
+ await testRunner.AndAsync("the PagedList values are", ((string)(null)), table50, "And ");
 #line hidden
-                global::Reqnroll.Table table46 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table51 = new global::Reqnroll.Table(new string[] {
                             "ModifiedDate",
                             "Name",
                             "ParentProductCategoryId",
                             "ProductCategoryId",
                             "Rowguid"});
-                table46.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Bottom Brackets",
                             "2",
                             "9",
                             "a9e54089-8a1e-4cf5-8646-e3801f685934"});
-                table46.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Brakes",
                             "2",
                             "10",
                             "d43ba4a3-ef0d-426b-90eb-4be4547dd30c"});
-                table46.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Chains",
                             "2",
                             "11",
                             "e93a7231-f16c-4b0f-8c41-c73fdec62da0"});
-                table46.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Cranksets",
                             "2",
                             "12",
                             "4f644521-422b-4f19-974a-e3df6102567e"});
-                table46.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Derailleurs",
                             "2",
                             "13",
                             "1830d70c-aa2a-40c0-a271-5ba86f38f8bf"});
-                table46.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Forks",
                             "2",
                             "14",
                             "b5f9ba42-b69b-4fdd-b2ec-57fb7b42e3cf"});
-                table46.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Headsets",
                             "2",
                             "15",
                             "7c782bbe-5a16-495a-aa50-10afe5a84af2"});
-                table46.AddRow(new string[] {
+                table51.AddRow(new string[] {
                             "6/1/2002 12:00:00 AM",
                             "Mountain Frames",
                             "2",
                             "16",
                             "61b21b65-e16a-4be7-9300-4d8e9db861be"});
 #line 154
- await testRunner.AndAsync("the results are", ((string)(null)), table46, "And ");
+ await testRunner.AndAsync("the results are", ((string)(null)), table51, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -961,42 +961,42 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-                global::Reqnroll.Table table47 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table52 = new global::Reqnroll.Table(new string[] {
                             "PageNumber",
                             "PageSize"});
-                table47.AddRow(new string[] {
+                table52.AddRow(new string[] {
                             "1234",
                             "5"});
 #line 166
- await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table47, "When ");
+ await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table52, "When ");
 #line hidden
-                global::Reqnroll.Table table48 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table53 = new global::Reqnroll.Table(new string[] {
                             "Key",
                             "Value",
                             "TypeName"});
-                table48.AddRow(new string[] {
+                table53.AddRow(new string[] {
                             "pageingFilter",
                             "{{model}}",
                             "AdventureWorksDemo.Data.Paging.PagingFilter"});
 #line 169
- await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table48, "And ");
+ await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table53, "And ");
 #line hidden
-                global::Reqnroll.Table table49 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table54 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table49.AddRow(new string[] {
+                table54.AddRow(new string[] {
                             "AdventureWorksDemo.Data.Paging.PagedList<AdventureWorksDemo.Data.Models.ProductCa" +
                                 "tegoryModel>"});
 #line 172
- await testRunner.ThenAsync("the result is of type", ((string)(null)), table49, "Then ");
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table54, "Then ");
 #line hidden
-                global::Reqnroll.Table table50 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table55 = new global::Reqnroll.Table(new string[] {
                             "TotalPages",
                             "TotalCount",
                             "PageSize",
                             "CurrentPage",
                             "Count",
                             "Capacity"});
-                table50.AddRow(new string[] {
+                table55.AddRow(new string[] {
                             "9",
                             "42",
                             "5",
@@ -1004,16 +1004,16 @@ await this.FeatureBackgroundAsync();
                             "0",
                             "0"});
 #line 175
- await testRunner.AndAsync("the PagedList values are", ((string)(null)), table50, "And ");
+ await testRunner.AndAsync("the PagedList values are", ((string)(null)), table55, "And ");
 #line hidden
-                global::Reqnroll.Table table51 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table56 = new global::Reqnroll.Table(new string[] {
                             "ModifiedDate",
                             "Name",
                             "ParentProductCategoryId",
                             "ProductCategoryId",
                             "Rowguid"});
 #line 178
- await testRunner.AndAsync("the results are", ((string)(null)), table51, "And ");
+ await testRunner.AndAsync("the results are", ((string)(null)), table56, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -1040,39 +1040,39 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-                global::Reqnroll.Table table52 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table57 = new global::Reqnroll.Table(new string[] {
                             "PageNumber",
                             "PageSize"});
-                table52.AddRow(new string[] {
+                table57.AddRow(new string[] {
                             "0",
                             "5"});
 #line 182
- await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table52, "When ");
+ await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table57, "When ");
 #line hidden
-                global::Reqnroll.Table table53 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table58 = new global::Reqnroll.Table(new string[] {
                             "Key",
                             "Value",
                             "TypeName"});
-                table53.AddRow(new string[] {
+                table58.AddRow(new string[] {
                             "pageingFilter",
                             "{{model}}",
                             "AdventureWorksDemo.Data.Paging.PagingFilter"});
 #line 185
- await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table53, "And ");
+ await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table58, "And ");
 #line hidden
-                global::Reqnroll.Table table54 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table59 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table54.AddRow(new string[] {
+                table59.AddRow(new string[] {
                             "System.ArgumentOutOfRangeException"});
 #line 188
- await testRunner.ThenAsync("the result is of type", ((string)(null)), table54, "Then ");
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table59, "Then ");
 #line hidden
-                global::Reqnroll.Table table55 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table60 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table55.AddRow(new string[] {
+                table60.AddRow(new string[] {
                             "Parameter pageNumber must be positive (Parameter \'pageNumber\')"});
 #line 191
- await testRunner.AndAsync("the exception message is", ((string)(null)), table55, "And ");
+ await testRunner.AndAsync("the exception message is", ((string)(null)), table60, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -1099,39 +1099,39 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-                global::Reqnroll.Table table56 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table61 = new global::Reqnroll.Table(new string[] {
                             "PageNumber",
                             "PageSize"});
-                table56.AddRow(new string[] {
+                table61.AddRow(new string[] {
                             "0",
                             "0"});
 #line 196
- await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table56, "When ");
+ await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table61, "When ");
 #line hidden
-                global::Reqnroll.Table table57 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table62 = new global::Reqnroll.Table(new string[] {
                             "Key",
                             "Value",
                             "TypeName"});
-                table57.AddRow(new string[] {
+                table62.AddRow(new string[] {
                             "pageingFilter",
                             "{{model}}",
                             "AdventureWorksDemo.Data.Paging.PagingFilter"});
 #line 199
- await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table57, "And ");
+ await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table62, "And ");
 #line hidden
-                global::Reqnroll.Table table58 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table63 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table58.AddRow(new string[] {
+                table63.AddRow(new string[] {
                             "System.ArgumentOutOfRangeException"});
 #line 202
- await testRunner.ThenAsync("the result is of type", ((string)(null)), table58, "Then ");
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table63, "Then ");
 #line hidden
-                global::Reqnroll.Table table59 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table64 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table59.AddRow(new string[] {
+                table64.AddRow(new string[] {
                             "Parameter pageNumber must be positive (Parameter \'pageNumber\')"});
 #line 205
- await testRunner.AndAsync("the exception message is", ((string)(null)), table59, "And ");
+ await testRunner.AndAsync("the exception message is", ((string)(null)), table64, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -1158,39 +1158,39 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-                global::Reqnroll.Table table60 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table65 = new global::Reqnroll.Table(new string[] {
                             "PageNumber",
                             "PageSize"});
-                table60.AddRow(new string[] {
+                table65.AddRow(new string[] {
                             "5",
                             "0"});
 #line 210
- await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table60, "When ");
+ await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Paging.PagingFilter\'", ((string)(null)), table65, "When ");
 #line hidden
-                global::Reqnroll.Table table61 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table66 = new global::Reqnroll.Table(new string[] {
                             "Key",
                             "Value",
                             "TypeName"});
-                table61.AddRow(new string[] {
+                table66.AddRow(new string[] {
                             "pageingFilter",
                             "{{model}}",
                             "AdventureWorksDemo.Data.Paging.PagingFilter"});
 #line 213
- await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table61, "And ");
+ await testRunner.AndAsync("I call the method \'FindAllAsync\' with the parameter values", ((string)(null)), table66, "And ");
 #line hidden
-                global::Reqnroll.Table table62 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table67 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table62.AddRow(new string[] {
+                table67.AddRow(new string[] {
                             "System.ArgumentOutOfRangeException"});
 #line 216
- await testRunner.ThenAsync("the result is of type", ((string)(null)), table62, "Then ");
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table67, "Then ");
 #line hidden
-                global::Reqnroll.Table table63 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table68 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table63.AddRow(new string[] {
+                table68.AddRow(new string[] {
                             "Parameter pageSize must be positive (Parameter \'pageSize\')"});
 #line 219
- await testRunner.AndAsync("the exception message is", ((string)(null)), table63, "And ");
+ await testRunner.AndAsync("the exception message is", ((string)(null)), table68, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
