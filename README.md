@@ -10,7 +10,7 @@ I will inevitably get some of these ideas wrong, so please point me in the right
 For standard TDD testing this project will use nUnit.  
 #### Integration testing
 For integration testing this project will use the SpecFlow replacment [reqnroll](https://reqnroll.net/).  
-It will also require a database and access to a MS-SQL database with a backup file that can be accessed by both the project and the database.  
+It will also require a database and access to docker.  
 
 
 ### References  
