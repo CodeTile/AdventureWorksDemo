@@ -5,6 +5,9 @@ This project is meant as a proving ground for ideas and as a reminder of how to 
   
 I will inevitably get some of these ideas wrong, so please point me in the right direction.  
 
+While I am concentrating on getting the basics in place, then I am foccusing on the ProductCategory table.
+
+
 ## Testing
 #### Standard TDD testing
 For standard TDD testing this project will use nUnit.  
