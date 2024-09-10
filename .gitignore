@@ -61,6 +61,7 @@ BenchmarkDotNet.Artifacts/
 project.lock.json
 project.fragment.lock.json
 artifacts/
+**/Properties/launchSettings.json
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
@@ -396,3 +397,29 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+
+#Reqnroll Stuff
+!lib/**
+Reqnroll.Tools/app.config
+Reqnroll.Tools/plugincompability.config
+Reqnroll.sln.GhostDoc.xml
+Features.Generated/
+GitExtensions.settings.backup
+
+/Tests/Reqnroll.MsBuildNetSdk.IntegrationTests/Features/dummy.feature.cs
+*.feature.cs
+*.AssemblyHooks.cs
+*.AssemblyHooks.vb
+
+# Version for Specs
+Tests/**/NuGetPackageVersion.cs
+
+#Analytics
+AppInsightsInstrumentationKey.cs
+
+docs/_build/*
+!Directory.Build.rsp
+/docs/Lib/
+/docs/Scripts/
+/docs/pyvenv.cfg
+nCrunchTemp*.csproj

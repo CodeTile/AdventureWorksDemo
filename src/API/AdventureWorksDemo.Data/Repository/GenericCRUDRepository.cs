@@ -19,6 +19,8 @@ namespace AdventureWorksDemo.Data.Repository
 		Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicateToGetId, params string[] includes);
 
 		Task<TEntity> UpdateAsync(TEntity entity);
+
+		Task<TEntity[]> UpdateAsync(TEntity[] entities);
 	}
 
 	public class GenericCrudRepository<TEntity>(dbContext context, TimeProvider timeProvider) : IGenericCrudRepository<TEntity> where TEntity : class
@@ -77,7 +79,7 @@ namespace AdventureWorksDemo.Data.Repository
 												 params string[] includes)
 		{
 			var query = ApplyIncludes(_dbContext.Set<TEntity>(), includes);
-			return await query.FirstOrDefaultAsync(predicateToGetId);
+			return await query.AsNoTracking().FirstOrDefaultAsync(predicateToGetId);
 		}
 
 		public async Task<TEntity> UpdateAsync(TEntity entity)
@@ -85,6 +87,13 @@ namespace AdventureWorksDemo.Data.Repository
 			_dbContext.Update(entity);
 			await _dbContext.SaveChangesAsync();
 			return entity;
+		}
+
+		public async Task<TEntity[]> UpdateAsync(TEntity[] entities)
+		{
+			_dbContext.UpdateRange(entities);
+			await _dbContext.SaveChangesAsync();
+			return entities.ToArray();
 		}
 
 		internal async Task<bool> DeleteAsync(TEntity? entity)

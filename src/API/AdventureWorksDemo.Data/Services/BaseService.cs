@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 
+using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Repository;
 
@@ -63,6 +64,16 @@ namespace AdventureWorksDemo.Data.Services
 			return _mapper.Map<TModel>(result);
 		}
 
+		public virtual async Task<IEnumerable<TModel>> UpdateAsync(IEnumerable<TModel> models)
+		{
+			TEntity[] entities = _mapper.Map<TEntity[]>(models);
+			await PreDataMutationAsync(entities);
+
+			TEntity[] result = await genericRepo.UpdateAsync(entities);
+
+			return _mapper.Map<TModel[]>(result);
+		}
+
 		internal virtual async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predictate)
 		{
 			//TODO: Add validation on delete.
@@ -86,7 +97,7 @@ namespace AdventureWorksDemo.Data.Services
 
 		internal virtual async Task PreDataMutationAsync(IEnumerable<TEntity> entities)
 		{
-			foreach (TEntity entity in entities)
+			foreach (TEntity entity in entities.AsParallel())
 			{
 				await PreDataMutationAsync(entity);
 			}
