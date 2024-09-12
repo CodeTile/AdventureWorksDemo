@@ -8,6 +8,7 @@ using AdventureWorksDemo.Data.Tests.reqnroll.Models;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using AdventureWorksDemo.Data.Paging;
 using Reqnroll;
+using AdventureWorksDemo.Data.Tests.reqnroll.Extensions;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 {
@@ -59,7 +60,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 		{
 			var contextResult = Helper.ScenarioContexts.GetResult;
 
-			string? resultTypeName = contextResult.GetType().FullName;
+			string? resultTypeName = contextResult.GetType().FullNameReadable();
 			switch (resultTypeName)
 			{
 				case "System.Boolean":
@@ -70,12 +71,16 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 					table.CompareToSet(new List<string>() { resultTypeName });
 					break;
 
-				case "AdventureWorksDemo.Data.Models.ProductCategoryModel":
+				case nameof(AdventureWorksDemo.Data.Models.ProductCategoryModel):
 					table.CompareToSet(new List<ProductCategoryModel> { (ProductCategoryModel)contextResult });
 					break;
 
 				case "AdventureWorksDemo.Data.Models.ProductCategoryModel[]":
 					table.CompareToSet((ProductCategoryModel[])contextResult);
+					break;
+
+				case "AdventureWorksDemo.Data.Models.ServiceResult<System.Boolean>":
+					table.CompareToInstance((IServiceResult<bool>)contextResult);
 					break;
 
 				default:
@@ -155,7 +160,8 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 		[When("I populate a list of the model {string}")]
 		public void WhenIPopulateAListOfTheModel(string modelTypeName, DataTable table)
 		{
-			var models = (IEnumerable<object>)Helper.Types.PopulateListFromTable(modelTypeName, table, null);
+			//var models = (IEnumerable<object>)Helper.Types.PopulateListFromTable(modelTypeName, table, null);
+			var models = Helper.Types.PopulateListFromTable(modelTypeName, table, null);
 			Helper.ScenarioContexts.AddToContext(ScenarioContextKey.ListOfObjects, models);
 		}
 

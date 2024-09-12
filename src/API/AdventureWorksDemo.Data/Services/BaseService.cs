@@ -74,7 +74,7 @@ namespace AdventureWorksDemo.Data.Services
 			return _mapper.Map<TModel[]>(result);
 		}
 
-		internal virtual async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predictate)
+		internal virtual async Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predictate)
 		{
 			//TODO: Add validation on delete.
 			return await genericRepo.DeleteAsync(predictate);

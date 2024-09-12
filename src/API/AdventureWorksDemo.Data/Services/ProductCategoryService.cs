@@ -15,7 +15,7 @@ namespace AdventureWorksDemo.Data.Services
 
 		Task<IEnumerable<ProductCategoryModel>> AddBatchAsync(IEnumerable<ProductCategoryModel> models);
 
-		Task<bool> DeleteAsync(int productCategoryId);
+		Task<IServiceResult<bool>> DeleteAsync(int productCategoryId);
 
 		Task<PagedList<ProductCategoryModel>?> FindAllAsync(PageingFilter pageingFilter);
 
@@ -31,7 +31,7 @@ namespace AdventureWorksDemo.Data.Services
 	public class ProductCategoryService(IMapper mapper, IGenericCrudRepository<ProductCategory> genericRepo, TimeProvider timeProvider) : BaseService<ProductCategory, ProductCategoryModel>(mapper, genericRepo)
 																											  , IProductCategoryService
 	{
-		public async Task<bool> DeleteAsync(int productCategoryId) => await base.DeleteAsync(m => m.ProductCategoryId == productCategoryId);
+		public async Task<IServiceResult<bool>> DeleteAsync(int productCategoryId) => await base.DeleteAsync(m => m.ProductCategoryId == productCategoryId);
 
 		public async Task<ProductCategoryModel?> FindAsync(int productCategoryId) => await base.FindByIdAsync(m => m.ProductCategoryId == productCategoryId);
 

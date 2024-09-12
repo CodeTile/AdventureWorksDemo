@@ -89,14 +89,8 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 					case "pageingfilter":
 						return typeof(PageingFilter);
 
-					case "addressservice":
-						return typeof(AddressService);
-
 					case "productcategoryservice":
 						return typeof(ProductCategoryService);
-
-					case "addressmodel":
-						return typeof(AddressModel);
 
 					case "adventureworksdemo.data.models.productcategorymodel":
 					case "productcategorymodel":

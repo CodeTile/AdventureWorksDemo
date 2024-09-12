@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 
 using AdventureWorksDemo.Data.DbContexts;
+using AdventureWorksDemo.Data.Models;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -12,7 +13,7 @@ namespace AdventureWorksDemo.Data.Repository
 
 		Task<IEnumerable<TEntity>> AddBatchAsync(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] references);
 
-		Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predictate);
+		Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predictate);
 
 		IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null, params string[] includes);
 
@@ -50,17 +51,20 @@ namespace AdventureWorksDemo.Data.Repository
 			return (IEnumerable<TEntity>)entities;
 		}
 
-		public async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predictate)
+		public async Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predictate)
 		{
 			var entities = FindEntities(predictate);
-			if (entities == null || !entities.Any())
+			if (entities == null || !(await entities.AnyAsync()))
 			{
-				return false;
+				return ServiceResult<bool>.Failure(false);
 			}
 
 			_dbContext.RemoveRange(entities);
-			await _dbContext.SaveChangesAsync();
-			return true;
+			int result = await _dbContext.SaveChangesAsync();
+			if (result == 1)
+				return ServiceResult<bool>.Success(true);
+			else
+				return ServiceResult<bool>.Failure(false);
 		}
 
 		public IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null,
