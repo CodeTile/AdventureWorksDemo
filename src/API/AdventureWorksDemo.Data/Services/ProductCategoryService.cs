@@ -23,9 +23,9 @@ namespace AdventureWorksDemo.Data.Services
 
 		Task<ProductCategoryModel?> FindAsync(int productCategoryId);
 
-		Task<ProductCategoryModel> UpdateAsync(ProductCategoryModel model);
+		Task<IServiceResult<ProductCategoryModel>> UpdateAsync(ProductCategoryModel model);
 
-		Task<IEnumerable<ProductCategoryModel>> UpdateBatchAsync(IEnumerable<ProductCategoryModel> models);
+		Task<IServiceResult<IEnumerable<ProductCategoryModel>>> UpdateBatchAsync(IEnumerable<ProductCategoryModel> models);
 	}
 
 	public class ProductCategoryService(IMapper mapper, IGenericCrudRepository<ProductCategory> genericRepo, TimeProvider timeProvider) : BaseService<ProductCategory, ProductCategoryModel>(mapper, genericRepo)
@@ -35,18 +35,16 @@ namespace AdventureWorksDemo.Data.Services
 
 		public async Task<ProductCategoryModel?> FindAsync(int productCategoryId) => await base.FindByIdAsync(m => m.ProductCategoryId == productCategoryId);
 
-		public override async Task<ProductCategoryModel> UpdateAsync(ProductCategoryModel model)
+		public override async Task<IServiceResult<ProductCategoryModel>> UpdateAsync(ProductCategoryModel model)
 		{
 			var original = await FindAsync(model.ProductCategoryId);
 			if (original == null)
 			{
-				//TODO:  Move to result pattern
-				throw new Exception("Record not found to update!");
+				return ServiceResult<ProductCategoryModel>.Failure(model, "Unable to locate record to update!");
 			}
 			else if (original.Equals(model))
 			{
-				//TODO:  Move to result pattern
-				return original;
+				return ServiceResult<ProductCategoryModel>.Failure(model, "Record does not need to be updated!");
 			}
 
 			original.Name = model.Name;
@@ -54,12 +52,12 @@ namespace AdventureWorksDemo.Data.Services
 			return await base.UpdateAsync(original);
 		}
 
-		public async Task<IEnumerable<ProductCategoryModel>> UpdateBatchAsync(IEnumerable<ProductCategoryModel> models)
+		public async Task<IServiceResult<IEnumerable<ProductCategoryModel>>> UpdateBatchAsync(IEnumerable<ProductCategoryModel> models)
 		{
 			if (models == null || !models.Any())
 			{
 				var retval = models ?? Array.Empty<ProductCategoryModel>();
-				return retval.ToArray();
+				return ServiceResult<IEnumerable<ProductCategoryModel>>.Failure(retval, "Please select some records to update!");
 			}
 			List<ProductCategoryModel> modelsToUpdate = [];
 			foreach (var model in models.AsParallel())
@@ -72,7 +70,7 @@ namespace AdventureWorksDemo.Data.Services
 				modelsToUpdate.Add(original);
 			}
 
-			return (ProductCategoryModel[])await base.UpdateAsync(modelsToUpdate);
+			return await base.UpdateAsync(modelsToUpdate);
 		}
 
 		internal override Task PreDataMutationAsync(ProductCategory entity)

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Reflection;
 
@@ -10,6 +11,10 @@ using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
 using AdventureWorksDemo.Data.Tests.reqnroll.Models;
 
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+
+using Newtonsoft.Json.Linq;
+
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 {
@@ -83,7 +88,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 					break;
 
 				case IServiceResult:
-					table.CompareToInstance(contextResult);
+					CompareDataTableWithResult(table, contextResult);
 					break;
 
 				default:
@@ -154,7 +159,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			}
 			else
 				values = (IList?)value;
-			CompareDatatableWithResultList(dataTable, values);
+			CompareDataTableWithResult(dataTable, values);
 		}
 
 		[When("I call the method {string} with the parameter values")]
@@ -196,7 +201,16 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			Helper.ScenarioContexts.AddToContext(ScenarioContextKey.Model, model);
 		}
 
-		private void CompareDatatableWithResultList(DataTable datatable, IEnumerable? values)
+		private void CompareDataTableWithResult(DataTable datatable, object value)
+		{
+			var valueType = value.GetType();
+			IList? values = createList(valueType);
+
+			values.Add(value);
+			CompareDataTableWithResult(datatable, values);
+		}
+
+		private void CompareDataTableWithResult(DataTable datatable, IEnumerable? values)
 		{
 			object valueType = values.GetType().GetGenericArguments().SingleOrDefault();
 			switch (valueType)

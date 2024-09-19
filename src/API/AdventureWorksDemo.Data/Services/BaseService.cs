@@ -66,23 +66,32 @@ namespace AdventureWorksDemo.Data.Services
 			return EntityPagedListToModelPagedList(result);
 		}
 
-		public virtual async Task<TModel> UpdateAsync(TModel model)
+		public virtual async Task<IServiceResult<TModel>> UpdateAsync(TModel model)
 		{
 			//TODO: Add modify record validation
 			var entity = _mapper.Map<TEntity>(model);
 			await PreDataMutationAsync(entity);
 			var result = await genericRepo.UpdateAsync(entity);
-			return _mapper.Map<TModel>(result);
+			return new ServiceResult<TModel>()
+			{
+				IsSuccess = result.IsSuccess,
+				Message = result.Message,
+				Value = _mapper.Map<TModel>(result.Value),
+			};
 		}
 
-		public virtual async Task<IEnumerable<TModel>> UpdateAsync(IEnumerable<TModel> models)
+		public virtual async Task<IServiceResult<IEnumerable<TModel>>> UpdateAsync(IEnumerable<TModel> models)
 		{
 			TEntity[] entities = _mapper.Map<TEntity[]>(models);
 			await PreDataMutationAsync(entities);
 
-			TEntity[] result = await genericRepo.UpdateAsync(entities);
-
-			return _mapper.Map<TModel[]>(result);
+			var result = await genericRepo.UpdateAsync(entities);
+			return new ServiceResult<IEnumerable<TModel>>()
+			{
+				IsSuccess = result.IsSuccess,
+				Message = result.Message,
+				Value = _mapper.Map<TModel[]>(result.Value),
+			};
 		}
 
 		internal virtual async Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predictate)

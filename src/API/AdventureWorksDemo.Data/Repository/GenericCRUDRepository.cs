@@ -4,6 +4,7 @@ using AdventureWorksDemo.Data.DbContexts;
 using AdventureWorksDemo.Data.Models;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace AdventureWorksDemo.Data.Repository
 {
@@ -19,9 +20,9 @@ namespace AdventureWorksDemo.Data.Repository
 
 		Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicateToGetId, params string[] includes);
 
-		Task<TEntity> UpdateAsync(TEntity entity);
+		Task<IServiceResult<IEnumerable<TEntity>>> UpdateAsync(TEntity[] entities);
 
-		Task<TEntity[]> UpdateAsync(TEntity[] entities);
+		Task<IServiceResult<TEntity>> UpdateAsync(TEntity entity);
 	}
 
 	public class GenericCrudRepository<TEntity>(dbContext context, TimeProvider timeProvider) : IGenericCrudRepository<TEntity> where TEntity : class
@@ -94,18 +95,25 @@ namespace AdventureWorksDemo.Data.Repository
 			return await query.AsNoTracking().FirstOrDefaultAsync(predicateToGetId);
 		}
 
-		public async Task<TEntity> UpdateAsync(TEntity entity)
+		public async Task<IServiceResult<TEntity>> UpdateAsync(TEntity entity)
 		{
 			_dbContext.Update(entity);
-			await _dbContext.SaveChangesAsync();
-			return entity;
+			return new ServiceResult<TEntity>()
+			{
+				IsSuccess = (1 == await _dbContext.SaveChangesAsync()),
+				Value = entity,
+			};
 		}
 
-		public async Task<TEntity[]> UpdateAsync(TEntity[] entities)
+		public async Task<IServiceResult<IEnumerable<TEntity>>> UpdateAsync(TEntity[] entities)
 		{
 			_dbContext.UpdateRange(entities);
-			await _dbContext.SaveChangesAsync();
-			return entities.ToArray();
+			var result = await _dbContext.SaveChangesAsync();
+			return new ServiceResult<IEnumerable<TEntity>>()
+			{
+				IsSuccess = entities.Length == result,
+				Value = entities,
+			};
 		}
 
 		internal async Task<bool> DeleteAsync(TEntity? entity)
