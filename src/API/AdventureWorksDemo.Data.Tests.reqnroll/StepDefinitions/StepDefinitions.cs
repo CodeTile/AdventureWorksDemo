@@ -1,14 +1,15 @@
 using System.Collections;
 using System.Reflection;
+
 using AdventureWorksDemo.Data.Models;
+using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Services;
 using AdventureWorksDemo.Data.Tests.reqnroll.enums;
+using AdventureWorksDemo.Data.Tests.reqnroll.Extensions;
 using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
 using AdventureWorksDemo.Data.Tests.reqnroll.Models;
+
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-using AdventureWorksDemo.Data.Paging;
-using Reqnroll;
-using AdventureWorksDemo.Data.Tests.reqnroll.Extensions;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 {
@@ -61,30 +62,32 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			var contextResult = Helper.ScenarioContexts.GetResult;
 
 			string? resultTypeName = contextResult.GetType().FullNameReadable();
-			switch (resultTypeName)
+
+			switch (contextResult)
 			{
-				case "System.Boolean":
+				case bool:
 					table.CompareToSet(new List<ValueExpectedResult>() { new ValueExpectedResult() { Expected = ((bool)contextResult).ToString() } });
 					break;
 
-				case "System.Exception":
+				case Exception:
 					table.CompareToSet(new List<string>() { resultTypeName });
 					break;
 
-				case nameof(AdventureWorksDemo.Data.Models.ProductCategoryModel):
+				case AdventureWorksDemo.Data.Models.ProductCategoryModel:
 					table.CompareToSet(new List<ProductCategoryModel> { (ProductCategoryModel)contextResult });
 					break;
 
-				case "AdventureWorksDemo.Data.Models.ProductCategoryModel[]":
+				case AdventureWorksDemo.Data.Models.ProductCategoryModel[]:
+				case IEnumerable<ProductCategoryModel>:
 					table.CompareToSet((ProductCategoryModel[])contextResult);
 					break;
 
-				case "AdventureWorksDemo.Data.Models.ServiceResult<System.Boolean>":
-					table.CompareToInstance((IServiceResult<bool>)contextResult);
+				case IServiceResult:
+					table.CompareToInstance(contextResult);
 					break;
 
 				default:
-					throw new NotImplementedException($"Type [{resultTypeName}] is not implemented!");
+					throw new NotImplementedException($"Type [{resultTypeName}] is not handled!");
 			}
 		}
 
@@ -133,6 +136,27 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			}
 		}
 
+		[Then("the results property {string} contains")]
+		public void ThenTheResultsPropertyContains(string propertyName, DataTable dataTable)
+		{
+			var result = Helper.ScenarioContexts.GetResult;
+			var properties = result.GetType().GetProperties();
+			var property = properties.SingleOrDefault(p => p.Name == propertyName);
+
+			Type valueType = property.PropertyType;
+			var value = property.GetValue(result, null);
+
+			IList? values = createList(valueType);
+
+			if (valueType is not IEnumerable)
+			{
+				values.Add(value);
+			}
+			else
+				values = (IList?)value;
+			CompareDatatableWithResultList(dataTable, values);
+		}
+
 		[When("I call the method {string} with the parameter values")]
 		public async Task WhenICallTheMethodWithTheParameterValuesAsync(string methodName, DataTable table)
 		{
@@ -170,6 +194,26 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 		{
 			var model = Helper.Types.PopulateModelFromRow(modelTypeName, dataTable.Rows[0], null);
 			Helper.ScenarioContexts.AddToContext(ScenarioContextKey.Model, model);
+		}
+
+		private void CompareDatatableWithResultList(DataTable datatable, IEnumerable? values)
+		{
+			object valueType = values.GetType().GetGenericArguments().SingleOrDefault();
+			switch (valueType)
+			{
+				case ProductCategoryModel:
+					datatable.CompareToSet((IEnumerable<ProductCategoryModel>)values);
+					break;
+
+				default:
+					break;
+			}
+		}
+
+		private IList createList(Type myType)
+		{
+			Type genericListType = typeof(List<>).MakeGenericType(myType);
+			return (IList)Activator.CreateInstance(genericListType);
 		}
 
 		private object? GetArgumentValue(DataTableRow row)

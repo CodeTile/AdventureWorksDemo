@@ -11,9 +11,9 @@ namespace AdventureWorksDemo.Data.Services
 {
 	public interface IProductCategoryService
 	{
-		Task<ProductCategoryModel> AddAsync(ProductCategoryModel model);
+		Task<IServiceResult<ProductCategoryModel>> AddAsync(ProductCategoryModel model);
 
-		Task<IEnumerable<ProductCategoryModel>> AddBatchAsync(IEnumerable<ProductCategoryModel> models);
+		Task<IServiceResult<IEnumerable<ProductCategoryModel>>> AddBatchAsync(IEnumerable<ProductCategoryModel> models);
 
 		Task<IServiceResult<bool>> DeleteAsync(int productCategoryId);
 

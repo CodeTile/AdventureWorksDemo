@@ -2,13 +2,17 @@
 
 namespace AdventureWorksDemo.Data.Models
 {
-	public interface IServiceResult<T>
+	public interface IServiceResult
 	{
 		bool IsException { get; }
 		bool IsFailure { get; }
 		bool IsSuccess { get; }
 		string? Message { get; }
-		T? Value { get; }
+	}
+
+	public interface IServiceResult<T> : IServiceResult
+	{
+		T? Value { get; set; }
 	}
 
 	public class ServiceResult<T> : IServiceResult<T>
@@ -17,7 +21,7 @@ namespace AdventureWorksDemo.Data.Models
 		public bool IsFailure => !IsSuccess;
 		public bool IsSuccess { get; set; }
 		public string? Message { get; internal set; }
-		public T? Value { get; internal set; }
+		public T? Value { get; set; }
 
 		public static ServiceResult<T> Failure(dynamic? result, string? message = null)
 		{

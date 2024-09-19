@@ -1,4 +1,5 @@
-﻿using AdventureWorksDemo.Data.Tests.reqnroll.Extensions;
+﻿using AdventureWorksDemo.Data.Models;
+using AdventureWorksDemo.Data.Tests.reqnroll.Extensions;
 using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
@@ -24,6 +25,29 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			}
 			else
 				throw new NotImplementedException();
+		}
+
+		[Then("the ServiceResult is of type {string} with the values")]
+		public void ThenTheServiceResultIsOfTypeWithTheValues(string expectedTypeName, DataTable dataTable)
+		{
+			var contextResult = (dynamic)Helper.ScenarioContexts.GetResult;
+
+			// check type
+			Type actualType = contextResult.Value.GetType();
+			actualType.FullNameReadable().Should().Be(expectedTypeName);
+			//
+			//Check datatype
+			dataTable.Should().NotBeNull();
+			var debug = actualType.FullNameReadable();
+			switch (actualType.FullNameReadable())
+			{
+				case "AdventureWorksDemo.Data.Models.ProductCategoryModel":
+					dataTable.Should().Be((ProductCategoryModel)contextResult);
+					break;
+
+				default:
+					break;
+			}
 		}
 	}
 }

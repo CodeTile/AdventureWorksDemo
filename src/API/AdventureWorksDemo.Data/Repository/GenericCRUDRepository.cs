@@ -9,9 +9,9 @@ namespace AdventureWorksDemo.Data.Repository
 {
 	public interface IGenericCrudRepository<TEntity>
 	{
-		Task<TEntity> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references);
+		Task<IServiceResult<TEntity>> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references);
 
-		Task<IEnumerable<TEntity>> AddBatchAsync(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] references);
+		Task<IServiceResult<IEnumerable<TEntity>>> AddBatchAsync(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] references);
 
 		Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predictate);
 
@@ -33,22 +33,30 @@ namespace AdventureWorksDemo.Data.Repository
 
 		private readonly DbContext _dbContext = context;
 
-		public async Task<TEntity> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references)
+		public async Task<IServiceResult<TEntity>> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references)
 		{
 			_dbContext.Set<TEntity>().Add(entity);
 
 			await LoadReferences(entity, references);
-			await _dbContext.SaveChangesAsync();
-			return entity;
+			var result = await _dbContext.SaveChangesAsync();
+			return new ServiceResult<TEntity>()
+			{
+				IsSuccess = (1 == result),
+				Value = entity,
+			};
 		}
 
-		public async Task<IEnumerable<TEntity>> AddBatchAsync(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] references)
+		public async Task<IServiceResult<IEnumerable<TEntity>>> AddBatchAsync(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] references)
 		{
 			await _dbContext.Set<TEntity>().AddRangeAsync(entities);
 
 			await LoadReferences(entities, references);
-			await _dbContext.SaveChangesAsync();
-			return (IEnumerable<TEntity>)entities;
+			var result = await _dbContext.SaveChangesAsync();
+			return new ServiceResult<IEnumerable<TEntity>>()
+			{
+				IsSuccess = (entities.Count() == result),
+				Value = entities,
+			};
 		}
 
 		public async Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predictate)

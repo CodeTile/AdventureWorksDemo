@@ -20,22 +20,33 @@ namespace AdventureWorksDemo.Data.Services
 		internal readonly IMapper _mapper = mapper;
 		internal readonly IGenericCrudRepository<TEntity> genericRepo = genericRepo;
 
-		public virtual async Task<TModel> AddAsync(TModel model)
+		public virtual async Task<IServiceResult<TModel>> AddAsync(TModel model)
 		{
 			//TODO: Add new record validation
 			var entity = _mapper.Map<TEntity>(model);
 			await PreDataMutationAsync(entity);
-			var result = await genericRepo.AddAsync(entity);
-			return _mapper.Map<TModel>(result);
+			IServiceResult<TEntity> result = await genericRepo.AddAsync(entity);
+			var mapped = _mapper.Map<TModel>(result.Value);
+			return new ServiceResult<TModel>()
+			{
+				IsSuccess = result.IsSuccess,
+				Message = result.Message,
+				Value = mapped,
+			};
 		}
 
-		public virtual async Task<IEnumerable<TModel>> AddBatchAsync(IEnumerable<TModel> models)
+		public virtual async Task<IServiceResult<IEnumerable<TModel>>> AddBatchAsync(IEnumerable<TModel> models)
 		{
 			//TODO: Add new record validation
 			var entities = _mapper.Map<IEnumerable<TEntity>>(models);
 			await PreDataMutationAsync(entities);
 			var result = await genericRepo.AddBatchAsync(entities);
-			return _mapper.Map<IEnumerable<TModel>>(result);
+			return new ServiceResult<IEnumerable<TModel>>()
+			{
+				IsSuccess = result.IsSuccess,
+				Message = result.Message,
+				Value = _mapper.Map<IEnumerable<TModel>>(result.Value),
+			};
 		}
 
 		public virtual async Task<PagedList<TModel>?> FindAllAsync(PageingFilter pageingFilter)
