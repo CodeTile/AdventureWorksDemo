@@ -5,13 +5,18 @@ This project is meant as a proving ground for ideas and as a reminder of how to 
   
 I will inevitably get some of these ideas wrong, so please point me in the right direction.  
 
+While I am concentrating on getting the basics in place, then I am foccusing on the ProductCategory table.
+
+
 ## Testing
 #### Standard TDD testing
 For standard TDD testing this project will use nUnit.  
 #### Integration testing
 For integration testing this project will use the SpecFlow replacment [reqnroll](https://reqnroll.net/).  
+
 It will also require a database and access to a MS-SQL database with a backup file that can be accessed by both the project and the database.  
-This should automaticaly be downloaded to docker desktop and an image created.
+This should automaticaly download to docker desktop and an image created.
+
 
 ## Project status  
 I am still working on the basics for this project, as such I am concentrating on the table [ProductCategory]. The reason for this table is it depends on no other objects, which makes getting the basics right easier.  
