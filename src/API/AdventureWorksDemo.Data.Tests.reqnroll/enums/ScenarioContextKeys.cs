@@ -8,5 +8,8 @@
         Result,
         ResultType,
         UOT,
+        FakeDateTime,
+        FakeTimeProvider,
+        ListOfObjects,
     }
 }

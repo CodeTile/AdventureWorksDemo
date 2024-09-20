@@ -31,4 +31,10 @@ public partial class ProductCategoryModel
     /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
     /// </summary>
     public Guid Rowguid { get; set; }
+
+    public virtual bool Equals(ProductCategoryModel obj)
+    {
+        return Name.Equals(obj.Name)
+               && ParentProductCategoryId.Equals(obj.ParentProductCategoryId);
+    }
 }

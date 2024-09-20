@@ -24,6 +24,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
         {
             DockerMsSqlServerDatabase.Current = await DockerMsSqlServerDatabase.Create();
             Helper.ScenarioContexts.UpdateFlag(enums.ScenarioContextKey.FlagResetDatabase, false);
+            Helper.DateTimeHelpers.SetTimeProvider();
         }
 
         public void Dispose()

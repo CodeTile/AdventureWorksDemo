@@ -1,100 +1,152 @@
 ﻿using System.Linq.Expressions;
+
 using AdventureWorksDemo.Data.DbContexts;
+using AdventureWorksDemo.Data.Models;
+
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace AdventureWorksDemo.Data.Repository
 {
-    public interface IGenericCrudRepository<TEntity>
-    {
-        Task<TEntity> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references);
+	public interface IGenericCrudRepository<TEntity>
+	{
+		Task<IServiceResult<TEntity>> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references);
 
-        Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predictate);
+		Task<IServiceResult<IEnumerable<TEntity>>> AddBatchAsync(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] references);
 
-        IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null, params string[] includes);
+		Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predictate);
 
-        Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicateToGetId, params string[] includes);
+		IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null, params string[] includes);
 
-        Task<TEntity> UpdateAsync(TEntity entity);
-    }
+		Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicateToGetId, params string[] includes);
 
-    public class GenericCrudRepository<TEntity>(dbContext context) : IGenericCrudRepository<TEntity> where TEntity : class
-    {
-        // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // Class is based on https://medium.com/@abdulwariis/building-a-generic-service-for-crud-operations-in-c-net-core-3db40c2c8c8a
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        // //
+		Task<IServiceResult<IEnumerable<TEntity>>> UpdateAsync(TEntity[] entities);
 
-        private readonly DbContext _dbContext = context;
+		Task<IServiceResult<TEntity>> UpdateAsync(TEntity entity);
+	}
 
-        public async Task<TEntity> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references)
-        {
-            _dbContext.Set<TEntity>().Add(entity);
+	public class GenericCrudRepository<TEntity>(dbContext context, TimeProvider timeProvider) : IGenericCrudRepository<TEntity> where TEntity : class
+	{
+		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// Class is based on https://medium.com/@abdulwariis/building-a-generic-service-for-crud-operations-in-c-net-core-3db40c2c8c8a
+		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		// //
 
-            await LoadReferences(entity, references);
-            await _dbContext.SaveChangesAsync();
-            return entity;
-        }
+		private readonly DbContext _dbContext = context;
 
-        public async Task<bool> DeleteAsync(Expression<Func<TEntity, bool>> predictate)
-        {
-            var entities = FindEntities(predictate);
-            if (entities == null || !entities.Any())
-                return false;
+		public async Task<IServiceResult<TEntity>> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references)
+		{
+			_dbContext.Set<TEntity>().Add(entity);
 
-            _dbContext.RemoveRange(entities);
-            await _dbContext.SaveChangesAsync();
-            return true;
-        }
+			await LoadReferences(entity, references);
+			var result = await _dbContext.SaveChangesAsync();
+			return new ServiceResult<TEntity>()
+			{
+				IsSuccess = (1 == result),
+				Value = entity,
+			};
+		}
 
-        public IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null,
-                                                params string[] includes)
-        {
-            var query = ApplyIncludes(_dbContext.Set<TEntity>(), includes);
+		public async Task<IServiceResult<IEnumerable<TEntity>>> AddBatchAsync(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] references)
+		{
+			await _dbContext.Set<TEntity>().AddRangeAsync(entities);
 
-            if (predictate != null)
-            {
-                query = query.Where(predictate);
-            }
-            return query;
-        }
+			await LoadReferences(entities, references);
+			var result = await _dbContext.SaveChangesAsync();
+			return new ServiceResult<IEnumerable<TEntity>>()
+			{
+				IsSuccess = (entities.Count() == result),
+				Value = entities,
+			};
+		}
 
-        public async Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicateToGetId,
-                                                 params string[] includes)
-        {
-            var query = ApplyIncludes(_dbContext.Set<TEntity>(), includes);
-            return await query.FirstOrDefaultAsync(predicateToGetId);
-        }
+		public async Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predictate)
+		{
+			var entities = FindEntities(predictate);
+			if (entities == null || !(await entities.AnyAsync()))
+			{
+				return ServiceResult<bool>.Failure(false);
+			}
 
-        public async Task<TEntity> UpdateAsync(TEntity entity)
-        {
-            _dbContext.Update(entity);
-            await _dbContext.SaveChangesAsync();
-            return entity;
-        }
+			_dbContext.RemoveRange(entities);
+			int result = await _dbContext.SaveChangesAsync();
+			if (result == 1)
+				return ServiceResult<bool>.Success(true);
+			else
+				return ServiceResult<bool>.Failure(false);
+		}
 
-        internal async Task<bool> DeleteAsync(TEntity? entity)
-        {
-            if (entity == null)
-            {
-                return false;
-            }
+		public IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null,
+												params string[] includes)
+		{
+			var query = ApplyIncludes(_dbContext.Set<TEntity>(), includes);
 
-            _dbContext.Set<TEntity>().Remove(entity);
-            var result = await _dbContext.SaveChangesAsync();
-            return result == 1;
-        }
+			if (predictate != null)
+			{
+				query = query.Where(predictate);
+			}
+			return query;
+		}
 
-        private IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
-        {
-            return includes.Aggregate(query, (current, include) => current.Include(include));
-        }
+		public async Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicateToGetId,
+												 params string[] includes)
+		{
+			var query = ApplyIncludes(_dbContext.Set<TEntity>(), includes);
+			return await query.AsNoTracking().FirstOrDefaultAsync(predicateToGetId);
+		}
 
-        private async Task LoadReferences(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> references)
-        {
-            foreach (var reference in references)
-            {
-                await _dbContext.Entry(entity).Reference(reference!).LoadAsync();
-            }
-        }
-    }
+		public async Task<IServiceResult<TEntity>> UpdateAsync(TEntity entity)
+		{
+			_dbContext.Update(entity);
+			return new ServiceResult<TEntity>()
+			{
+				IsSuccess = (1 == await _dbContext.SaveChangesAsync()),
+				Value = entity,
+			};
+		}
+
+		public async Task<IServiceResult<IEnumerable<TEntity>>> UpdateAsync(TEntity[] entities)
+		{
+			_dbContext.UpdateRange(entities);
+			var result = await _dbContext.SaveChangesAsync();
+			return new ServiceResult<IEnumerable<TEntity>>()
+			{
+				IsSuccess = entities.Length == result,
+				Value = entities,
+			};
+		}
+
+		internal async Task<bool> DeleteAsync(TEntity? entity)
+		{
+			if (entity == null)
+			{
+				return false;
+			}
+
+			_dbContext.Set<TEntity>().Remove(entity);
+			var result = await _dbContext.SaveChangesAsync();
+			return result == 1;
+		}
+
+		private IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
+		{
+			return includes.Aggregate(query, (current, include) => current.Include(include));
+		}
+
+		private async Task LoadReferences(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> references)
+		{
+			foreach (var reference in references)
+			{
+				await _dbContext.Entry(entity).Reference(reference!).LoadAsync();
+			}
+		}
+
+		private async Task LoadReferences(IEnumerable<TEntity> entities, IEnumerable<Expression<Func<TEntity, object>>> references)
+		{
+			foreach (var entity in entities)
+			{
+				await LoadReferences(entity, references);
+			}
+		}
+	}
 }
