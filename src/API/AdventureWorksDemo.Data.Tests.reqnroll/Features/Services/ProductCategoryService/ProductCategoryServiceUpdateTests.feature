@@ -23,8 +23,8 @@ Scenario: Update01
 		| Expected                                                                                          |
 		| AdventureWorksDemo.Data.Models.ServiceResult<AdventureWorksDemo.Data.Models.ProductCategoryModel> |
 	And the result is
-		| IsException | IsFailure | IsSuccess | Message |
-		| False       | False     | True      |         |
+		| IsFailure | IsSuccess | Message |
+		| False     | True      |         |
 	And the results property 'Value' contains
 		| ProductCategoryId | ParentProductCategoryId | Name      | ModifiedDate          | Rowguid                              |
 		| 41                |                         | Ping Pong | 5/24/2024 12:34:56 PM | 3c17c9ae-e906-48b4-bdd3-60e28d47dcdf |
@@ -48,8 +48,8 @@ Scenario: Update02
 		| Expected                                                                                          |
 		| AdventureWorksDemo.Data.Models.ServiceResult<AdventureWorksDemo.Data.Models.ProductCategoryModel> |
 	And the result is
-		| IsException | IsFailure | IsSuccess | Message |
-		| False       | False     | True      |         |
+		| IsFailure | IsSuccess | Message |
+		| False     | True      |         |
 	And the results property 'Value' contains
 		| ProductCategoryId | ParentProductCategoryId | Name      | ModifiedDate          | Rowguid                              |
 		| 41                | 42                      | Ping Pong | 5/24/2024 12:34:56 PM | 3c17c9ae-e906-48b4-bdd3-60e28d47dcdf |
@@ -72,8 +72,8 @@ Scenario: Update03
 		| Expected                                                                                          |
 		| AdventureWorksDemo.Data.Models.ServiceResult<AdventureWorksDemo.Data.Models.ProductCategoryModel> |
 	And the result is
-		| IsException | IsFailure | IsSuccess | Message |
-		| False       | False     | True      |         |
+		| IsFailure | IsSuccess | Message |
+		| False     | True      |         |
 	And the results property 'Value' contains
 		| ProductCategoryId | ParentProductCategoryId | Name            | ModifiedDate          | Rowguid                              |
 		| 41                | 42                      | Tires and Tubes | 5/24/2024 12:34:56 PM | 3c17c9ae-e906-48b4-bdd3-60e28d47dcdf |
@@ -81,28 +81,6 @@ Scenario: Update03
 		| ProductCategoryId | ParentProductCategoryId | Name             | ModifiedDate          | Rowguid                              |
 		| 41                | 42                      | Tires and Tubes  | 5/24/2024 12:34:56 PM | 3c17c9ae-e906-48b4-bdd3-60e28d47dcdf |
 		| 42                |                         | Record to Delete | 6/1/2005 12:00:00 AM  | 3c17c9ae-e906-48b4-bdd3-000000000001 |
-#Scenario: UpdateParentIsSameRecord
-#
-#	Given the table 'SalesLT.ProductCategory' filtered by 'ProductCategoryId > 40' contains
-#		| ProductCategoryId | ParentProductCategoryId | Name             | ModifiedDate         | Rowguid                              |
-#		| 41                | 4                       | Tires and Tubes  | 6/1/2002 12:00:00 AM | 3c17c9ae-e906-48b4-bdd3-60e28d47dcdf |
-#		| 42                |                         | Record to Delete | 6/1/2005 12:00:00 AM | 3c17c9ae-e906-48b4-bdd3-000000000001 |
-#	When I populate the model 'AdventureWorksDemo.Data.Models.ProductCategoryModel'
-#		| ProductCategoryId | Name            | ParentProductCategoryId |
-#		| 41                | Tires and Tubes | 41                      |
-#	And I call the method 'UpdateAsync' with the parameter values
-#		| Key   | Value     | TypeName                                            |
-#		| model | {{model}} | AdventureWorksDemo.Data.Models.ProductCategoryModel |
-#	Then the result is of type
-#		| Expected                                            |
-#		| AdventureWorksDemo.Data.Models.ProductCategoryModel |
-#	And the result is
-#		| ProductCategoryId | ParentProductCategoryId | Name      | ModifiedDate          | Rowguid                              |
-#		| 41                | 42                      | Ping Pong | 5/24/2024 12:34:56 PM | 3c17c9ae-e906-48b4-bdd3-60e28d47dcdf |
-#	And the table 'SalesLT.ProductCategory' filtered by 'ProductCategoryId > 40' contains
-#		| ProductCategoryId | ParentProductCategoryId | Name             | ModifiedDate         | Rowguid                              |
-#		| 41                | 4                       | Tires and Tubes  | 6/1/2002 12:00:00 AM | 3c17c9ae-e906-48b4-bdd3-60e28d47dcdf |
-#		| 42                |                         | Record to Delete | 6/1/2005 12:00:00 AM | 3c17c9ae-e906-48b4-bdd3-000000000001 |
 Scenario: UpdateNoChange
 	Given I don't reset the database after the scenario
 	When I populate the model 'AdventureWorksDemo.Data.Models.ProductCategoryModel'
@@ -115,8 +93,8 @@ Scenario: UpdateNoChange
 		| Expected                                                                                          |
 		| AdventureWorksDemo.Data.Models.ServiceResult<AdventureWorksDemo.Data.Models.ProductCategoryModel> |
 	And the result is
-		| IsException | IsFailure | IsSuccess | Message |
-		| False       | False     | True      |         |
+		| IsFailure | IsSuccess | Message                     |
+		| False     | True      | Record is already uptodate! |
 	And the results property 'Value' contains
 		| ProductCategoryId | ParentProductCategoryId | Name            | ModifiedDate         | Rowguid                              |
 		| 41                | 4                       | Tires and Tubes | 6/1/2002 12:00:00 AM | 3c17c9ae-e906-48b4-bdd3-60e28d47dcdf |
@@ -124,23 +102,25 @@ Scenario: UpdateNoChange
 		| ProductCategoryId | ParentProductCategoryId | Name             | ModifiedDate         | Rowguid                              |
 		| 41                | 4                       | Tires and Tubes  | 6/1/2002 12:00:00 AM | 3c17c9ae-e906-48b4-bdd3-60e28d47dcdf |
 		| 42                |                         | Record to Delete | 6/1/2005 12:00:00 AM | 3c17c9ae-e906-48b4-bdd3-000000000001 |
-		Scenario: UpdateUnknownRecord
+Scenario: UpdateUnknownRecord
 	Given I don't reset the database after the scenario
 	When I populate the model 'AdventureWorksDemo.Data.Models.ProductCategoryModel'
-		| ProductCategoryId | ParentProductCategoryId | Name            |
-		| 1234                | 4                       | Tires and Tubes |
+		| ProductCategoryId | ParentProductCategoryId | Name                |
+		| 1234              | 4                       | UpdateUnknownRecord |
 	And I call the method 'UpdateAsync' with the parameter values
 		| Key   | Value     | TypeName                                            |
 		| model | {{model}} | AdventureWorksDemo.Data.Models.ProductCategoryModel |
 	Then the result is of type
 		| Expected                                                                                          |
 		| AdventureWorksDemo.Data.Models.ServiceResult<AdventureWorksDemo.Data.Models.ProductCategoryModel> |
+		
 	And the result is
-		| IsException | IsFailure | IsSuccess | Message |
-		| False       | False     | True      |         |
+		| IsFailure | IsSuccess | Message                            |
+		| True      | False     | Unable to locate record to update! |
+
 	And the results property 'Value' contains
-		| ProductCategoryId | ParentProductCategoryId | Name            | ModifiedDate         | Rowguid                              |
-		| 41                | 4                       | Tires and Tubes | 6/1/2002 12:00:00 AM | 3c17c9ae-e906-48b4-bdd3-60e28d47dcdf |
+		| ProductCategoryId | ParentProductCategoryId | Name                | ModifiedDate         | Rowguid                              |
+		| 1234              | 4                       | UpdateUnknownRecord | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000000 |
 	And the table 'SalesLT.ProductCategory' filtered by 'ProductCategoryId > 40' contains
 		| ProductCategoryId | ParentProductCategoryId | Name             | ModifiedDate         | Rowguid                              |
 		| 41                | 4                       | Tires and Tubes  | 6/1/2002 12:00:00 AM | 3c17c9ae-e906-48b4-bdd3-60e28d47dcdf |

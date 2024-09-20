@@ -21,8 +21,8 @@ Scenario: AddAsyncNoParent
 		| Expected                                                                                          |
 		| AdventureWorksDemo.Data.Models.ServiceResult<AdventureWorksDemo.Data.Models.ProductCategoryModel> |
 	And the result is
-		| IsException | IsFailure | IsSuccess | Message |
-		| False       | False     | True      |         |
+		| IsFailure | IsSuccess | Message |
+		| False     | True      |         |
 	And the results property 'Value' contains
 		| ProductCategoryId | ParentProductCategoryId | Name     | ModifiedDate          | Rowguid                              |
 		| 1001              |                         | PingPong | 5/24/2024 12:34:56 PM | 00000000-1111-0000-0000-000000000002 |
@@ -44,8 +44,8 @@ Scenario: AddAsyncParent
 		| Expected                                                                                          |
 		| AdventureWorksDemo.Data.Models.ServiceResult<AdventureWorksDemo.Data.Models.ProductCategoryModel> |
 	And the result is
-		| IsException | IsFailure | IsSuccess | Message |
-		| False       | False     | True      |         |
+		| IsFailure | IsSuccess | Message |
+		| False     | True      |         |
 	And the results property 'Value' contains
 		| ProductCategoryId | ParentProductCategoryId | Name     | ModifiedDate          | Rowguid                              |
 		| 1001              | 42                      | PingPong | 5/24/2024 12:34:56 PM | 00000000-1111-0000-0000-000000000002 |
@@ -70,8 +70,8 @@ Scenario: AddBatchAsync
 		| Expected                                                                                                                                 |
 		| AdventureWorksDemo.Data.Models.ServiceResult<System.Collections.Generic.IEnumerable<AdventureWorksDemo.Data.Models.ProductCategoryModel> |
 	And the result is
-		| IsException | IsFailure | IsSuccess | Message |
-		| False       | false     | true      |         |
+		| IsFailure | IsSuccess | Message |
+		| false     | true      |         |
 	
 	And the results property 'Value' contains
 		| ProductCategoryId | ParentProductCategoryId | Name  | ModifiedDate          | Rowguid                              |

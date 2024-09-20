@@ -38,7 +38,6 @@ namespace AdventureWorksDemo.Data.Tests.nUnit
 			// Assert
 			actual.IsSuccess.Should().BeTrue();
 			actual.IsFailure.Should().BeFalse();
-			actual.IsException.Should().BeFalse();
 
 			actual.Message.Should().Be(expectedMessage);
 

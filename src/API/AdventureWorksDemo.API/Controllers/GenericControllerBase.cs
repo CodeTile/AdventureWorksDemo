@@ -37,8 +37,6 @@ namespace AdventureWorksDemo.API.Controllers
 			var result = (await _service.DeleteAsync(id));
 			if (result.IsSuccess)
 				return Ok(result.Message);
-			else if (result.IsException)
-				WriteResultToErrorLog(nameof(GenericControllerBase<TModel>), nameof(DeleteAsync), result);
 
 			return BadRequest();
 		}
@@ -78,16 +76,6 @@ namespace AdventureWorksDemo.API.Controllers
 				return Ok(result);
 			else
 				return BadRequest(result);
-		}
-
-		internal void WriteResultToErrorLog(string namespaceName, string methodName, AdventureWorksDemo.Data.Models.IServiceResult<dynamic> result)
-		{
-			string message = $"{namespaceName}.{methodName}\r\n{result.Message}";
-			_logger.LogError("{Message}", message);
-			if (result.IsException)
-			{
-				_logger.LogError((Exception)!result.Value, message);
-			}
 		}
 
 		internal void WriteToTraceLog(string namespaceName, string methodName, string parmeterNames = "")

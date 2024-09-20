@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Diagnostics.Eventing.Reader;
 using System.Reflection;
 
 using AdventureWorksDemo.Data.Models;
@@ -88,7 +89,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 					break;
 
 				case IServiceResult:
-					CompareDataTableWithResult(table, contextResult);
+					CompareDataTableWithResult(table, (IServiceResult)contextResult);
 					break;
 
 				default:
@@ -151,10 +152,11 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			Type valueType = property.PropertyType;
 			var value = property.GetValue(result, null);
 
-			IList? values = createList(valueType);
+			IList? values;
 
-			if (valueType is not IEnumerable)
+			if (value is not IEnumerable)
 			{
+				values = createList(valueType);
 				values.Add(value);
 			}
 			else
@@ -189,7 +191,6 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 		[When("I populate a list of the model {string}")]
 		public void WhenIPopulateAListOfTheModel(string modelTypeName, DataTable table)
 		{
-			//var models = (IEnumerable<object>)Helper.Types.PopulateListFromTable(modelTypeName, table, null);
 			var models = Helper.Types.PopulateListFromTable(modelTypeName, table, null);
 			Helper.ScenarioContexts.AddToContext(ScenarioContextKey.ListOfObjects, models);
 		}
@@ -203,25 +204,23 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 
 		private void CompareDataTableWithResult(DataTable datatable, object value)
 		{
-			var valueType = value.GetType();
-			IList? values = createList(valueType);
-
+			if (value is IServiceResult result)
+			{
+				value = ServiceResult.Simple(result);
+			}
+			IList? values = createList(value.GetType());
 			values.Add(value);
 			CompareDataTableWithResult(datatable, values);
 		}
 
-		private void CompareDataTableWithResult(DataTable datatable, IEnumerable? values)
+		private void CompareDataTableWithResult(DataTable datatable, IEnumerable values)
 		{
-			object valueType = values.GetType().GetGenericArguments().SingleOrDefault();
-			switch (valueType)
-			{
-				case ProductCategoryModel:
-					datatable.CompareToSet((IEnumerable<ProductCategoryModel>)values);
-					break;
-
-				default:
-					break;
-			}
+			var valueType = values.GetType();
+			string valueTypeName = valueType.FullNameReadable();
+			if (valueTypeName.Contains(nameof(ProductCategoryModel))) datatable.CompareToSet(values.Cast<ProductCategoryModel>());
+			else if (valueTypeName.Contains(nameof(ServiceResult))) datatable.CompareToSet(values.Cast<IServiceResult>());
+			else
+				throw new NotImplementedException($"unhandled type!!!\r\n {valueType.GetType().FullNameReadable}");
 		}
 
 		private IList createList(Type myType)

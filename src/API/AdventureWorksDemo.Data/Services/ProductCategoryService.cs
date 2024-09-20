@@ -44,7 +44,7 @@ namespace AdventureWorksDemo.Data.Services
 			}
 			else if (original.Equals(model))
 			{
-				return ServiceResult<ProductCategoryModel>.Failure(model, "Record does not need to be updated!");
+				return ServiceResult<ProductCategoryModel>.Success(original, "Record is already uptodate!");
 			}
 
 			original.Name = model.Name;

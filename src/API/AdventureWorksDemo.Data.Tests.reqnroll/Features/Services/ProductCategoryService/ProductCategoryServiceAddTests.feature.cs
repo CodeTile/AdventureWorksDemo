@@ -160,12 +160,10 @@ await this.FeatureBackgroundAsync();
  await testRunner.ThenAsync("the result is of type", ((string)(null)), table3, "Then ");
 #line hidden
                 global::Reqnroll.Table table4 = new global::Reqnroll.Table(new string[] {
-                            "IsException",
                             "IsFailure",
                             "IsSuccess",
                             "Message"});
                 table4.AddRow(new string[] {
-                            "False",
                             "False",
                             "True",
                             ""});
@@ -274,12 +272,10 @@ await this.FeatureBackgroundAsync();
  await testRunner.ThenAsync("the result is of type", ((string)(null)), table9, "Then ");
 #line hidden
                 global::Reqnroll.Table table10 = new global::Reqnroll.Table(new string[] {
-                            "IsException",
                             "IsFailure",
                             "IsSuccess",
                             "Message"});
                 table10.AddRow(new string[] {
-                            "False",
                             "False",
                             "True",
                             ""});
@@ -402,12 +398,10 @@ await this.FeatureBackgroundAsync();
  await testRunner.ThenAsync("the result is of type", ((string)(null)), table15, "Then ");
 #line hidden
                 global::Reqnroll.Table table16 = new global::Reqnroll.Table(new string[] {
-                            "IsException",
                             "IsFailure",
                             "IsSuccess",
                             "Message"});
                 table16.AddRow(new string[] {
-                            "False",
                             "false",
                             "true",
                             ""});

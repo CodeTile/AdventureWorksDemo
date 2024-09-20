@@ -18,8 +18,8 @@ Scenario: DeleteAsync1234
 		| Expected                                                     |
 		| AdventureWorksDemo.Data.Models.ServiceResult<System.Boolean> |
 	And the result is
-		| IsException | IsFailure | IsSuccess | Message |
-		| False       | true      | false     |         |
+		| IsFailure | IsSuccess | Message |
+		| true      | false     |         |
 	
 	And the ServiceResult is of type 'System.Boolean' with the value
 		| Expected |
@@ -41,8 +41,8 @@ Scenario: DeleteAsync42
 		| Expected                                                     |
 		| AdventureWorksDemo.Data.Models.ServiceResult<System.Boolean> |
 	And the result is
-		| IsException | IsFailure | IsSuccess | Message |
-		| False       | False     | True      |         |
+		| IsFailure | IsSuccess | Message |
+		| False     | True      |         |
 	And the ServiceResult is of type 'System.Boolean' with the value
 		| Expected |
 		| True     |

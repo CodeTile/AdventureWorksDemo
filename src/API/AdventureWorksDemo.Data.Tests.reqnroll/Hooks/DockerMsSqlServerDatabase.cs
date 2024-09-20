@@ -170,7 +170,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 							.WithWaitStrategy(Wait.ForUnixContainer()
 								.UntilOperationIsSucceeded(
 									() => HealthCheck(CancellationToken.None).GetAwaiter().GetResult(),
-									10))
+									15))
 							.WithBindMount(GetBackupLocation, AppSettings["Docker:BindLocation"])
 							.Build();
 
