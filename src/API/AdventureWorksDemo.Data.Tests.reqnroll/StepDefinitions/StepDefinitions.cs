@@ -6,7 +6,7 @@ using System.Reflection;
 using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Services;
-using AdventureWorksDemo.Data.Tests.reqnroll.enums;
+using AdventureWorksDemo.Tests.enums;
 using AdventureWorksDemo.Data.Tests.reqnroll.Extensions;
 using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
 using AdventureWorksDemo.Data.Tests.reqnroll.Models;
