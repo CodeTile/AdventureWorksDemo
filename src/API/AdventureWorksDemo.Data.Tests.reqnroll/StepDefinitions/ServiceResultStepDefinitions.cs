@@ -1,5 +1,5 @@
-﻿using AdventureWorksDemo.Data.Models;
-using AdventureWorksDemo.Data.Tests.reqnroll.Extensions;
+﻿using AdventureWorksDemo.Common.Tests.Extensions;
+using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
@@ -38,7 +38,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			//
 			//Check datatype
 			dataTable.Should().NotBeNull();
-			var debug = actualType.FullNameReadable();
+			//var debug = actualType.FullNameReadable();
 			switch (actualType.FullNameReadable())
 			{
 				case "AdventureWorksDemo.Data.Models.ProductCategoryModel":

@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksDemo.Data.Tes
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksDemo.Data.Tests.nUnit", "API\AdventureWorksDemo.Data.Tests.nUnit\AdventureWorksDemo.Data.Tests.nUnit.csproj", "{21A4B543-EC69-441F-A9FF-1EA9359ECA4C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorksDemo.Tests.Enums", "API\AdventureWorksDemo.Tests.Enums\AdventureWorksDemo.Tests.Enums.csproj", "{10DB4EB6-6505-4C9B-BD98-330FC23136BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorksDemo.Common.Tests", "API\AdventureWorksDemo.Common.Tests\AdventureWorksDemo.Common.Tests.csproj", "{FFA1B5BA-6670-448E-8516-F01E9772F48E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,10 +41,10 @@ Global
 		{21A4B543-EC69-441F-A9FF-1EA9359ECA4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{21A4B543-EC69-441F-A9FF-1EA9359ECA4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{21A4B543-EC69-441F-A9FF-1EA9359ECA4C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{10DB4EB6-6505-4C9B-BD98-330FC23136BF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{10DB4EB6-6505-4C9B-BD98-330FC23136BF}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{10DB4EB6-6505-4C9B-BD98-330FC23136BF}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{10DB4EB6-6505-4C9B-BD98-330FC23136BF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFA1B5BA-6670-448E-8516-F01E9772F48E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFA1B5BA-6670-448E-8516-F01E9772F48E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFA1B5BA-6670-448E-8516-F01E9772F48E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFA1B5BA-6670-448E-8516-F01E9772F48E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

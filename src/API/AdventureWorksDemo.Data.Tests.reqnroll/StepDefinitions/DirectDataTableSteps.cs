@@ -1,5 +1,5 @@
-﻿using AdventureWorksDemo.Data.Entities;
-using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
+﻿using AdventureWorksDemo.Common.Tests.Helpers;
+using AdventureWorksDemo.Data.Entities;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 {
@@ -12,7 +12,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			string sqlQuery = $"SELECT * FROM {tableName} ;";
 			var data = tableName switch
 			{
-				"SalesLT.ProductCategory" => Helper.Sql.GetDataTableAsList<ProductCategory>(sqlQuery),
+				"SalesLT.ProductCategory" => CommonHelper.Sql.GetDataTableAsList<ProductCategory>(sqlQuery),
 				_ => throw new NotImplementedException(tableName),
 			};
 
@@ -26,7 +26,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			string sqlQuery = $"SELECT * FROM {tableName} WHERE {filter};";
 			var data = tableName switch
 			{
-				"SalesLT.ProductCategory" => Helper.Sql.GetDataTableAsList<ProductCategory>(sqlQuery),
+				"SalesLT.ProductCategory" => CommonHelper.Sql.GetDataTableAsList<ProductCategory>(sqlQuery),
 				_ => throw new NotImplementedException(tableName),
 			}
 			;

@@ -1,4 +1,4 @@
-﻿using AdventureWorksDemo.Tests.enums;
+﻿using AdventureWorksDemo.Common.Tests;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 {
@@ -26,7 +26,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 			internal static string GetContextResultTypeName()
 			{
 				Type resultType = GetResultType;
-				string retval = resultType.FullName;
+				string? retval = resultType.FullName;
 				if (resultType.Name.StartsWith("Tuple"))
 				{
 					retval = "System.Tuple<";
@@ -39,7 +39,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 					}
 					retval = (retval += ">").Replace(", >", ">");
 				}
-				else if (retval.Contains("`1[["))
+				else if (retval!.Contains("`1[["))
 				{
 					retval = retval.Replace("`1[[", "<").Split(',')[0] + ">";
 				}

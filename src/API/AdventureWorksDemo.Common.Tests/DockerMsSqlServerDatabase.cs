@@ -1,25 +1,25 @@
-﻿using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
 
-using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
+using AdventureWorksDemo.Common.Tests.Helpers;
+
+//using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
 
 using Docker.DotNet;
 
 using DotNet.Testcontainers.Builders;
 using DotNet.Testcontainers.Containers;
 
-using FluentAssertions.Extensions;
-
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Testing.Platform.Configurations;
 
 using Polly;
 
-namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
+namespace AdventureWorksDemo.Common.Tests
 {
 	[ExcludeFromCodeCoverage]
-	internal class DockerMsSqlServerDatabase : IAsyncDisposable
+	public class DockerMsSqlServerDatabase : IAsyncDisposable
 	{
 		public DockerMsSqlServerDatabase()
 		{
@@ -32,7 +32,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 		}
 
 		public readonly string DatabaseName;
-		internal IConfiguration? configuration;
+		internal Microsoft.Extensions.Configuration.IConfiguration? configuration;
 		private const string Image = "mcr.microsoft.com/mssql/server";
 		private const string Password = "!Passw0rd";
 		private const string Tag = "latest";
@@ -41,17 +41,18 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 		private bool _deleted;
 		private SemaphoreSlim semaphore = new(1, 1);
 
-		public string ConnectionString =>
-					$"server=localhost,{PublicPort};database={DatabaseName};User Id=sa;Password={Password};Encrypt=false";
+		public static DockerMsSqlServerDatabase? Current { get; set; }
 
-		internal static DockerMsSqlServerDatabase? Current { get; set; }
-		internal Microsoft.Extensions.Configuration.IConfiguration AppSettings => Helper.Configuration.GetConfiguration;
+		public string ConnectionString =>
+							$"server=localhost,{PublicPort};database={DatabaseName};User Id=sa;Password={Password};Encrypt=false";
+
+		internal Microsoft.Extensions.Configuration.IConfiguration AppSettings => CommonHelper.Configuration.GetConfiguration;
 		private static int PublicPort => _sqlServerContainer!.GetMappedPublicPort(ContainerPort);
 
 		private string? GetBackupFullName => Path.Combine(GetBackupLocation!, AppSettings["Database:FileName"]!);
 
 		private string? GetBackupLocation => AppSettings["Database:Location"]?
-														.Replace("<<sln>>", Helper.TryGetSolutionDirectoryInfo()?.FullName);
+														.Replace("<<sln>>", CommonHelper.IO.TryGetSolutionDirectoryInfo()?.FullName);
 
 		public static async Task<DockerMsSqlServerDatabase> Create(CancellationToken cancellationToken = default)
 		{
@@ -60,7 +61,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 			await db.CreateAndStartContainer();
 			await db.CreateDatabase(cancellationToken);
 			await db.PrepareDataForTesting(cancellationToken);
-			Helper.Configuration.DatabaseConnectionString = db.ConnectionString;
+			CommonHelper.Configuration.DatabaseConnectionString = db.ConnectionString;
 			return db;
 		}
 
@@ -80,7 +81,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 		public async Task PrepareDataForTesting(CancellationToken cancellationToken = default)
 		{
 			string filename = AppSettings["Database:ResetDataScriptName"]?
-														.Replace("<<sln>>", Helper.TryGetSolutionDirectoryInfo()?.FullName)
+														.Replace("<<sln>>", CommonHelper.IO.TryGetSolutionDirectoryInfo()?.FullName)
 														?? string.Empty;
 			if (!File.Exists(filename))
 			{
@@ -96,7 +97,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 
 			await using var command = new SqlCommand("Print 'Hello World';", connection);
 
-			foreach (string commandText in Helper.Sql.SplitSqlQueryOnGo(query))
+			foreach (string commandText in CommonHelper.Sql.SplitSqlQueryOnGo(query))
 			{
 				command.CommandText = commandText;
 				System.Diagnostics.Debug.WriteLine(command.CommandText);
@@ -127,7 +128,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 			}
 			catch (Exception)
 			{
-				await Task.Delay(1.Seconds(), cancellationToken);
+				await Task.Delay(2000, cancellationToken);
 			}
 
 			return false;
@@ -197,7 +198,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 		private async Task CreateDatabase(CancellationToken cancellationToken = default)
 		{
 			string filename = AppSettings["Database:RestoreScriptName"]?
-														.Replace("<<sln>>", Helper.TryGetSolutionDirectoryInfo()?.FullName)
+														.Replace("<<sln>>", CommonHelper.IO.TryGetSolutionDirectoryInfo()?.FullName)
 														?? string.Empty;
 			if (!File.Exists(filename))
 			{

@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Text;
 
+using AdventureWorksDemo.Common.Tests.Extensions;
 using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Services;
-using AdventureWorksDemo.Data.Tests.reqnroll.Extensions;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 {

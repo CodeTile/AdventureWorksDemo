@@ -1,10 +1,7 @@
 namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 {
-	using AdventureWorksDemo.Data.StartUp;
+	using AdventureWorksDemo.Common.Tests;
 	using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
-
-	using Microsoft.Extensions.DependencyInjection;
-	using AdventureWorksDemo.Tests.enums;
 
 	[Binding]
 	public sealed class DatabaseHooks : IDisposable

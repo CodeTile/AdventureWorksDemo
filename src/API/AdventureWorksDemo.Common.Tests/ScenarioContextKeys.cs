@@ -1,4 +1,4 @@
-﻿namespace AdventureWorksDemo.Tests.enums
+﻿namespace AdventureWorksDemo.Common.Tests
 {
 	public enum ScenarioContextKey
 	{

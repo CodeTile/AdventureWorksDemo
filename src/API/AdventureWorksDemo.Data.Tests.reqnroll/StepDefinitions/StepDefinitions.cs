@@ -1,21 +1,15 @@
-using System;
 using System.Collections;
-using System.Diagnostics.Eventing.Reader;
 using System.Reflection;
 
+using AdventureWorksDemo.Common.Tests;
 using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Services;
-using AdventureWorksDemo.Tests.enums;
-using AdventureWorksDemo.Data.Tests.reqnroll.Extensions;
 using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
 using AdventureWorksDemo.Data.Tests.reqnroll.Models;
 
+using AdventureWorksDemo.Common.Tests.Extensions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
-
-using Newtonsoft.Json.Linq;
-
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 {
@@ -220,7 +214,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			if (valueTypeName.Contains(nameof(ProductCategoryModel))) datatable.CompareToSet(values.Cast<ProductCategoryModel>());
 			else if (valueTypeName.Contains(nameof(ServiceResult))) datatable.CompareToSet(values.Cast<IServiceResult>());
 			else
-				throw new NotImplementedException($"unhandled type!!!\r\n {valueType.GetType().FullNameReadable}");
+				throw new NotImplementedException($"unhandled type!!!\r\n {valueTypeName}");
 		}
 
 		private IList createList(Type myType)

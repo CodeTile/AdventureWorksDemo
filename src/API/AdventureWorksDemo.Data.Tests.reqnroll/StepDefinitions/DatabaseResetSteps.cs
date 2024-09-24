@@ -1,7 +1,7 @@
 ﻿namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 {
+	using AdventureWorksDemo.Common.Tests;
 	using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
-	using AdventureWorksDemo.Tests.enums;
 
 	[Binding]
 	public class DatabaseResetSteps

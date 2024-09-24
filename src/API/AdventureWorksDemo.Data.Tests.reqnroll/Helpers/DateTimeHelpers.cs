@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Time.Testing;
-using AdventureWorksDemo.Tests.enums;
+using AdventureWorksDemo.Common.Tests;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 {
