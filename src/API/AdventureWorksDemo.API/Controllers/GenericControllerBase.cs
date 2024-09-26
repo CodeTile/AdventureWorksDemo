@@ -1,4 +1,5 @@
 ﻿using System.Reflection;
+using System.Text.Json;
 
 using AdventureWorksDemo.Data.Entities;
 using AdventureWorksDemo.Data.Models;
@@ -21,7 +22,7 @@ namespace AdventureWorksDemo.API.Controllers
 		public virtual async Task<IActionResult> AddAsync([FromBody] TModel model)
 		{
 			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(AddAsync));
-			var result = await _service.AddAsync(model);
+			IServiceResult<TModel> result = await _service.AddAsync(model);
 			if (result != null)
 				return Ok(result);
 			else
@@ -48,8 +49,9 @@ namespace AdventureWorksDemo.API.Controllers
 		{
 			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(GetAllAsync), "pageingFilter");
 
-			var result = await _service.FindAllAsync(pageingFilter);
-			if (result != null && result!.Count() > 0)
+			PagedList<TModel> result = await _service.FindAllAsync(pageingFilter);
+			Response.Headers.Append("X-Pagination", JsonSerializer.Serialize((IPagedList)result));
+			if (result != null && result!.Any())
 				return Ok(result);
 			else
 				return NotFound(result);
