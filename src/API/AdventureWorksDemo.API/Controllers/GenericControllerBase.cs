@@ -4,6 +4,7 @@ using System.Text.Json;
 using AdventureWorksDemo.Data.Entities;
 using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Paging;
+using AdventureWorksDemo.Data.Services;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -14,7 +15,7 @@ namespace AdventureWorksDemo.API.Controllers
 													where TModel : class
 	{
 		internal readonly ILogger _logger = logger;
-		internal readonly dynamic _service = service;
+		internal readonly IService _service = service;
 
 		[HttpPost()]
 		[ProducesResponseType<Product>(StatusCodes.Status200OK)]
@@ -22,7 +23,7 @@ namespace AdventureWorksDemo.API.Controllers
 		public virtual async Task<IActionResult> AddAsync([FromBody] TModel model)
 		{
 			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(AddAsync));
-			IServiceResult<TModel> result = await _service.AddAsync(model);
+			IServiceResult<TModel> result = await ((IAddService<TModel>)_service).AddAsync(model);
 			if (result != null)
 				return Ok(result);
 			else
@@ -35,7 +36,7 @@ namespace AdventureWorksDemo.API.Controllers
 		public virtual async Task<IActionResult> DeleteAsync(int id)
 		{
 			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(DeleteAsync));
-			var result = (await _service.DeleteAsync(id));
+			var result = await ((IDeleteService<int>)_service).DeleteAsync(id);
 			if (result.IsSuccess)
 				return Ok(result.Message);
 
@@ -45,11 +46,11 @@ namespace AdventureWorksDemo.API.Controllers
 		[HttpGet()]
 		[ProducesResponseType<Product>(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public virtual async Task<IActionResult> GetAllAsync([FromQuery] PageingFilter pageingFilter)
+		public virtual async Task<IActionResult> FindAllAsync([FromQuery] PageingFilter pageingFilter)
 		{
-			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(GetAllAsync), "pageingFilter");
+			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(FindAllAsync), "pageingFilter");
 
-			PagedList<TModel> result = await _service.FindAllAsync(pageingFilter);
+			PagedList<TModel> result = await ((IFindService<TModel, int>)_service).FindAllAsync(pageingFilter);
 			Response.Headers.Append("X-Pagination", JsonSerializer.Serialize((IPagedList)result));
 			if (result != null && result!.Any())
 				return Ok(result);
@@ -61,10 +62,10 @@ namespace AdventureWorksDemo.API.Controllers
 		[ProducesResponseType<Product>(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		[ProducesResponseType(StatusCodes.Status400BadRequest)]
-		public virtual async Task<IActionResult?> GetAsync(int id)
+		public virtual async Task<IActionResult?> FindAsync(int id)
 		{
-			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(GetAsync));
-			return Ok(await _service.FindAsync(id));
+			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(FindAllAsync));
+			return Ok(await ((IFindService<TModel, int>)_service).FindAsync(id));
 		}
 
 		[HttpPut()]
@@ -73,7 +74,7 @@ namespace AdventureWorksDemo.API.Controllers
 		public virtual async Task<IActionResult> UpdateAsync([FromBody] TModel model)
 		{
 			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(UpdateAsync), "model");
-			var result = await _service.UpdateAsync(model);
+			var result = await ((IUpdateService<TModel>)_service).UpdateAsync(model);
 			if (result != null)
 				return Ok(result);
 			else

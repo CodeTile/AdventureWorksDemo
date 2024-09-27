@@ -49,12 +49,12 @@ namespace AdventureWorksDemo.Data.Services
 			};
 		}
 
-		public virtual async Task<PagedList<TModel>?> FindAllAsync(PageingFilter pageingFilter)
+		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter pageingFilter)
 		{
 			return await FindAllAsync(pageingFilter, null);
 		}
 
-		public virtual async Task<PagedList<TModel>?> FindAllAsync(PageingFilter paging,
+		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter paging,
 																   Expression<Func<TEntity, bool>>? predictate)
 		{
 			IQueryable<TEntity>? query = genericRepo.FindEntities(predictate);
