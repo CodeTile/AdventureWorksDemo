@@ -1,46 +1,47 @@
 using System.Diagnostics.CodeAnalysis;
+
 using AdventureWorksDemo.API.Exceptions;
 using AdventureWorksDemo.Data.StartUp;
 
 namespace AdventureWorksDemo.API
 {
-    [ExcludeFromCodeCoverage]
-    public class Program
-    {
-        public static void Main(string[] args)
-        {
-            var builder = WebApplication.CreateBuilder(args);
+	[ExcludeFromCodeCoverage]
+	public class Program
+	{
+		public static void Main(string[] args)
+		{
+			var builder = WebApplication.CreateBuilder(args);
 
-            //Exception handling
-            builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
-            builder.Services.AddProblemDetails();
-            // Add controllers
-            builder.Services.AddControllers();
-            // Add child projects
-            new IocData(builder.Configuration).ConfigureServices(builder.Services);
+			//Exception handling
+			builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
+			builder.Services.AddProblemDetails();
+			// Add controllers
+			builder.Services.AddControllers();
+			// Add child projects
+			new IocData(builder.Configuration).ConfigureServices(builder.Services);
 
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+			builder.Services.AddEndpointsApiExplorer();
+			builder.Services.AddSwaggerGen();
 
-            var app = builder.Build();
+			var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+			// Configure the HTTP request pipeline.
+			if (app.Environment.IsDevelopment())
+			{
+				app.UseSwagger();
+				app.UseSwaggerUI();
+			}
 
-            app.UseHttpsRedirection();
+			app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+			app.UseAuthorization();
 
-            app.MapControllers();
+			app.MapControllers();
 
-            app.UseExceptionHandler();
+			app.UseExceptionHandler();
 
-            app.Run();
-        }
-    }
+			app.Run();
+		}
+	}
 }

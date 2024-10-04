@@ -1,5 +1,4 @@
-﻿using System.Reflection;
-using System.Text.Json;
+﻿using System.Text.Json;
 
 using AdventureWorksDemo.Data.Entities;
 using AdventureWorksDemo.Data.Models;
@@ -10,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdventureWorksDemo.API.Controllers
 {
+	[ApiController]
 	public abstract class GenericControllerBase<TModel>(ILogger logger,
 													dynamic service) : ControllerBase
 													where TModel : class
@@ -39,8 +39,7 @@ namespace AdventureWorksDemo.API.Controllers
 			var result = await ((IDeleteService<int>)_service).DeleteAsync(id);
 			if (result.IsSuccess)
 				return Ok(result.Message);
-
-			return BadRequest();
+			return BadRequest(result);
 		}
 
 		[HttpGet()]
@@ -60,8 +59,6 @@ namespace AdventureWorksDemo.API.Controllers
 
 		[HttpGet("id")]
 		[ProducesResponseType<Product>(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public virtual async Task<IActionResult?> FindAsync(int id)
 		{
 			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(FindAllAsync));

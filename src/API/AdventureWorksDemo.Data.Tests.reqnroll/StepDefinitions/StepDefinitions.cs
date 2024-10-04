@@ -2,13 +2,14 @@ using System.Collections;
 using System.Reflection;
 
 using AdventureWorksDemo.Common.Tests;
+
+using AdventureWorksDemo.Common.Tests.Extensions;
 using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Services;
 using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
 using AdventureWorksDemo.Data.Tests.reqnroll.Models;
 
-using AdventureWorksDemo.Common.Tests.Extensions;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions

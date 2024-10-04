@@ -3,35 +3,35 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdventureWorksDemo.API.Exceptions
 {
-    internal sealed class GlobalExceptionHandler : IExceptionHandler
-    {
-        public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
-        {
-            _logger = logger;
-        }
+	internal sealed class GlobalExceptionHandler : IExceptionHandler
+	{
+		public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
+		{
+			_logger = logger;
+		}
 
-        private readonly ILogger<GlobalExceptionHandler> _logger;
+		private readonly ILogger<GlobalExceptionHandler> _logger;
 
-        public async ValueTask<bool> TryHandleAsync(
-            HttpContext httpContext,
-            Exception exception,
-            CancellationToken cancellationToken)
-        {
-            _logger.LogError(
-                exception, "Exception occurred: {Message}", exception.Message);
+		public async ValueTask<bool> TryHandleAsync(
+			HttpContext httpContext,
+			Exception exception,
+			CancellationToken cancellationToken)
+		{
+			_logger.LogError(
+				exception, "Exception occurred: {Message}", exception.Message);
 
-            var problemDetails = new ProblemDetails
-            {
-                Status = StatusCodes.Status500InternalServerError,
-                Title = "Server error"
-            };
+			var problemDetails = new ProblemDetails
+			{
+				Status = StatusCodes.Status500InternalServerError,
+				Title = "Server error"
+			};
 
-            httpContext.Response.StatusCode = problemDetails.Status.Value;
+			httpContext.Response.StatusCode = problemDetails.Status.Value;
 
-            await httpContext.Response
-                .WriteAsJsonAsync(problemDetails, cancellationToken);
+			await httpContext.Response
+				.WriteAsJsonAsync(problemDetails, cancellationToken);
 
-            return true;
-        }
-    }
+			return true;
+		}
+	}
 }
