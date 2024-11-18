@@ -3,6 +3,10 @@ using System.Diagnostics.CodeAnalysis;
 using AdventureWorksDemo.API.Exceptions;
 using AdventureWorksDemo.Data.StartUp;
 
+using Microsoft.Extensions.DependencyInjection;
+
+using Scalar.AspNetCore;
+
 namespace AdventureWorksDemo.API
 {
 	[ExcludeFromCodeCoverage]
@@ -19,18 +23,16 @@ namespace AdventureWorksDemo.API
 			builder.Services.AddControllers();
 			// Add child projects
 			new IocData(builder.Configuration).ConfigureServices(builder.Services);
-
-			// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
+			builder.Services.AddOpenApi();
 
 			var app = builder.Build();
 
+			app.MapOpenApi();
 			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
-				app.UseSwagger();
-				app.UseSwaggerUI();
+				app.MapScalarApiReference();
 			}
 
 			app.UseHttpsRedirection();
