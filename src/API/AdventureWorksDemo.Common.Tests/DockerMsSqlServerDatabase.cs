@@ -16,6 +16,8 @@ using Microsoft.Testing.Platform.Configurations;
 
 using Polly;
 
+using Testcontainers.MsSql;
+
 namespace AdventureWorksDemo.Common.Tests
 {
 	[ExcludeFromCodeCoverage]
@@ -162,17 +164,13 @@ namespace AdventureWorksDemo.Common.Tests
 					if (_sqlServerContainer == null)
 					{
 						bool withCleanUp = Convert.ToBoolean(AppSettings["TestContainers:RemoveTestContainersAfterTestRun"]);
-						_sqlServerContainer = new ContainerBuilder()
+
+						_sqlServerContainer = new MsSqlBuilder()
 							.WithImage($"{Image}:{Tag}")
-							.WithPortBinding(ContainerPort, assignRandomHostPort: true)
-							.WithEnvironment("ACCEPT_EULA", "Y")
-							.WithEnvironment("SA_PASSWORD", Password)
-							.WithCleanUp(cleanUp: withCleanUp)
-							.WithWaitStrategy(Wait.ForUnixContainer()
-								.UntilOperationIsSucceeded(
-									() => HealthCheck(CancellationToken.None).GetAwaiter().GetResult(),
-									15))
+							.WithPassword(Password)
+							.WithCleanUp(withCleanUp)
 							.WithBindMount(GetBackupLocation, AppSettings["Docker:BindLocation"])
+							.WithPortBinding(ContainerPort, true)
 							.Build();
 
 						_sqlServerContainer.Stopping += OnStopping;
