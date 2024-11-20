@@ -20,7 +20,7 @@ namespace AdventureWorksDemo.Data.Repository
 
 		Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicateToGetId, params string[] includes);
 
-		Task<IServiceResult<IEnumerable<TEntity>>> UpdateAsync(TEntity[] entities);
+		Task<IServiceResult<IEnumerable<TEntity>>> UpdateAsync(IEnumerable<TEntity> entities);
 
 		Task<IServiceResult<TEntity>> UpdateAsync(TEntity entity);
 	}
@@ -105,13 +105,13 @@ namespace AdventureWorksDemo.Data.Repository
 			};
 		}
 
-		public async Task<IServiceResult<IEnumerable<TEntity>>> UpdateAsync(TEntity[] entities)
+		public async Task<IServiceResult<IEnumerable<TEntity>>> UpdateAsync(IEnumerable<TEntity> entities)
 		{
 			_dbContext.UpdateRange(entities);
 			var result = await _dbContext.SaveChangesAsync();
 			return new ServiceResult<IEnumerable<TEntity>>()
 			{
-				IsSuccess = entities.Length == result,
+				IsSuccess = entities.Count() == result,
 				Value = entities,
 			};
 		}

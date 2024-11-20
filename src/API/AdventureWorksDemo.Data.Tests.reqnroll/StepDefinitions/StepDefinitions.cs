@@ -142,14 +142,19 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 		{
 			var result = Helper.ScenarioContexts.GetResult;
 			var properties = result.GetType().GetProperties();
-			var property = properties.SingleOrDefault(p => p.Name == propertyName);
+			var property = properties.Single(p => p.Name == propertyName);
 
 			Type valueType = property.PropertyType;
 			var value = property.GetValue(result, null);
 
 			IList? values;
 
-			if (value is not IEnumerable)
+			if (valueType == typeof(string))
+			{
+				var list = value.ToString().Split(["\n", "\r\n"], StringSplitOptions.RemoveEmptyEntries);
+				values = list.Select(m => new ValueExpectedResult() { Expected = m }).ToList<ValueExpectedResult>();
+			}
+			else if (value is not IEnumerable)
 			{
 				values = createList(valueType);
 				values.Add(value);
@@ -214,6 +219,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			string valueTypeName = valueType.FullNameReadable();
 			if (valueTypeName.Contains(nameof(ProductCategoryModel))) datatable.CompareToSet(values.Cast<ProductCategoryModel>());
 			else if (valueTypeName.Contains(nameof(ServiceResult))) datatable.CompareToSet(values.Cast<IServiceResult>());
+			else if (valueTypeName.Contains(nameof(ValueExpectedResult))) datatable.CompareToSet(values.Cast<ValueExpectedResult>());
 			else
 				throw new NotImplementedException($"unhandled type!!!\r\n {valueTypeName}");
 		}
