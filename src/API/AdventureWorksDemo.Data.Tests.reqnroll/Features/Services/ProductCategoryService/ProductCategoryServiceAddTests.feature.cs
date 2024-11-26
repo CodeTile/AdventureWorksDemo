@@ -220,13 +220,13 @@ await this.FeatureBackgroundAsync();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("AddAsyncParent")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("AddAsyncNoParentShortName")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceAddTests")]
-        public async System.Threading.Tasks.Task AddAsyncParent()
+        public async System.Threading.Tasks.Task AddAsyncNoParentShortName()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddAsyncParent", null, tagsOfScenario, argumentsOfScenario, featureTags);
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddAsyncNoParentShortName", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 35
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
@@ -248,8 +248,8 @@ await this.FeatureBackgroundAsync();
                             "ParentProductCategoryId",
                             "Rowguid"});
                 table7.AddRow(new string[] {
-                            "PingPong",
-                            "42",
+                            "Hi",
+                            "",
                             "00000000-1111-0000-0000-000000000002"});
 #line 37
  await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Models.ProductCategoryModel\'", ((string)(null)), table7, "When ");
@@ -278,9 +278,9 @@ await this.FeatureBackgroundAsync();
                             "IsSuccess",
                             "Message"});
                 table10.AddRow(new string[] {
-                            "False",
                             "True",
-                            ""});
+                            "False",
+                            "\'Name\' must be between 3 and 50 characters. You entered 2 characters."});
 #line 46
  await testRunner.AndAsync("the result is", ((string)(null)), table10, "And ");
 #line hidden
@@ -291,12 +291,12 @@ await this.FeatureBackgroundAsync();
                             "ModifiedDate",
                             "Rowguid"});
                 table11.AddRow(new string[] {
-                            "1001",
-                            "42",
-                            "PingPong",
-                            "5/24/2024 12:34:56 PM",
+                            "0",
+                            "",
+                            "Hi",
+                            "1/1/0001 12:00:00 AM",
                             "00000000-1111-0000-0000-000000000002"});
-#line 49
+#line 50
  await testRunner.AndAsync("the results property \'Value\' contains", ((string)(null)), table11, "And ");
 #line hidden
                 global::Reqnroll.Table table12 = new global::Reqnroll.Table(new string[] {
@@ -317,13 +317,7 @@ await this.FeatureBackgroundAsync();
                             "Record to Delete",
                             "6/1/2005 12:00:00 AM",
                             "3c17c9ae-e906-48b4-bdd3-000000000001"});
-                table12.AddRow(new string[] {
-                            "1001",
-                            "42",
-                            "PingPong",
-                            "5/24/2024 12:34:56 PM",
-                            "00000000-1111-0000-0000-000000000002"});
-#line 52
+#line 54
  await testRunner.AndAsync("the table \'SalesLT.ProductCategory\' filtered by \'ProductCategoryId > 40\' contains" +
                         "", ((string)(null)), table12, "And ");
 #line hidden
@@ -332,14 +326,14 @@ await this.FeatureBackgroundAsync();
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
-        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("AddBatchAsync")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("AddAsyncParent")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceAddTests")]
-        public async System.Threading.Tasks.Task AddBatchAsync()
+        public async System.Threading.Tasks.Task AddAsyncParent()
         {
             string[] tagsOfScenario = ((string[])(null));
             System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
-            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddBatchAsync", null, tagsOfScenario, argumentsOfScenario, featureTags);
-#line 58
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddAsyncParent", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 59
 this.ScenarioInitialize(scenarioInfo);
 #line hidden
             if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
@@ -352,7 +346,7 @@ this.ScenarioInitialize(scenarioInfo);
 #line 8
 await this.FeatureBackgroundAsync();
 #line hidden
-#line 59
+#line 60
  await testRunner.GivenAsync("I reset the database after the scenario", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
                 global::Reqnroll.Table table13 = new global::Reqnroll.Table(new string[] {
@@ -360,24 +354,11 @@ await this.FeatureBackgroundAsync();
                             "ParentProductCategoryId",
                             "Rowguid"});
                 table13.AddRow(new string[] {
-                            "How",
-                            "4",
-                            "00000000-1111-1111-0000-000000000001"});
-                table13.AddRow(new string[] {
-                            "Now",
-                            "5",
-                            "00000000-1111-1111-0000-000000000002"});
-                table13.AddRow(new string[] {
-                            "Brown",
-                            "41",
-                            "00000000-1111-1111-0000-000000000003"});
-                table13.AddRow(new string[] {
-                            "Cow",
-                            "",
-                            "00000000-1111-1111-0000-000000000004"});
-#line 60
- await testRunner.WhenAsync("I populate a list of the model \'AdventureWorksDemo.Data.Models.ProductCategoryMod" +
-                        "el\'", ((string)(null)), table13, "When ");
+                            "PingPong",
+                            "42",
+                            "00000000-1111-0000-0000-000000000002"});
+#line 61
+ await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Models.ProductCategoryModel\'", ((string)(null)), table13, "When ");
 #line hidden
                 global::Reqnroll.Table table14 = new global::Reqnroll.Table(new string[] {
                             "Key",
@@ -385,18 +366,17 @@ await this.FeatureBackgroundAsync();
                             "TypeName"});
                 table14.AddRow(new string[] {
                             "model",
-                            "{{ListOfObjects}}",
-                            "System.Collections.Generic.IEnumerable<AdventureWorksDemo.Data.Models.ProductCate" +
-                                "goryModel>"});
-#line 66
- await testRunner.AndAsync("I call the method \'AddBatchAsync\' with the parameter values", ((string)(null)), table14, "And ");
+                            "{{model}}",
+                            "AdventureWorksDemo.Data.Models.ProductCategoryModel"});
+#line 64
+ await testRunner.AndAsync("I call the method \'AddAsync\' with the parameter values", ((string)(null)), table14, "And ");
 #line hidden
                 global::Reqnroll.Table table15 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
                 table15.AddRow(new string[] {
-                            "AdventureWorksDemo.Data.Models.ServiceResult<System.Collections.Generic.IEnumerab" +
-                                "le<AdventureWorksDemo.Data.Models.ProductCategoryModel>"});
-#line 69
+                            "AdventureWorksDemo.Data.Models.ServiceResult<AdventureWorksDemo.Data.Models.Produ" +
+                                "ctCategoryModel>"});
+#line 67
  await testRunner.ThenAsync("the result is of type", ((string)(null)), table15, "Then ");
 #line hidden
                 global::Reqnroll.Table table16 = new global::Reqnroll.Table(new string[] {
@@ -404,10 +384,10 @@ await this.FeatureBackgroundAsync();
                             "IsSuccess",
                             "Message"});
                 table16.AddRow(new string[] {
-                            "false",
-                            "true",
+                            "False",
+                            "True",
                             ""});
-#line 72
+#line 70
  await testRunner.AndAsync("the result is", ((string)(null)), table16, "And ");
 #line hidden
                 global::Reqnroll.Table table17 = new global::Reqnroll.Table(new string[] {
@@ -418,29 +398,11 @@ await this.FeatureBackgroundAsync();
                             "Rowguid"});
                 table17.AddRow(new string[] {
                             "1001",
-                            "4",
-                            "How",
+                            "42",
+                            "PingPong",
                             "5/24/2024 12:34:56 PM",
-                            "00000000-1111-1111-0000-000000000001"});
-                table17.AddRow(new string[] {
-                            "1002",
-                            "5",
-                            "Now",
-                            "5/24/2024 12:34:56 PM",
-                            "00000000-1111-1111-0000-000000000002"});
-                table17.AddRow(new string[] {
-                            "1003",
-                            "41",
-                            "Brown",
-                            "5/24/2024 12:34:56 PM",
-                            "00000000-1111-1111-0000-000000000003"});
-                table17.AddRow(new string[] {
-                            "1004",
-                            "",
-                            "Cow",
-                            "5/24/2024 12:34:56 PM",
-                            "00000000-1111-1111-0000-000000000004"});
-#line 76
+                            "00000000-1111-0000-0000-000000000002"});
+#line 73
  await testRunner.AndAsync("the results property \'Value\' contains", ((string)(null)), table17, "And ");
 #line hidden
                 global::Reqnroll.Table table18 = new global::Reqnroll.Table(new string[] {
@@ -463,31 +425,426 @@ await this.FeatureBackgroundAsync();
                             "3c17c9ae-e906-48b4-bdd3-000000000001"});
                 table18.AddRow(new string[] {
                             "1001",
+                            "42",
+                            "PingPong",
+                            "5/24/2024 12:34:56 PM",
+                            "00000000-1111-0000-0000-000000000002"});
+#line 76
+ await testRunner.AndAsync("the table \'SalesLT.ProductCategory\' filtered by \'ProductCategoryId > 40\' contains" +
+                        "", ((string)(null)), table18, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("AddAsyncParentShortName")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceAddTests")]
+        public async System.Threading.Tasks.Task AddAsyncParentShortName()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddAsyncParentShortName", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 82
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 8
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 83
+ await testRunner.GivenAsync("I reset the database after the scenario", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table19 = new global::Reqnroll.Table(new string[] {
+                            "Name",
+                            "ParentProductCategoryId",
+                            "Rowguid"});
+                table19.AddRow(new string[] {
+                            "Hi",
+                            "42",
+                            "00000000-1111-0000-0000-000000000002"});
+#line 84
+ await testRunner.WhenAsync("I populate the model \'AdventureWorksDemo.Data.Models.ProductCategoryModel\'", ((string)(null)), table19, "When ");
+#line hidden
+                global::Reqnroll.Table table20 = new global::Reqnroll.Table(new string[] {
+                            "Key",
+                            "Value",
+                            "TypeName"});
+                table20.AddRow(new string[] {
+                            "model",
+                            "{{model}}",
+                            "AdventureWorksDemo.Data.Models.ProductCategoryModel"});
+#line 87
+ await testRunner.AndAsync("I call the method \'AddAsync\' with the parameter values", ((string)(null)), table20, "And ");
+#line hidden
+                global::Reqnroll.Table table21 = new global::Reqnroll.Table(new string[] {
+                            "Expected"});
+                table21.AddRow(new string[] {
+                            "AdventureWorksDemo.Data.Models.ServiceResult<AdventureWorksDemo.Data.Models.Produ" +
+                                "ctCategoryModel>"});
+#line 90
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table21, "Then ");
+#line hidden
+                global::Reqnroll.Table table22 = new global::Reqnroll.Table(new string[] {
+                            "IsFailure",
+                            "IsSuccess",
+                            "Message"});
+                table22.AddRow(new string[] {
+                            "True",
+                            "False",
+                            "\'Name\' must be between 3 and 50 characters. You entered 2 characters."});
+#line 93
+ await testRunner.AndAsync("the result is", ((string)(null)), table22, "And ");
+#line hidden
+                global::Reqnroll.Table table23 = new global::Reqnroll.Table(new string[] {
+                            "ProductCategoryId",
+                            "ParentProductCategoryId",
+                            "Name",
+                            "ModifiedDate",
+                            "Rowguid"});
+                table23.AddRow(new string[] {
+                            "0",
+                            "42",
+                            "Hi",
+                            "1/1/0001 12:00:00 AM",
+                            "00000000-1111-0000-0000-000000000002"});
+#line 97
+ await testRunner.AndAsync("the results property \'Value\' contains", ((string)(null)), table23, "And ");
+#line hidden
+                global::Reqnroll.Table table24 = new global::Reqnroll.Table(new string[] {
+                            "ProductCategoryId",
+                            "ParentProductCategoryId",
+                            "Name",
+                            "ModifiedDate",
+                            "Rowguid"});
+                table24.AddRow(new string[] {
+                            "41",
+                            "4",
+                            "Tires and Tubes",
+                            "6/1/2002 12:00:00 AM",
+                            "3c17c9ae-e906-48b4-bdd3-60e28d47dcdf"});
+                table24.AddRow(new string[] {
+                            "42",
+                            "",
+                            "Record to Delete",
+                            "6/1/2005 12:00:00 AM",
+                            "3c17c9ae-e906-48b4-bdd3-000000000001"});
+#line 100
+ await testRunner.AndAsync("the table \'SalesLT.ProductCategory\' filtered by \'ProductCategoryId > 40\' contains" +
+                        "", ((string)(null)), table24, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("AddBatchAsync")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceAddTests")]
+        public async System.Threading.Tasks.Task AddBatchAsync()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddBatchAsync", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 105
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 8
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 106
+ await testRunner.GivenAsync("I reset the database after the scenario", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table25 = new global::Reqnroll.Table(new string[] {
+                            "Name",
+                            "ParentProductCategoryId",
+                            "Rowguid"});
+                table25.AddRow(new string[] {
+                            "How",
+                            "4",
+                            "00000000-1111-1111-0000-000000000001"});
+                table25.AddRow(new string[] {
+                            "Now",
+                            "5",
+                            "00000000-1111-1111-0000-000000000002"});
+                table25.AddRow(new string[] {
+                            "Brown",
+                            "41",
+                            "00000000-1111-1111-0000-000000000003"});
+                table25.AddRow(new string[] {
+                            "Cow",
+                            "",
+                            "00000000-1111-1111-0000-000000000004"});
+#line 107
+ await testRunner.WhenAsync("I populate a list of the model \'AdventureWorksDemo.Data.Models.ProductCategoryMod" +
+                        "el\'", ((string)(null)), table25, "When ");
+#line hidden
+                global::Reqnroll.Table table26 = new global::Reqnroll.Table(new string[] {
+                            "Key",
+                            "Value",
+                            "TypeName"});
+                table26.AddRow(new string[] {
+                            "model",
+                            "{{ListOfObjects}}",
+                            "System.Collections.Generic.IEnumerable<AdventureWorksDemo.Data.Models.ProductCate" +
+                                "goryModel>"});
+#line 113
+ await testRunner.AndAsync("I call the method \'AddBatchAsync\' with the parameter values", ((string)(null)), table26, "And ");
+#line hidden
+                global::Reqnroll.Table table27 = new global::Reqnroll.Table(new string[] {
+                            "Expected"});
+                table27.AddRow(new string[] {
+                            "AdventureWorksDemo.Data.Models.ServiceResult<System.Collections.Generic.IEnumerab" +
+                                "le<AdventureWorksDemo.Data.Models.ProductCategoryModel>"});
+#line 116
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table27, "Then ");
+#line hidden
+                global::Reqnroll.Table table28 = new global::Reqnroll.Table(new string[] {
+                            "IsFailure",
+                            "IsSuccess",
+                            "Message"});
+                table28.AddRow(new string[] {
+                            "false",
+                            "true",
+                            ""});
+#line 119
+ await testRunner.AndAsync("the result is", ((string)(null)), table28, "And ");
+#line hidden
+                global::Reqnroll.Table table29 = new global::Reqnroll.Table(new string[] {
+                            "ProductCategoryId",
+                            "ParentProductCategoryId",
+                            "Name",
+                            "ModifiedDate",
+                            "Rowguid"});
+                table29.AddRow(new string[] {
+                            "1001",
                             "4",
                             "How",
                             "5/24/2024 12:34:56 PM",
                             "00000000-1111-1111-0000-000000000001"});
-                table18.AddRow(new string[] {
+                table29.AddRow(new string[] {
                             "1002",
                             "5",
                             "Now",
                             "5/24/2024 12:34:56 PM",
                             "00000000-1111-1111-0000-000000000002"});
-                table18.AddRow(new string[] {
+                table29.AddRow(new string[] {
                             "1003",
                             "41",
                             "Brown",
                             "5/24/2024 12:34:56 PM",
                             "00000000-1111-1111-0000-000000000003"});
-                table18.AddRow(new string[] {
+                table29.AddRow(new string[] {
                             "1004",
                             "",
                             "Cow",
                             "5/24/2024 12:34:56 PM",
                             "00000000-1111-1111-0000-000000000004"});
-#line 83
+#line 123
+ await testRunner.AndAsync("the results property \'Value\' contains", ((string)(null)), table29, "And ");
+#line hidden
+                global::Reqnroll.Table table30 = new global::Reqnroll.Table(new string[] {
+                            "ProductCategoryId",
+                            "ParentProductCategoryId",
+                            "Name",
+                            "ModifiedDate",
+                            "Rowguid"});
+                table30.AddRow(new string[] {
+                            "41",
+                            "4",
+                            "Tires and Tubes",
+                            "6/1/2002 12:00:00 AM",
+                            "3c17c9ae-e906-48b4-bdd3-60e28d47dcdf"});
+                table30.AddRow(new string[] {
+                            "42",
+                            "",
+                            "Record to Delete",
+                            "6/1/2005 12:00:00 AM",
+                            "3c17c9ae-e906-48b4-bdd3-000000000001"});
+                table30.AddRow(new string[] {
+                            "1001",
+                            "4",
+                            "How",
+                            "5/24/2024 12:34:56 PM",
+                            "00000000-1111-1111-0000-000000000001"});
+                table30.AddRow(new string[] {
+                            "1002",
+                            "5",
+                            "Now",
+                            "5/24/2024 12:34:56 PM",
+                            "00000000-1111-1111-0000-000000000002"});
+                table30.AddRow(new string[] {
+                            "1003",
+                            "41",
+                            "Brown",
+                            "5/24/2024 12:34:56 PM",
+                            "00000000-1111-1111-0000-000000000003"});
+                table30.AddRow(new string[] {
+                            "1004",
+                            "",
+                            "Cow",
+                            "5/24/2024 12:34:56 PM",
+                            "00000000-1111-1111-0000-000000000004"});
+#line 130
  await testRunner.AndAsync("the table \'SalesLT.ProductCategory\' filtered by \'ProductCategoryId > 40\' contains" +
-                        "", ((string)(null)), table18, "And ");
+                        "", ((string)(null)), table30, "And ");
+#line hidden
+            }
+            await this.ScenarioCleanupAsync();
+        }
+        
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("AddBatchAsync2ShortName")]
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceAddTests")]
+        public async System.Threading.Tasks.Task AddBatchAsync2ShortName()
+        {
+            string[] tagsOfScenario = ((string[])(null));
+            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("AddBatchAsync2ShortName", null, tagsOfScenario, argumentsOfScenario, featureTags);
+#line 139
+this.ScenarioInitialize(scenarioInfo);
+#line hidden
+            if ((global::Reqnroll.TagHelper.ContainsIgnoreTag(scenarioInfo.CombinedTags) || global::Reqnroll.TagHelper.ContainsIgnoreTag(featureTags)))
+            {
+                testRunner.SkipScenario();
+            }
+            else
+            {
+                await this.ScenarioStartAsync();
+#line 8
+await this.FeatureBackgroundAsync();
+#line hidden
+#line 140
+ await testRunner.GivenAsync("I reset the database after the scenario", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
+#line hidden
+                global::Reqnroll.Table table31 = new global::Reqnroll.Table(new string[] {
+                            "Name",
+                            "ParentProductCategoryId",
+                            "Rowguid"});
+                table31.AddRow(new string[] {
+                            "Hi",
+                            "4",
+                            "00000000-1111-1111-0000-000000000001"});
+                table31.AddRow(new string[] {
+                            "Now",
+                            "5",
+                            "00000000-1111-1111-0000-000000000002"});
+                table31.AddRow(new string[] {
+                            "Brown",
+                            "41",
+                            "00000000-1111-1111-0000-000000000003"});
+                table31.AddRow(new string[] {
+                            "It",
+                            "",
+                            "00000000-1111-1111-0000-000000000004"});
+#line 141
+ await testRunner.WhenAsync("I populate a list of the model \'AdventureWorksDemo.Data.Models.ProductCategoryMod" +
+                        "el\'", ((string)(null)), table31, "When ");
+#line hidden
+                global::Reqnroll.Table table32 = new global::Reqnroll.Table(new string[] {
+                            "Key",
+                            "Value",
+                            "TypeName"});
+                table32.AddRow(new string[] {
+                            "model",
+                            "{{ListOfObjects}}",
+                            "System.Collections.Generic.IEnumerable<AdventureWorksDemo.Data.Models.ProductCate" +
+                                "goryModel>"});
+#line 147
+ await testRunner.AndAsync("I call the method \'AddBatchAsync\' with the parameter values", ((string)(null)), table32, "And ");
+#line hidden
+                global::Reqnroll.Table table33 = new global::Reqnroll.Table(new string[] {
+                            "Expected"});
+                table33.AddRow(new string[] {
+                            "AdventureWorksDemo.Data.Models.ServiceResult<System.Collections.Generic.IEnumerab" +
+                                "le<AdventureWorksDemo.Data.Models.ProductCategoryModel>"});
+#line 150
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table33, "Then ");
+#line hidden
+                global::Reqnroll.Table table34 = new global::Reqnroll.Table(new string[] {
+                            "IsFailure",
+                            "IsSuccess"});
+                table34.AddRow(new string[] {
+                            "True",
+                            "False"});
+#line 153
+ await testRunner.AndAsync("the result is", ((string)(null)), table34, "And ");
+#line hidden
+                global::Reqnroll.Table table35 = new global::Reqnroll.Table(new string[] {
+                            "Expected"});
+                table35.AddRow(new string[] {
+                            "\'Name\' must be between 3 and 50 characters. You entered 2 characters."});
+                table35.AddRow(new string[] {
+                            "\'Name\' must be between 3 and 50 characters. You entered 2 characters."});
+#line 156
+ await testRunner.AndAsync("the results property \'Message\' contains", ((string)(null)), table35, "And ");
+#line hidden
+                global::Reqnroll.Table table36 = new global::Reqnroll.Table(new string[] {
+                            "ProductCategoryId",
+                            "ParentProductCategoryId",
+                            "Name",
+                            "ModifiedDate",
+                            "Rowguid"});
+                table36.AddRow(new string[] {
+                            "0",
+                            "4",
+                            "Hi",
+                            "1/1/0001 12:00:00 AM",
+                            "00000000-1111-1111-0000-000000000001"});
+                table36.AddRow(new string[] {
+                            "0",
+                            "5",
+                            "Now",
+                            "1/1/0001 12:00:00 AM",
+                            "00000000-1111-1111-0000-000000000002"});
+                table36.AddRow(new string[] {
+                            "0",
+                            "41",
+                            "Brown",
+                            "1/1/0001 12:00:00 AM",
+                            "00000000-1111-1111-0000-000000000003"});
+                table36.AddRow(new string[] {
+                            "0",
+                            "",
+                            "It",
+                            "1/1/0001 12:00:00 AM",
+                            "00000000-1111-1111-0000-000000000004"});
+#line 160
+ await testRunner.AndAsync("the results property \'Value\' contains", ((string)(null)), table36, "And ");
+#line hidden
+                global::Reqnroll.Table table37 = new global::Reqnroll.Table(new string[] {
+                            "ProductCategoryId",
+                            "ParentProductCategoryId",
+                            "Name",
+                            "ModifiedDate",
+                            "Rowguid"});
+                table37.AddRow(new string[] {
+                            "41",
+                            "4",
+                            "Tires and Tubes",
+                            "6/1/2002 12:00:00 AM",
+                            "3c17c9ae-e906-48b4-bdd3-60e28d47dcdf"});
+                table37.AddRow(new string[] {
+                            "42",
+                            "",
+                            "Record to Delete",
+                            "6/1/2005 12:00:00 AM",
+                            "3c17c9ae-e906-48b4-bdd3-000000000001"});
+#line 167
+ await testRunner.AndAsync("the table \'SalesLT.ProductCategory\' filtered by \'ProductCategoryId > 40\' contains" +
+                        "", ((string)(null)), table37, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

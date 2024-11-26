@@ -4,6 +4,8 @@ using AdventureWorksDemo.Data.Repository;
 
 using AutoMapper;
 
+using FluentValidation;
+
 namespace AdventureWorksDemo.Data.Services
 {
 	public interface IProductCategoryService : IService,
@@ -17,8 +19,8 @@ namespace AdventureWorksDemo.Data.Services
 	{
 	}
 
-	public class ProductCategoryService(IMapper mapper, IGenericCrudRepository<ProductCategory> genericRepo, TimeProvider timeProvider)
-			: BaseService<ProductCategory, ProductCategoryModel>(mapper, genericRepo)
+	public class ProductCategoryService(IMapper mapper, IGenericCrudRepository<ProductCategory> genericRepo, TimeProvider timeProvider, IValidator<ProductCategory>? validator)
+			: BaseService<ProductCategory, ProductCategoryModel>(mapper, genericRepo, validator)
 			  , IProductCategoryService
 	{
 		public async Task<IServiceResult<bool>> DeleteAsync(int productCategoryId) => await base.DeleteAsync(m => m.ProductCategoryId == productCategoryId);
