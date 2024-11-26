@@ -30,6 +30,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AdventureWorksDemo.Common.Tests\AdventureWorksDemo.Common.Tests.csproj" />
     <ProjectReference Include="..\AdventureWorksDemo.Data\AdventureWorksDemo.Data.csproj" />
   </ItemGroup>
 

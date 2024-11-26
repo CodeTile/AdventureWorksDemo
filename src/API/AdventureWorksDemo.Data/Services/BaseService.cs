@@ -74,7 +74,7 @@ namespace AdventureWorksDemo.Data.Services
 		{
 			IQueryable<TEntity>? query = _genericRepo.FindEntities(predictate);
 			if (query == null)
-				return default;
+				return [];
 			PagedList<TEntity> result = await PagedList<TEntity>.CreateAsync(query
 														, paging.PageNumber
 														, paging.PageSize);
