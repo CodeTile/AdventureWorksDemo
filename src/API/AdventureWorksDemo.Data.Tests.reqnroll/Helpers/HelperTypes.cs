@@ -92,9 +92,16 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 					case "productcategoryservice":
 						return typeof(ProductCategoryService);
 
+					case "productdescriptionservice":
+						return typeof(ProductDescriptionService);
+
 					case "adventureworksdemo.data.models.productcategorymodel":
 					case "productcategorymodel":
 						return typeof(ProductCategoryModel);
+
+					case "adventureworksdemo.data.models.productdescriptionmodel":
+					case "productdescriptionmodel":
+						return typeof(ProductDescriptionModel);
 
 					default:
 						throw new NotImplementedException($"Type [{typeName.ToLower()}] is not implemented!");

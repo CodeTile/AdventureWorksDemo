@@ -18,6 +18,10 @@ namespace AdventureWorksDemo.Data.StartUp
 			CreateMap<ProductCategory, ProductCategoryModel>();
 			CreateMap<ProductCategoryModel, ProductCategory>();
 			CreateMap<PagedList<ProductCategory>, PagedList<ProductCategoryModel>>().ForMember("Item", opt => opt.Ignore());
+
+			CreateMap<ProductDescription, ProductDescriptionModel>();
+			CreateMap<ProductDescriptionModel, ProductDescription>();
+			CreateMap<PagedList<ProductDescription>, PagedList<ProductDescriptionModel>>().ForMember("Item", opt => opt.Ignore());
 		}
 	}
 }

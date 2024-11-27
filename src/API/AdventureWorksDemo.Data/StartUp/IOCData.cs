@@ -30,13 +30,16 @@ namespace AdventureWorksDemo.Data.StartUp
 			services.AddAutoMapper(typeof(MappingProfile));
 			//Add Transient services to the container.
 			services.AddTransient<IProductCategoryService, ProductCategoryService>();
+			services.AddTransient<IProductDescriptionService, ProductDescriptionService>();
 			//Add Repositories
 			services.AddScoped<IGenericCrudRepository<Address>, GenericCrudRepository<Address>>();
 			services.AddScoped<IGenericCrudRepository<ProductCategory>, GenericCrudRepository<ProductCategory>>();
+			services.AddScoped<IGenericCrudRepository<ProductDescription>, GenericCrudRepository<ProductDescription>>();
 			// Add Singleton's
 			services.AddSingleton(TimeProvider.System);
 			// Add validators
 			services.AddScoped<IValidator<ProductCategory>, ProductCategoryValidator>();
+			services.AddScoped<IValidator<ProductDescription>, ProductDescriptionValidator>();
 		}
 	}
 }

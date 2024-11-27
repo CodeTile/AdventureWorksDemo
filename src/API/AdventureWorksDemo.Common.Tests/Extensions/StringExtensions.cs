@@ -38,12 +38,11 @@
 			{
 				var posStart = value.IndexOf("{{Pad", StringComparison.Ordinal);
 				var posEnd = value.IndexOf("}}", posStart, StringComparison.Ordinal);
-				var textToReplace = value.Substring(posStart, posEnd + 2 - posStart)
-											.Replace("{{", "")
-											.Replace("}}", "");
+				var textToReplace = value.Substring(posStart, posEnd + 2 - posStart);
+				var strippedTest = textToReplace.Replace("{{", "").Replace("}}", "");
 
-				var character = textToReplace.Split(':')[1];
-				var numerator = textToReplace.Split(':')[2];
+				var character = strippedTest.Split(':')[1];
+				var numerator = strippedTest.Split(':')[2];
 				var iterations = Convert.ToInt32(numerator);
 				var replacementText = character.PadRight(iterations, Convert.ToChar(character));
 				value = value.Replace(textToReplace, replacementText);

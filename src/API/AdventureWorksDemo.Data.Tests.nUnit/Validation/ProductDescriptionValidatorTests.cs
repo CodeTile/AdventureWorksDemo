@@ -4,48 +4,45 @@ using AdventureWorksDemo.Data.Validation;
 
 using FluentValidation.TestHelper;
 
-using Microsoft.Extensions.Time.Testing;
-
 namespace AdventureWorksDemo.Data.Tests.nUnit.Validation
 {
-	public class ProductCategoryValidatorTests
+	public class ProductDescriptionValidatorTests
 	{
 		private FakeTimeProvider? _fakeTimeProvider;
-		private ProductCategoryValidator? _validator;
+		private ProductDescriptionValidator? _validator;
 
 		[TestCase("")]
 		[TestCase("1")]
 		[TestCase("12")]
-		[TestCase("{{PadRight:X:51}}")]
+		[TestCase("{{PadRight:X:401}}")]
 		[Test()]
-		public void NameTestError(string nameValue)
+		public void NameTestError(string value)
 		{
 			// arrange
-			var entity = new ProductCategory()
+			var entity = new ProductDescription()
 			{
-				Name = nameValue.InterpretValue(),
+				Description = value.InterpretValue(),
 			};
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
-			result.ShouldHaveValidationErrorFor(m => m.Name);
+			result.ShouldHaveValidationErrorFor(m => m.Description);
 		}
 
 		[TestCase("123")]
-		[TestCase("{{PadRight:X:49}}")]
-		[TestCase("{{PadRight:X:50}}")]
+		[TestCase("{{PadRight:X:400}}")]
 		[Test]
-		public void NameTestGood(string nameValue)
+		public void NameTestGood(string value)
 		{
 			// arrange
-			var entity = new ProductCategory()
+			var entity = new ProductDescription()
 			{
-				Name = nameValue,
+				Description = value,
 			};
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
-			result.ShouldNotHaveValidationErrorFor(m => m.Name);
+			result.ShouldNotHaveValidationErrorFor(m => m.Description);
 		}
 
 		[SetUp]
@@ -53,7 +50,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit.Validation
 		{
 			_fakeTimeProvider = new FakeTimeProvider();
 			_fakeTimeProvider.SetUtcNow(new DateTimeOffset(new DateTime(2024, 8, 17, 12, 34, 56, DateTimeKind.Local)));
-			_validator = new ProductCategoryValidator();
+			_validator = new ProductDescriptionValidator();
 		}
 	}
 }

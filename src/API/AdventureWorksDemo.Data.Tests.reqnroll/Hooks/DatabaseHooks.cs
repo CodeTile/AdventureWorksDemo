@@ -2,10 +2,19 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 {
 	using AdventureWorksDemo.Common.Tests;
 	using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
+	using AdventureWorksDemo.Data.Tests.reqnroll.ValueRetrievers;
+
+	using Reqnroll.Assist;
 
 	[Binding]
 	public sealed class DatabaseHooks : IDisposable
 	{
+		[BeforeTestRun(Order = 1)]
+		public static void BeforeTestRun()
+		{
+			Service.Instance.ValueComparers.Register(new StringValueComparer());
+		}
+
 		[AfterScenario(Order = 100)]
 		public static async Task DataBaseBeforeScenario()
 		{

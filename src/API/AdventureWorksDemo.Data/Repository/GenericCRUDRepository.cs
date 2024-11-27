@@ -4,7 +4,6 @@ using AdventureWorksDemo.Data.DbContexts;
 using AdventureWorksDemo.Data.Models;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace AdventureWorksDemo.Data.Repository
 {
