@@ -64,15 +64,22 @@ namespace AdventureWorksDemo.Data.Repository
 			var entities = FindEntities(predictate);
 			if (entities == null || !(await entities.AnyAsync()))
 			{
-				return ServiceResult<bool>.Failure(false);
+				return ServiceResult<bool>.Failure(false, "Unable to find record to delete!");
 			}
 
 			_dbContext.RemoveRange(entities);
-			int result = await _dbContext.SaveChangesAsync();
-			if (result == 1)
-				return ServiceResult<bool>.Success(true);
-			else
-				return ServiceResult<bool>.Failure(false);
+			try
+			{
+				int result = await _dbContext.SaveChangesAsync();
+				if (result == 1)
+					return ServiceResult<bool>.Success(true);
+				else
+					return ServiceResult<bool>.Failure(false);
+			}
+			catch (Exception ex)
+			{
+				return ServiceResult<bool>.Failure(false, ConvertExceptionToUserMessage(ex));
+			}
 		}
 
 		public IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null,
@@ -130,6 +137,16 @@ namespace AdventureWorksDemo.Data.Repository
 		private IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
 		{
 			return includes.Aggregate(query, (current, include) => current.Include(include));
+		}
+
+		private string ConvertExceptionToUserMessage(Exception ex)
+		{
+			string result = ex.Message;
+			if (ex.InnerException != null && ex.Message.Contains("Inner Exception", StringComparison.CurrentCultureIgnoreCase))
+				result = ConvertExceptionToUserMessage(ex.InnerException);
+			if (result.Contains("The DELETE statement conflicted with the REFERENCE constraint", StringComparison.CurrentCultureIgnoreCase))
+				result = "Unable to delete, record is referenced elsewhere!";
+			return result;
 		}
 
 		private async Task LoadReferences(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> references)
