@@ -157,7 +157,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 				var exclusionFields = excludeFieldNames?.Split(',');
 				foreach (var fieldname in row.Keys)
 				{
-					var cellValue = row[fieldname].Trim();
+					var cellValue = row[fieldname].Trim().InterpretValue();
 					if (string.IsNullOrEmpty(cellValue) ||
 						(!string.IsNullOrEmpty(excludeFieldNames) && exclusionFields!.Contains(fieldname))
 					   )

@@ -34,7 +34,7 @@
 						 .Replace("{{DateTime.TomorrowResult}}", DateTime.Today.AddDays(1).ToString("M/d/yyyy 12:00:00 AM"))
 						 .Replace("{{CrLf}}", "\r\n");
 
-			while (value.Contains("{{PadRight", StringComparison.CurrentCultureIgnoreCase))
+			while (value.Contains("{{Pad", StringComparison.CurrentCultureIgnoreCase))
 			{
 				var posStart = value.IndexOf("{{Pad", StringComparison.Ordinal);
 				var posEnd = value.IndexOf("}}", posStart, StringComparison.Ordinal);

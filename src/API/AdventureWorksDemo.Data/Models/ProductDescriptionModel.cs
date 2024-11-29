@@ -25,4 +25,11 @@ public partial class ProductDescriptionModel
 	/// </summary>
 
 	public Guid Rowguid { get; set; }
+
+	public bool Equals(ProductDescriptionModel revised)
+	{
+		return revised != null
+			&& Description.Equals(revised.Description)
+			;
+	}
 }

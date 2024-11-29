@@ -37,7 +37,7 @@ namespace AdventureWorksDemo.Data.Services
 			}
 			else if (original.Equals(model))
 			{
-				return ServiceResult<ProductDescriptionModel>.Success(original, "Record is already uptodate!");
+				return ServiceResult<ProductDescriptionModel>.Success(original, "Record is already up to date!");
 			}
 
 			original.Description = model.Description;
