@@ -9,7 +9,7 @@ using FluentValidation;
 namespace AdventureWorksDemo.Data.Services
 {
 	public interface IProductCategoryService :
-												IFindService<ProductCategoryModel?, int>,
+												IFindService<ProductCategoryModel, int>,
 												IAddService<ProductCategoryModel>,
 												IAddBatchService<ProductCategoryModel>,
 												IDeleteService<int>,
