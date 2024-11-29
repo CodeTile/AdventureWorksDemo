@@ -164,9 +164,9 @@ namespace AdventureWorksDemo.Data.Services
 			};
 		}
 
-		internal virtual async Task<TModel?> FindByIdAsync(Expression<Func<TEntity, bool>> predictate)
+		internal virtual async Task<TModel> FindByIdAsync(Expression<Func<TEntity, bool>> predictate)
 		{
-			var result = (await _genericRepo.GetByIdAsync(predictate));
+			TEntity? result = (await _genericRepo.GetByIdAsync(predictate));
 			return _mapper.Map<TModel>(result);
 		}
 

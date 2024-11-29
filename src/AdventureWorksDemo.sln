@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34511.84
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksDemo.API", "API\AdventureWorksDemo.API\AdventureWorksDemo.API.csproj", "{80C5749E-28CA-4F1B-98CA-A7FA620A7A47}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksDemo.Data", "API\AdventureWorksDemo.Data\AdventureWorksDemo.Data.csproj", "{62101789-D3C8-4435-9174-3AD997CAC13C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{70684F3F-1A6E-44F6-8BCD-29C338660812}"
@@ -19,16 +17,14 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdventureWorksDemo.Data.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorksDemo.Common.Tests", "API\AdventureWorksDemo.Common.Tests\AdventureWorksDemo.Common.Tests.csproj", "{FFA1B5BA-6670-448E-8516-F01E9772F48E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorksDemo.API", "API\AdventureWorksDemo.API\AdventureWorksDemo.API.csproj", "{144FC8D9-C245-468B-90BB-A21917B42AD2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{80C5749E-28CA-4F1B-98CA-A7FA620A7A47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{80C5749E-28CA-4F1B-98CA-A7FA620A7A47}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{80C5749E-28CA-4F1B-98CA-A7FA620A7A47}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{80C5749E-28CA-4F1B-98CA-A7FA620A7A47}.Release|Any CPU.Build.0 = Release|Any CPU
 		{62101789-D3C8-4435-9174-3AD997CAC13C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{62101789-D3C8-4435-9174-3AD997CAC13C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62101789-D3C8-4435-9174-3AD997CAC13C}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -45,6 +41,10 @@ Global
 		{FFA1B5BA-6670-448E-8516-F01E9772F48E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FFA1B5BA-6670-448E-8516-F01E9772F48E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FFA1B5BA-6670-448E-8516-F01E9772F48E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{144FC8D9-C245-468B-90BB-A21917B42AD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{144FC8D9-C245-468B-90BB-A21917B42AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{144FC8D9-C245-468B-90BB-A21917B42AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{144FC8D9-C245-468B-90BB-A21917B42AD2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

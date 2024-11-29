@@ -6,45 +6,44 @@ using FluentValidation.TestHelper;
 
 namespace AdventureWorksDemo.Data.Tests.nUnit.Validation
 {
-	public class ProductCategoryValidatorTests
+	public class ProductDescriptionValidatorTests
 	{
-		private FakeTimeProvider _fakeTimeProvider = new();
+		private FakeTimeProvider? _fakeTimeProvider;
 
 		[TestCase("")]
 		[TestCase("1")]
 		[TestCase("12")]
-		[TestCase("{{PadRight:X:51}}")]
+		[TestCase("{{PadRight:X:401}}")]
 		[Test()]
-		public void NameTestError(string nameValue)
+		public void NameTestError(string value)
 		{
 			// arrange
-			var uot = new ProductCategoryValidator();
-			var entity = new ProductCategory()
+			var uot = new ProductDescriptionValidator();
+			var entity = new ProductDescription()
 			{
-				Name = nameValue.InterpretValue(),
+				Description = value.InterpretValue(),
 			};
 			//act
 			var result = uot.TestValidate(entity);
 			//assert
-			result.ShouldHaveValidationErrorFor(m => m.Name);
+			result.ShouldHaveValidationErrorFor(m => m.Description);
 		}
 
 		[TestCase("123")]
-		[TestCase("{{PadRight:X:49}}")]
-		[TestCase("{{PadRight:X:50}}")]
+		[TestCase("{{PadRight:X:400}}")]
 		[Test]
-		public void NameTestGood(string nameValue)
+		public void NameTestGood(string value)
 		{
 			// arrange
-			var uot = new ProductCategoryValidator();
-			var entity = new ProductCategory()
+			var uot = new ProductDescriptionValidator();
+			var entity = new ProductDescription()
 			{
-				Name = nameValue,
+				Description = value,
 			};
 			//act
 			var result = uot.TestValidate(entity);
 			//assert
-			result.ShouldNotHaveValidationErrorFor(m => m.Name);
+			result.ShouldNotHaveValidationErrorFor(m => m.Description);
 		}
 
 		[SetUp]

@@ -8,7 +8,7 @@ using FluentValidation;
 
 namespace AdventureWorksDemo.Data.Services
 {
-	public interface IProductCategoryService : IService,
+	public interface IProductCategoryService :
 												IFindService<ProductCategoryModel, int>,
 												IAddService<ProductCategoryModel>,
 												IAddBatchService<ProductCategoryModel>,
@@ -36,7 +36,7 @@ namespace AdventureWorksDemo.Data.Services
 			}
 			else if (original.Equals(model))
 			{
-				return ServiceResult<ProductCategoryModel>.Success(original, "Record is already uptodate!");
+				return ServiceResult<ProductCategoryModel>.Success(original, "Record is already up to date!");
 			}
 
 			original.Name = model.Name;

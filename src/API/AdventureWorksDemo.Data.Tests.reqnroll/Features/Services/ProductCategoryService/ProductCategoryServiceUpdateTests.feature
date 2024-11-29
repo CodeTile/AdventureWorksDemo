@@ -124,7 +124,7 @@ Scenario: UpdateNoChange
 		| AdventureWorksDemo.Data.Models.ServiceResult<AdventureWorksDemo.Data.Models.ProductCategoryModel> |
 	And the result is
 		| IsFailure | IsSuccess | Message                     |
-		| False     | True      | Record is already uptodate! |
+		| False     | True      | Record is already up to date! |
 	And the results property 'Value' contains
 		| ProductCategoryId | ParentProductCategoryId | Name            | ModifiedDate         | Rowguid                              |
 		| 41                | 4                       | Tires and Tubes | 6/1/2002 12:00:00 AM | 3c17c9ae-e906-48b4-bdd3-60e28d47dcdf |

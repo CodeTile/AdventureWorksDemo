@@ -10,28 +10,26 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 		public void ThenTheTableContains(string tableName, Reqnroll.DataTable table)
 		{
 			string sqlQuery = $"SELECT * FROM {tableName} ;";
-			var data = tableName switch
-			{
-				"SalesLT.ProductCategory" => CommonHelper.Sql.GetDataTableAsList<ProductCategory>(sqlQuery),
-				_ => throw new NotImplementedException(tableName),
-			};
-
-			table.CompareToSet(data);
+			ThenTheTableFilteredByContains(tableName, string.Empty, table);
 		}
 
 		[Given("the table {string} filtered by {string} contains")]
 		[Then("the table {string} filtered by {string} contains")]
 		public void ThenTheTableFilteredByContains(string tableName, string filter, Reqnroll.DataTable table)
 		{
-			string sqlQuery = $"SELECT * FROM {tableName} WHERE {filter};";
-			var data = tableName switch
+			string sqlQuery = $"SELECT * FROM {tableName} ";
+			if (filter != string.Empty)
+				sqlQuery += $" WHERE {filter};";
+			else
+				sqlQuery += ";";
+			switch (tableName)
 			{
-				"SalesLT.ProductCategory" => CommonHelper.Sql.GetDataTableAsList<ProductCategory>(sqlQuery),
-				_ => throw new NotImplementedException(tableName),
+				case "SalesLT.Address": table.CompareToSet(CommonHelper.Sql.GetDataTableAsList<Address>(sqlQuery)); break;
+				case "SalesLT.ProductDescription": table.CompareToSet(CommonHelper.Sql.GetDataTableAsList<ProductDescription>(sqlQuery)); break;
+				case "SalesLT.ProductCategory": table.CompareToSet(CommonHelper.Sql.GetDataTableAsList<ProductCategory>(sqlQuery)); break;
+				default:
+					throw new NotImplementedException(tableName);
 			}
-			;
-
-			table.CompareToSet(data);
 		}
 	}
 }

@@ -32,9 +32,13 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 					Helper.ScenarioContexts.AddToContext(ScenarioContextKey.UOT, Helper.Ioc.ResolveObject<IProductCategoryService>());
 					break;
 
-				default:
+				case "AdventureWorksDemo.Data.Services.IProductDescriptionService":
+				case "AdventureWorksDemo.Data.Services.ProductDescriptionService":
+					Helper.ScenarioContexts.AddToContext(ScenarioContextKey.UOT, Helper.Ioc.ResolveObject<IProductDescriptionService>());
 					break;
-					throw new PendingStepException("Unknown service to Test");
+
+				default:
+					throw new PendingStepException($"Unknown service to Test '{uotName}'!");
 			}
 		}
 
@@ -75,12 +79,21 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 					break;
 
 				case AdventureWorksDemo.Data.Models.ProductCategoryModel:
-					table.CompareToSet(new List<ProductCategoryModel> { (ProductCategoryModel)contextResult });
+					table.CompareToSet([(ProductCategoryModel)contextResult]);
 					break;
 
 				case AdventureWorksDemo.Data.Models.ProductCategoryModel[]:
 				case IEnumerable<ProductCategoryModel>:
 					table.CompareToSet((ProductCategoryModel[])contextResult);
+					break;
+
+				case AdventureWorksDemo.Data.Models.ProductDescriptionModel:
+					table.CompareToSet([(ProductDescriptionModel)contextResult]);
+					break;
+
+				case AdventureWorksDemo.Data.Models.ProductDescriptionModel[]:
+				case IEnumerable<ProductDescriptionModel>:
+					table.CompareToSet((ProductDescriptionModel[])contextResult);
 					break;
 
 				case IServiceResult:
@@ -131,8 +144,9 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 
 			switch (resultTypeName)
 			{
-				case "System.Exception": table.CompareToSet(new List<string>() { resultTypeName }); break;
+				case "System.Exception": table.CompareToSet([resultTypeName]); break;
 				case "AdventureWorksDemo.Data.Models.ProductCategoryModel": table.CompareToSet((IEnumerable<ProductCategoryModel>)actual); break;
+				case "AdventureWorksDemo.Data.Models.ProductDescriptionModel": table.CompareToSet((IEnumerable<ProductDescriptionModel>)actual); break;
 				default: throw new NotImplementedException($"Type [{resultTypeName}] is not implemented!");
 			}
 		}
@@ -218,6 +232,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			var valueType = values.GetType();
 			string valueTypeName = valueType.FullNameReadable();
 			if (valueTypeName.Contains(nameof(ProductCategoryModel))) datatable.CompareToSet(values.Cast<ProductCategoryModel>());
+			else if (valueTypeName.Contains(nameof(ProductDescriptionModel))) datatable.CompareToSet(values.Cast<ProductDescriptionModel>());
 			else if (valueTypeName.Contains(nameof(ServiceResult))) datatable.CompareToSet(values.Cast<IServiceResult>());
 			else if (valueTypeName.Contains(nameof(ValueExpectedResult))) datatable.CompareToSet(values.Cast<ValueExpectedResult>());
 			else
@@ -269,6 +284,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 														string methodName,
 														KeyValueTypeName[] arguments)
 		{
+			if (target == null) throw new ArgumentNullException("target");
 			Tuple<Type, object> retval = null;
 			await Task.Delay(0);
 			Type t = target.GetType();
@@ -338,14 +354,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 				}
 				catch (Exception)
 				{
-					//try
-					//{
-					//    actionResult = GetInstanceField(nonAsyncResult, "_expression") ?? nonAsyncResult;
-					//}
-					//catch (Exception)
-					//{
 					actionResult = nonAsyncResult;
-					// }
 				}
 			}
 

@@ -8,7 +8,7 @@ namespace AdventureWorksDemo.Data.Tests.nUnit.Helpers
 {
 	internal static class MockedDbContext
 	{
-		public static Mock<DbContexts.dbContext> MockedDbContextAllData()
+		internal static Mock<DbContexts.dbContext> MockedDbContextAllData()
 		{
 			Mock<DbContexts.dbContext> dbContext = new();
 			// //

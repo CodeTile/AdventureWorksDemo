@@ -1,11 +1,13 @@
 ﻿#nullable disable
 
+using System.Diagnostics.CodeAnalysis;
+
 namespace AdventureWorksDemo.Data.Models;
 
 /// <summary>
 /// High-level product categorization.
 /// </summary>
-public partial class ProductCategoryModel
+public sealed record ProductCategoryModel
 {
 	/// <summary>
 	/// Date and time the record was last updated.
@@ -32,9 +34,11 @@ public partial class ProductCategoryModel
 	/// </summary>
 	public Guid Rowguid { get; set; }
 
-	public virtual bool Equals(ProductCategoryModel obj)
+	public bool Equals(ProductCategoryModel revised)
 	{
-		return Name.Equals(obj.Name)
-			   && ParentProductCategoryId.Equals(obj.ParentProductCategoryId);
+		return revised != null
+				&& Name.Equals(revised.Name)
+			   && ParentProductCategoryId.Equals(revised.ParentProductCategoryId);
 	}
+	public override int GetHashCode() => ProductCategoryId.GetHashCode();
 }

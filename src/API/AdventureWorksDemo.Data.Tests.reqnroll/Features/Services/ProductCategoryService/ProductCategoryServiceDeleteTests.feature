@@ -19,7 +19,7 @@ Scenario: DeleteAsync1234
 		| AdventureWorksDemo.Data.Models.ServiceResult<System.Boolean> |
 	And the result is
 		| IsFailure | IsSuccess | Message |
-		| true      | false     |         |
+		| True      | False     | Unable to find record to delete! |
 	
 	And the ServiceResult is of type 'System.Boolean' with the value
 		| Expected |

@@ -22,7 +22,7 @@ namespace AdventureWorksDemo.Data.Services
 
 	public interface IFindService<TModel, TId> : IService
 	{
-		Task<PagedList<TModel>?> FindAllAsync(PageingFilter pageingFilter);
+		Task<PagedList<TModel>> FindAllAsync(PageingFilter pageingFilter);
 
 		Task<TModel?> FindAsync(TId productCategoryId);
 	}

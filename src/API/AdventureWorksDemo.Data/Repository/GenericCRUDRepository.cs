@@ -4,7 +4,6 @@ using AdventureWorksDemo.Data.DbContexts;
 using AdventureWorksDemo.Data.Models;
 
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 
 namespace AdventureWorksDemo.Data.Repository
 {
@@ -25,7 +24,7 @@ namespace AdventureWorksDemo.Data.Repository
 		Task<IServiceResult<TEntity>> UpdateAsync(TEntity entity);
 	}
 
-	public class GenericCrudRepository<TEntity>(dbContext context, TimeProvider timeProvider) : IGenericCrudRepository<TEntity> where TEntity : class
+	public class GenericCrudRepository<TEntity>(dbContext context) : IGenericCrudRepository<TEntity> where TEntity : class
 	{
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Class is based on https://medium.com/@abdulwariis/building-a-generic-service-for-crud-operations-in-c-net-core-3db40c2c8c8a
@@ -65,15 +64,22 @@ namespace AdventureWorksDemo.Data.Repository
 			var entities = FindEntities(predictate);
 			if (entities == null || !(await entities.AnyAsync()))
 			{
-				return ServiceResult<bool>.Failure(false);
+				return ServiceResult<bool>.Failure(false, "Unable to find record to delete!");
 			}
 
 			_dbContext.RemoveRange(entities);
-			int result = await _dbContext.SaveChangesAsync();
-			if (result == 1)
-				return ServiceResult<bool>.Success(true);
-			else
-				return ServiceResult<bool>.Failure(false);
+			try
+			{
+				int result = await _dbContext.SaveChangesAsync();
+				if (result == 1)
+					return ServiceResult<bool>.Success(true);
+				else
+					return ServiceResult<bool>.Failure(false);
+			}
+			catch (Exception ex)
+			{
+				return ServiceResult<bool>.Failure(false, GenericCrudRepository<TEntity>.ConvertExceptionToUserMessage(ex));
+			}
 		}
 
 		public IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null,
@@ -126,6 +132,16 @@ namespace AdventureWorksDemo.Data.Repository
 			_dbContext.Set<TEntity>().Remove(entity);
 			var result = await _dbContext.SaveChangesAsync();
 			return result == 1;
+		}
+
+		private static string ConvertExceptionToUserMessage(Exception ex)
+		{
+			string result = ex.Message;
+			if (ex.InnerException != null && ex.Message.Contains("Inner Exception", StringComparison.CurrentCultureIgnoreCase))
+				result = GenericCrudRepository<TEntity>.ConvertExceptionToUserMessage(ex.InnerException);
+			if (result.Contains("The DELETE statement conflicted with the REFERENCE constraint", StringComparison.CurrentCultureIgnoreCase))
+				result = "Unable to delete, record is referenced elsewhere!";
+			return result;
 		}
 
 		private IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
