@@ -28,10 +28,10 @@ namespace AdventureWorksDemo.API
 
 			var app = builder.Build();
 
-			app.MapOpenApi();
-			// Configure the HTTP request pipeline.
 			if (app.Environment.IsDevelopment())
 			{
+				app.MapOpenApi(); // .CacheOutput();
+								  // Configure the HTTP request pipeline.
 				app.MapScalarApiReference();
 			}
 
