@@ -1,8 +1,12 @@
 ﻿#nullable disable
 
+using System.Diagnostics.CodeAnalysis;
+
+using AdventureWorksDemo.Data.Entities;
+
 namespace AdventureWorksDemo.Data.Models;
 
-public partial class ProductDescriptionModel
+public sealed record ProductDescriptionModel
 {
 	/// <summary>
 	/// Description of the product.
@@ -29,7 +33,10 @@ public partial class ProductDescriptionModel
 	public bool Equals(ProductDescriptionModel revised)
 	{
 		return revised != null
+			&& ProductDescriptionId == revised.ProductDescriptionId
 			&& Description.Equals(revised.Description)
 			;
 	}
+
+	public override int GetHashCode() => ProductDescriptionId.GetHashCode();
 }
