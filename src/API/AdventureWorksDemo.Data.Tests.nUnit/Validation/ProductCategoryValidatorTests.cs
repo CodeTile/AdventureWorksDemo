@@ -4,14 +4,11 @@ using AdventureWorksDemo.Data.Validation;
 
 using FluentValidation.TestHelper;
 
-using Microsoft.Extensions.Time.Testing;
-
 namespace AdventureWorksDemo.Data.Tests.nUnit.Validation
 {
 	public class ProductCategoryValidatorTests
 	{
-		private FakeTimeProvider? _fakeTimeProvider;
-		private ProductCategoryValidator? _validator;
+		private FakeTimeProvider _fakeTimeProvider = new();
 
 		[TestCase("")]
 		[TestCase("1")]
@@ -21,12 +18,13 @@ namespace AdventureWorksDemo.Data.Tests.nUnit.Validation
 		public void NameTestError(string nameValue)
 		{
 			// arrange
+			var uot = new ProductCategoryValidator();
 			var entity = new ProductCategory()
 			{
 				Name = nameValue.InterpretValue(),
 			};
 			//act
-			var result = _validator.TestValidate(entity);
+			var result = uot.TestValidate(entity);
 			//assert
 			result.ShouldHaveValidationErrorFor(m => m.Name);
 		}
@@ -38,12 +36,13 @@ namespace AdventureWorksDemo.Data.Tests.nUnit.Validation
 		public void NameTestGood(string nameValue)
 		{
 			// arrange
+			var uot = new ProductCategoryValidator();
 			var entity = new ProductCategory()
 			{
 				Name = nameValue,
 			};
 			//act
-			var result = _validator.TestValidate(entity);
+			var result = uot.TestValidate(entity);
 			//assert
 			result.ShouldNotHaveValidationErrorFor(m => m.Name);
 		}
@@ -53,7 +52,6 @@ namespace AdventureWorksDemo.Data.Tests.nUnit.Validation
 		{
 			_fakeTimeProvider = new FakeTimeProvider();
 			_fakeTimeProvider.SetUtcNow(new DateTimeOffset(new DateTime(2024, 8, 17, 12, 34, 56, DateTimeKind.Local)));
-			_validator = new ProductCategoryValidator();
 		}
 	}
 }

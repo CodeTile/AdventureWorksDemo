@@ -354,14 +354,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 				}
 				catch (Exception)
 				{
-					//try
-					//{
-					//    actionResult = GetInstanceField(nonAsyncResult, "_expression") ?? nonAsyncResult;
-					//}
-					//catch (Exception)
-					//{
 					actionResult = nonAsyncResult;
-					// }
 				}
 			}
 

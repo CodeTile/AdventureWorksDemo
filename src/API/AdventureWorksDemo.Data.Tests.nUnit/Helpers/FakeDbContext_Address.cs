@@ -2,7 +2,7 @@
 
 namespace AdventureWorksDemo.Data.Tests.nUnit.Helpers
 {
-	internal partial class FakeDbContext
+	internal static class FakeDbContext
 	{
 		internal static List<Address> FakeAddresses
 		{
