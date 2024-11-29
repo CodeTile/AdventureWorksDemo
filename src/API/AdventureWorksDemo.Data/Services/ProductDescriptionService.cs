@@ -8,8 +8,8 @@ using FluentValidation;
 
 namespace AdventureWorksDemo.Data.Services
 {
-	public interface IProductDescriptionService : IService,
-												IFindService<ProductDescriptionModel, int>,
+	public interface IProductDescriptionService :
+												IFindService<ProductDescriptionModel?, int>,
 												IAddService<ProductDescriptionModel>,
 												IAddBatchService<ProductDescriptionModel>,
 												IDeleteService<int>,
