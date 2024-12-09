@@ -20,7 +20,7 @@ Scenario: FindAllAsync_1_5
 		| AdventureWorksDemo.Data.Paging.PagedList<AdventureWorksDemo.Data.Models.AddressModel> |
 	And the PagedList values are
 		| TotalPages | TotalCount | PageSize | CurrentPage | Count | Capacity |
-		| 2          | 7          | 5        | 1           | 5     | 5        |
+		| 2          | 8          | 5        | 1           | 5     | 5        |
 	And the results are
 		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1                      | AddressLine2 | City          | CountryRegion  | PostalCode | StateProvince |
 		| 640       | 9/1/2007 12:00:00 AM  | 0e4ac5bb-be0d-4a96-a58e-064daec08e1a | 251 The Metro Center              |              | Wokingham     | United Kingdom | RG41 1QW   | England       |
@@ -43,7 +43,7 @@ Scenario: FindAllAsync_1_500
 		| AdventureWorksDemo.Data.Paging.PagedList<AdventureWorksDemo.Data.Models.AddressModel> |
 	And the PagedList values are
 		| TotalPages | TotalCount | PageSize | CurrentPage | Count | Capacity |
-		| 1          | 7          | 100      | 1           | 7     | 7        |
+		| 1          | 8          | 100      | 1           | 8     | 8        |
 	And the results are
 		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1                      | AddressLine2 | City          | CountryRegion  | PostalCode | StateProvince |
 		| 640       | 9/1/2007 12:00:00 AM  | 0e4ac5bb-be0d-4a96-a58e-064daec08e1a | 251 The Metro Center              |              | Wokingham     | United Kingdom | RG41 1QW   | England       |
@@ -53,6 +53,7 @@ Scenario: FindAllAsync_1_500
 		| 1038      | 9/1/2007 12:00:00 AM  | a86c8140-ad7d-4caa-9b40-4006bd9998e2 | 123 Camelia Avenue                |              | Oxnard        | United States  | 93030      | California    |
 		| 1090      | 9/1/2007 12:00:00 AM  | cf3ae92a-3e66-4af0-b683-731826e89cd1 | 25130 South State Street          |              | Sandy         | United States  | 84070      | Utah          |
 		| 1092      | 9/1/2006 12:00:00 AM  | 79cdd89c-3c91-48db-8277-46d04aad7251 | 99700 Bell Road                   |              | Auburn        | United States  | 95603      | California    |
+		| 1111      | 9/1/2006 12:00:00 AM | 00000000-1111-2222-0000-000000000001 | Orphan Record                     |              | Use In Delete Tests | United States | 95603      | California    |
 
 Scenario: FindAllAsync_2_5
 	When I populate the model 'AdventureWorksDemo.Data.Paging.PagingFilter'
@@ -66,11 +67,12 @@ Scenario: FindAllAsync_2_5
 		| AdventureWorksDemo.Data.Paging.PagedList<AdventureWorksDemo.Data.Models.AddressModel> |
 	And the PagedList values are
 		| TotalPages | TotalCount | PageSize | CurrentPage | Count | Capacity |
-		| 2          | 7          | 5        | 2           | 2     | 4        |
+		| 2          | 8          | 5        | 2           | 3     | 4        |
 	And the results are
 		| AddressId | ModifiedDate         | Rowguid                              | AddressLine1             | AddressLine2 | City   | CountryRegion | PostalCode | StateProvince |
 		| 1090      | 9/1/2007 12:00:00 AM | cf3ae92a-3e66-4af0-b683-731826e89cd1 | 25130 South State Street |              | Sandy  | United States | 84070      | Utah          |
 		| 1092      | 9/1/2006 12:00:00 AM | 79cdd89c-3c91-48db-8277-46d04aad7251 | 99700 Bell Road          |              | Auburn | United States | 95603      | California    |
+		| 1111      | 9/1/2006 12:00:00 AM | 00000000-1111-2222-0000-000000000001 | Orphan Record                     |              | Use In Delete Tests | United States | 95603      | California    |
 
 Scenario: FindAllAsync_2_8
 	When I populate the model 'AdventureWorksDemo.Data.Paging.PagingFilter'
@@ -84,7 +86,7 @@ Scenario: FindAllAsync_2_8
 		| AdventureWorksDemo.Data.Paging.PagedList<AdventureWorksDemo.Data.Models.AddressModel> |
 	And the PagedList values are
 		| TotalPages | TotalCount | PageSize | CurrentPage | Count | Capacity |
-		| 1          | 7          | 8        | 2           | 0     | 0        |
+		| 1          | 8          | 8        | 2           | 0     | 0        |
 	And the results are
 		| AddressId | ModifiedDate | Rowguid | AddressLine1 | AddressLine2 | City | CountryRegion | PostalCode | StateProvince |
 
@@ -100,7 +102,7 @@ Scenario: FindAllAsync_20_20
 		| AdventureWorksDemo.Data.Paging.PagedList<AdventureWorksDemo.Data.Models.AddressModel> |
 	And the PagedList values are
 		| TotalPages | TotalCount | PageSize | CurrentPage | Count | Capacity |
-		| 1          | 7          | 8        | 2           | 0     | 0        |
+		| 1          | 8          | 8        | 2           | 0     | 0        |
 	And the results are
 		| AddressId | ModifiedDate | Rowguid | AddressLine1 | AddressLine2 | City | CountryRegion | PostalCode | StateProvince |
 
@@ -116,7 +118,7 @@ Scenario: FindAllAsync_1234_5
 		| AdventureWorksDemo.Data.Paging.PagedList<AdventureWorksDemo.Data.Models.AddressModel> |
 	And the PagedList values are
 		| TotalPages | TotalCount | PageSize | CurrentPage | Count | Capacity |
-		| 2          | 7          | 5        | 1234        | 0     | 0        |
+		| 2          | 8          | 5        | 1234        | 0     | 0        |
 	And the results are
 		| AddressId | ModifiedDate | Rowguid | AddressLine1 | AddressLine2 | City | CountryRegion | PostalCode | StateProvince |
 

@@ -82,6 +82,7 @@ INSERT [SalesLT].[Address] ([AddressID], [AddressLine1], [AddressLine2], [City],
                                                                      , (1038, N'123 Camelia Avenue', NULL, N'Oxnard', N'California', N'United States', N'93030', N'a86c8140-ad7d-4caa-9b40-4006bd9998e2', CAST(N'2007-09-01T00:00:00.000' AS DateTime))
                                                                      , (1090, N'25130 South State Street', NULL, N'Sandy', N'Utah', N'United States', N'84070', N'cf3ae92a-3e66-4af0-b683-731826e89cd1', CAST(N'2007-09-01T00:00:00.000' AS DateTime))
                                                                      , (1092, N'99700 Bell Road', NULL, N'Auburn', N'California', N'United States', N'95603', N'79cdd89c-3c91-48db-8277-46d04aad7251', CAST(N'2006-09-01T00:00:00.000' AS DateTime))
+                                                                     , (1111, N'Orphan Record', NULL, N'Use In Delete Tests', N'California', N'United States', N'95603', N'00000000-1111-2222-0000-000000000001', CAST(N'2006-09-01T00:00:00.000' AS DateTime))
 GO
 SET IDENTITY_INSERT [SalesLT].[Address] OFF
 GO
