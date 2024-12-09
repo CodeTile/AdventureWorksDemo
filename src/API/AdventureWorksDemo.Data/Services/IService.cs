@@ -17,14 +17,14 @@ namespace AdventureWorksDemo.Data.Services
 
 	public interface IDeleteService<T> : IService
 	{
-		Task<IServiceResult<bool>> DeleteAsync(T productCategoryId);
+		Task<IServiceResult<bool>> DeleteAsync(T id);
 	}
 
 	public interface IFindService<TModel, TId> : IService
 	{
 		Task<PagedList<TModel>> FindAllAsync(PageingFilter pageingFilter);
 
-		Task<TModel?> FindAsync(TId productCategoryId);
+		Task<TModel?> FindAsync(TId id);
 	}
 
 	////public interface ISearchService<Tentity, TModel, TId> : IService

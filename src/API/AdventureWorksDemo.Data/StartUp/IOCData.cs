@@ -29,6 +29,7 @@ namespace AdventureWorksDemo.Data.StartUp
 			services.AddDbContext<dbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Target")));
 			services.AddAutoMapper(typeof(MappingProfile));
 			//Add Transient services to the container.
+			services.AddTransient<IAddressService, AddressService>();
 			services.AddTransient<IProductCategoryService, ProductCategoryService>();
 			services.AddTransient<IProductDescriptionService, ProductDescriptionService>();
 			//Add Repositories
@@ -38,6 +39,7 @@ namespace AdventureWorksDemo.Data.StartUp
 			// Add Singleton's
 			services.AddSingleton(TimeProvider.System);
 			// Add validators
+			services.AddScoped<IValidator<Address>, AddressValidator>();
 			services.AddScoped<IValidator<ProductCategory>, ProductCategoryValidator>();
 			services.AddScoped<IValidator<ProductDescription>, ProductDescriptionValidator>();
 		}
