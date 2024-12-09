@@ -355,6 +355,6 @@ INSERT [dbo].[BuildVersion] ([SystemInformationID], [Database Version], [Version
 GO
 SET IDENTITY_INSERT [dbo].[BuildVersion] OFF
 GO
-DBCC CHECKIDENT ('[SalesLT].[Address]'           , RESEED, 1000);
-DBCC CHECKIDENT ('[SalesLT].[ProductCategory]'   , RESEED, 1000);
+DBCC CHECKIDENT ('[SalesLT].[Address]'           , RESEED, 5000);
+DBCC CHECKIDENT ('[SalesLT].[ProductCategory]'   , RESEED, 5000);
 DBCC CHECKIDENT ('[SalesLT].[ProductDescription]', RESEED, 5000);
