@@ -128,57 +128,57 @@ this.ScenarioInitialize(scenarioInfo);
 #line 7
 await this.FeatureBackgroundAsync();
 #line hidden
-                global::Reqnroll.Table table296 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table339 = new global::Reqnroll.Table(new string[] {
                             "Key",
                             "Value",
                             "TypeName",
                             "ModifiedDate"});
-                table296.AddRow(new string[] {
+                table339.AddRow(new string[] {
                             "productCategoryId",
                             "1234",
                             "int",
                             "21 Apr 2024 12:34:56"});
 #line 14
- await testRunner.WhenAsync("I call the method \'DeleteAsync\' with the parameter values", ((string)(null)), table296, "When ");
+ await testRunner.WhenAsync("I call the method \'DeleteAsync\' with the parameter values", ((string)(null)), table339, "When ");
 #line hidden
-                global::Reqnroll.Table table297 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table340 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table297.AddRow(new string[] {
+                table340.AddRow(new string[] {
                             "AdventureWorksDemo.Data.Models.ServiceResult<System.Boolean>"});
 #line 17
- await testRunner.ThenAsync("the result is of type", ((string)(null)), table297, "Then ");
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table340, "Then ");
 #line hidden
-                global::Reqnroll.Table table298 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table341 = new global::Reqnroll.Table(new string[] {
                             "IsFailure",
                             "IsSuccess",
                             "Message"});
-                table298.AddRow(new string[] {
+                table341.AddRow(new string[] {
                             "True",
                             "False",
                             "Unable to find record to delete!"});
 #line 20
- await testRunner.AndAsync("the result is", ((string)(null)), table298, "And ");
+ await testRunner.AndAsync("the result is", ((string)(null)), table341, "And ");
 #line hidden
-                global::Reqnroll.Table table299 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table342 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table299.AddRow(new string[] {
+                table342.AddRow(new string[] {
                             "False"});
 #line 24
- await testRunner.AndAsync("the ServiceResult is of type \'System.Boolean\' with the value", ((string)(null)), table299, "And ");
+ await testRunner.AndAsync("the ServiceResult is of type \'System.Boolean\' with the value", ((string)(null)), table342, "And ");
 #line hidden
-                global::Reqnroll.Table table300 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table343 = new global::Reqnroll.Table(new string[] {
                             "ProductCategoryId",
                             "ParentProductCategoryId",
                             "Name",
                             "ModifiedDate",
                             "Rowguid"});
-                table300.AddRow(new string[] {
+                table343.AddRow(new string[] {
                             "41",
                             "4",
                             "Tires and Tubes",
                             "6/1/2002 12:00:00 AM",
                             "3c17c9ae-e906-48b4-bdd3-60e28d47dcdf"});
-                table300.AddRow(new string[] {
+                table343.AddRow(new string[] {
                             "42",
                             "",
                             "Record to Delete",
@@ -186,7 +186,7 @@ await this.FeatureBackgroundAsync();
                             "3c17c9ae-e906-48b4-bdd3-000000000001"});
 #line 27
  await testRunner.AndAsync("the table \'SalesLT.ProductCategory\' filtered by \'ProductCategoryId > 40\' contains" +
-                        "", ((string)(null)), table300, "And ");
+                        "", ((string)(null)), table343, "And ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();
@@ -216,49 +216,49 @@ await this.FeatureBackgroundAsync();
 #line 36
  await testRunner.GivenAsync("I reset the database after the scenario", ((string)(null)), ((global::Reqnroll.Table)(null)), "Given ");
 #line hidden
-                global::Reqnroll.Table table301 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table344 = new global::Reqnroll.Table(new string[] {
                             "Key",
                             "Value",
                             "TypeName"});
-                table301.AddRow(new string[] {
+                table344.AddRow(new string[] {
                             "productCategoryId",
                             "42",
                             "int"});
 #line 37
- await testRunner.WhenAsync("I call the method \'DeleteAsync\' with the parameter values", ((string)(null)), table301, "When ");
+ await testRunner.WhenAsync("I call the method \'DeleteAsync\' with the parameter values", ((string)(null)), table344, "When ");
 #line hidden
-                global::Reqnroll.Table table302 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table345 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table302.AddRow(new string[] {
+                table345.AddRow(new string[] {
                             "AdventureWorksDemo.Data.Models.ServiceResult<System.Boolean>"});
 #line 40
- await testRunner.ThenAsync("the result is of type", ((string)(null)), table302, "Then ");
+ await testRunner.ThenAsync("the result is of type", ((string)(null)), table345, "Then ");
 #line hidden
-                global::Reqnroll.Table table303 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table346 = new global::Reqnroll.Table(new string[] {
                             "IsFailure",
                             "IsSuccess",
                             "Message"});
-                table303.AddRow(new string[] {
+                table346.AddRow(new string[] {
                             "False",
                             "True",
                             ""});
 #line 43
- await testRunner.AndAsync("the result is", ((string)(null)), table303, "And ");
+ await testRunner.AndAsync("the result is", ((string)(null)), table346, "And ");
 #line hidden
-                global::Reqnroll.Table table304 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table347 = new global::Reqnroll.Table(new string[] {
                             "Expected"});
-                table304.AddRow(new string[] {
+                table347.AddRow(new string[] {
                             "True"});
 #line 46
- await testRunner.AndAsync("the ServiceResult is of type \'System.Boolean\' with the value", ((string)(null)), table304, "And ");
+ await testRunner.AndAsync("the ServiceResult is of type \'System.Boolean\' with the value", ((string)(null)), table347, "And ");
 #line hidden
-                global::Reqnroll.Table table305 = new global::Reqnroll.Table(new string[] {
+                global::Reqnroll.Table table348 = new global::Reqnroll.Table(new string[] {
                             "ProductCategoryId",
                             "ParentProductCategoryId",
                             "Name",
                             "ModifiedDate",
                             "Rowguid"});
-                table305.AddRow(new string[] {
+                table348.AddRow(new string[] {
                             "41",
                             "4",
                             "Tires and Tubes",
@@ -266,7 +266,7 @@ await this.FeatureBackgroundAsync();
                             "3c17c9ae-e906-48b4-bdd3-60e28d47dcdf"});
 #line 49
  await testRunner.ThenAsync("the table \'SalesLT.ProductCategory\' filtered by \'ProductCategoryId > 40\' contains" +
-                        "", ((string)(null)), table305, "Then ");
+                        "", ((string)(null)), table348, "Then ");
 #line hidden
             }
             await this.ScenarioCleanupAsync();

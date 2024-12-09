@@ -183,6 +183,13 @@ namespace AdventureWorksDemo.Data.Services
 			await Task.Delay(0);
 		}
 
+		internal string TransposeIfNotNull(string original, string mutated)
+		{
+			if (mutated != null && !original.Equals(mutated))
+				original = mutated;
+			return original;
+		}
+
 		internal virtual IServiceResult<TModel> ValidateRecord(TModel model, out TEntity entity)
 		{
 			var result = new ServiceResult<TModel>() { IsSuccess = true };

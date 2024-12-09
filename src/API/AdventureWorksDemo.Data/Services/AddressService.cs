@@ -6,6 +6,8 @@ using AutoMapper;
 
 using FluentValidation;
 
+using Microsoft.IdentityModel.Tokens;
+
 namespace AdventureWorksDemo.Data.Services
 {
 	public interface IAddressService :
@@ -71,12 +73,13 @@ namespace AdventureWorksDemo.Data.Services
 
 		private void TransposeModel(AddressModel original, AddressModel mutated)
 		{
-			original.AddressLine1 = mutated.AddressLine1;
-			original.AddressLine2 = mutated.AddressLine2;
-			original.City = mutated.City;
-			original.StateProvince = mutated.StateProvince;
-			original.CountryRegion = mutated.CountryRegion;
-			original.PostalCode = mutated.PostalCode;
+			original.AddressLine1 = TransposeIfNotNull(original.AddressLine1, mutated.AddressLine1);
+
+			original.AddressLine2 = TransposeIfNotNull(original.AddressLine2, mutated.AddressLine2);
+			original.StateProvince = TransposeIfNotNull(original.StateProvince, mutated.StateProvince);
+			original.CountryRegion = TransposeIfNotNull(original.CountryRegion, mutated.CountryRegion);
+			original.PostalCode = TransposeIfNotNull(original.PostalCode, mutated.PostalCode);
+			original.City = TransposeIfNotNull(original.City, mutated.City);
 		}
 	}
 }
