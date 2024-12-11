@@ -7,21 +7,42 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdventureWorksDemo.Data.Repository
 {
-	public interface IGenericCrudRepository<TEntity>
+	public interface IGenericCrudRepository<TEntity> where TEntity : class
 	{
+		/// <summary>
+		/// Adds a new entity to the repository.
+		/// </summary>
 		Task<IServiceResult<TEntity>> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references);
 
+		/// <summary>
+		/// Adds multiple entities to the repository.
+		/// </summary>
 		Task<IServiceResult<IEnumerable<TEntity>>> AddBatchAsync(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] references);
 
-		Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predictate);
+		/// <summary>
+		/// Deletes entities matching the specified predicate.
+		/// </summary>
+		Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predicate);
 
-		IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null, params string[] includes);
+		/// <summary>
+		/// Finds entities matching the specified predicate, with optional includes.
+		/// </summary>
+		IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predicate = null, params string[] includes);
 
-		Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicateToGetId, params string[] includes);
+		/// <summary>
+		/// Gets an entity by its unique identifier.
+		/// </summary>
+		Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicate, params string[] includes);
 
-		Task<IServiceResult<IEnumerable<TEntity>>> UpdateAsync(IEnumerable<TEntity> entities);
-
+		/// <summary>
+		/// Updates a single entity.
+		/// </summary>
 		Task<IServiceResult<TEntity>> UpdateAsync(TEntity entity);
+
+		/// <summary>
+		/// Updates multiple entities.
+		/// </summary>
+		Task<IServiceResult<IEnumerable<TEntity>>> UpdateAsync(IEnumerable<TEntity> entities);
 	}
 
 	public class GenericCrudRepository<TEntity>(dbContext context) : IGenericCrudRepository<TEntity> where TEntity : class
@@ -31,38 +52,44 @@ namespace AdventureWorksDemo.Data.Repository
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// //
 
-		private readonly DbContext _dbContext = context;
+		private readonly DbContext _dbContext = context ?? throw new ArgumentNullException(nameof(context));
 
 		public async Task<IServiceResult<TEntity>> AddAsync(TEntity entity, params Expression<Func<TEntity, object>>[] references)
 		{
+			ArgumentNullException.ThrowIfNull(entity);
+
 			_dbContext.Set<TEntity>().Add(entity);
 
 			await LoadReferences(entity, references);
 			var result = await _dbContext.SaveChangesAsync();
 			return new ServiceResult<TEntity>()
 			{
-				IsSuccess = (1 == result),
+				IsSuccess = result > 0,
 				Value = entity,
 			};
 		}
 
 		public async Task<IServiceResult<IEnumerable<TEntity>>> AddBatchAsync(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] references)
 		{
+			if (entities == null || !entities.Any()) throw new ArgumentNullException(nameof(entities));
+
 			await _dbContext.Set<TEntity>().AddRangeAsync(entities);
 
 			await LoadReferences(entities, references);
 			var result = await _dbContext.SaveChangesAsync();
 			return new ServiceResult<IEnumerable<TEntity>>()
 			{
-				IsSuccess = (entities.Count() == result),
+				IsSuccess = entities.Count() == result,
 				Value = entities,
 			};
 		}
 
-		public async Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predictate)
+		public async Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predicate)
 		{
-			var entities = FindEntities(predictate);
-			if (entities == null || !(await entities.AnyAsync()))
+			if (predicate == null) throw new ArgumentNullException(nameof(predicate));
+
+			var entities = FindEntities(predicate);
+			if (entities == null || !await entities.AnyAsync())
 			{
 				return ServiceResult<bool>.Failure(false, "Unable to find record to delete!");
 			}
@@ -82,27 +109,27 @@ namespace AdventureWorksDemo.Data.Repository
 			}
 		}
 
-		public IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predictate = null,
+		public IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predicate = null,
 												params string[] includes)
 		{
 			var query = ApplyIncludes(_dbContext.Set<TEntity>(), includes);
 
-			if (predictate != null)
-			{
-				query = query.Where(predictate);
-			}
-			return query;
+			return predicate != null ? query.Where(predicate) : query;
 		}
 
-		public async Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicateToGetId,
+		public async Task<TEntity?> GetByIdAsync(Expression<Func<TEntity, bool>> predicate,
 												 params string[] includes)
 		{
+			ArgumentNullException.ThrowIfNull(predicate);
+
 			var query = ApplyIncludes(_dbContext.Set<TEntity>(), includes);
-			return await query.AsNoTracking().FirstOrDefaultAsync(predicateToGetId);
+			return await query.AsNoTracking().FirstOrDefaultAsync(predicate);
 		}
 
 		public async Task<IServiceResult<TEntity>> UpdateAsync(TEntity entity)
 		{
+			ArgumentNullException.ThrowIfNull(entity);
+
 			_dbContext.Update(entity);
 			return new ServiceResult<TEntity>()
 			{
@@ -136,12 +163,20 @@ namespace AdventureWorksDemo.Data.Repository
 
 		private static string ConvertExceptionToUserMessage(Exception ex)
 		{
-			string result = ex.Message;
-			if (ex.InnerException != null && ex.Message.Contains("Inner Exception", StringComparison.CurrentCultureIgnoreCase))
-				result = GenericCrudRepository<TEntity>.ConvertExceptionToUserMessage(ex.InnerException);
-			if (result.Contains("The DELETE statement conflicted with the REFERENCE constraint", StringComparison.CurrentCultureIgnoreCase))
-				result = "Unable to delete, record is referenced elsewhere!";
-			return result;
+			ArgumentNullException.ThrowIfNull(ex);
+
+			string message = ex.Message;
+			if (ex.InnerException != null)
+			{
+				message = ConvertExceptionToUserMessage(ex.InnerException);
+			}
+
+			if (message.Contains("REFERENCE constraint", StringComparison.OrdinalIgnoreCase))
+			{
+				return "Unable to delete, record is referenced elsewhere!";
+			}
+
+			return message;
 		}
 
 		private IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
