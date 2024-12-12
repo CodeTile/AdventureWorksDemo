@@ -1,6 +1,6 @@
 ﻿Feature: ProductDescriptionServiceUpdateBatchTests
 System tests for the ProductDescriptionService
-Testing the methods UpdateBatchAsync
+Testing the methods UpdateAsync with a list of ProductDescriptionModel
 
 
 Background:
@@ -17,7 +17,7 @@ Scenario: UpdateBatchAsync01
 		| ProductDescriptionId | Description   |
 		| 1600                 | Ping Pong     |
 		| 1605                 | {{Pad:X:123}} |
-	And I call the method 'UpdateBatchAsync' with the parameter values
+	And I call the method 'UpdateAsync' with the parameter values
 		| Key    | Value      | TypeName                                                            |
 		| models | {{models}} | IEnumerable<AdventureWorksDemo.Data.Models.ProductDescriptionModel> |
 	Then the result is of type
@@ -40,7 +40,7 @@ Scenario: UpdateBatchAsynNoRecords
 	Given I don't reset the database after the scenario
 	When I populate a list of the model 'AdventureWorksDemo.Data.Models.ProductDescriptionModel'
 		| ProductDescriptionId | Description |
-	And I call the method 'UpdateBatchAsync' with the parameter values
+	And I call the method 'UpdateAsync' with the parameter values
 		| Key    | Value      | TypeName                                                            |
 		| models | {{models}} | IEnumerable<AdventureWorksDemo.Data.Models.ProductDescriptionModel> |
 	Then the result is of type
@@ -60,7 +60,7 @@ Scenario: UpdateBatchAsyncOneBadRecord
 		| ProductDescriptionId | Description   |
 		| 1599                 | {{Pad:X:123}} |
 		| 1600                 | A             |
-	And I call the method 'UpdateBatchAsync' with the parameter values
+	And I call the method 'UpdateAsync' with the parameter values
 		| Key    | Value      | TypeName                                                            |
 		| models | {{models}} | IEnumerable<AdventureWorksDemo.Data.Models.ProductDescriptionModel> |
 	Then the result is of type
@@ -71,8 +71,8 @@ Scenario: UpdateBatchAsyncOneBadRecord
 		| True      | False     | 'Description' must be between 3 and 400 characters. You entered 1 characters. |
 	And the results property 'Value' contains
 		| ProductDescriptionId | ModifiedDate         | Rowguid                              | Description   |
-		| 1599                 | 6/1/2007 12:00:00 AM | 4aae6d4f-8320-4f32-99de-bb3b1b13f1ef | {{Pad:X:123}} |
-		| 1600                 | 6/1/2020 12:00:00 AM | 4aae6d4f-1111-4f32-99de-bb3b1b13f1ef | A             |
+		| 1599                 | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000000 | {{Pad:X:123}} |
+		| 1600                 | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000000 | A             |
 
 	And the table 'SalesLT.ProductDescription' filtered by 'ProductDescriptionId > 1599' contains
 		| ProductDescriptionId | ModifiedDate         | Rowguid                              | Description                                                                                                                                                                                                                                                                   |

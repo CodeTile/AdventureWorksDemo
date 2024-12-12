@@ -28,46 +28,30 @@ namespace AdventureWorksDemo.Data.Services
 
 		public async Task<ProductDescriptionModel?> FindAsync(int productDescriptionId) => await base.FindByIdAsync(m => m.ProductDescriptionId == productDescriptionId);
 
-		public override async Task<IServiceResult<ProductDescriptionModel>> UpdateAsync(ProductDescriptionModel model)
+		public async Task<IServiceResult<ProductDescriptionModel>> UpdateAsync(ProductDescriptionModel model)
 		{
-			var original = await FindAsync(model.ProductDescriptionId);
-			if (original == null)
-			{
-				return ServiceResult<ProductDescriptionModel>.Failure(model, "Unable to locate record to update!");
-			}
-			else if (original.Equals(model))
-			{
-				return ServiceResult<ProductDescriptionModel>.Success(original, "Record is already up to date!");
-			}
-
-			original.Description = model.Description;
-			return await base.UpdateAsync(original);
+			return await base.UpdateAsync(model, m => m.ProductDescriptionId == model.ProductDescriptionId);
 		}
 
-		public async Task<IServiceResult<IEnumerable<ProductDescriptionModel>>> UpdateBatchAsync(IEnumerable<ProductDescriptionModel> models)
+		internal override async Task<ProductDescriptionModel?> FindAsync(ProductDescriptionModel model)
 		{
-			if (models == null || !models.Any())
-			{
-				var retval = models ?? Array.Empty<ProductDescriptionModel>();
-				return ServiceResult<IEnumerable<ProductDescriptionModel>>.Failure(retval, "Please select some records to update!");
-			}
-			List<ProductDescriptionModel> modelsToUpdate = [];
-			foreach (var model in models.AsParallel())
-			{
-				var original = await FindAsync(model.ProductDescriptionId);
-				if (original == null || original.Equals(model))
-					continue;
-				original.Description = model.Description;
-				modelsToUpdate.Add(original);
-			}
+			return await FindAsync(model.ProductDescriptionId);
+		}
 
-			return await base.UpdateAsync(modelsToUpdate);
+		internal override bool IsModelDirty(ProductDescriptionModel original, ProductDescriptionModel mutated)
+		{
+			return !original.Description.Trim().Equals(mutated.Description.Trim());
 		}
 
 		internal override Task PreDataMutationAsync(ProductDescription entity)
 		{
 			entity.ModifiedDate = timeProvider.GetLocalNow().DateTime;
 			return base.PreDataMutationAsync(entity);
+		}
+
+		internal override void TransposeModel(ProductDescriptionModel original, ProductDescriptionModel mutated)
+		{
+			original.Description = mutated.Description;
 		}
 	}
 }

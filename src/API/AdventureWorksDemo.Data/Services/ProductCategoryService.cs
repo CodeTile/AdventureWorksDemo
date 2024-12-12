@@ -27,48 +27,31 @@ namespace AdventureWorksDemo.Data.Services
 
 		public async Task<ProductCategoryModel?> FindAsync(int productCategoryId) => await base.FindByIdAsync(m => m.ProductCategoryId == productCategoryId);
 
-		public override async Task<IServiceResult<ProductCategoryModel>> UpdateAsync(ProductCategoryModel model)
-		{
-			var original = await FindAsync(model.ProductCategoryId);
-			if (original == null)
-			{
-				return ServiceResult<ProductCategoryModel>.Failure(model, "Unable to locate record to update!");
-			}
-			else if (original.Equals(model))
-			{
-				return ServiceResult<ProductCategoryModel>.Success(original, "Record is already up to date!");
-			}
+		public async Task<IServiceResult<ProductCategoryModel>> UpdateAsync(ProductCategoryModel model)
+					=> await base.UpdateAsync(model, m => m.ProductCategoryId == model.ProductCategoryId);
 
-			original.Name = model.Name;
-			original.ParentProductCategoryId = model.ParentProductCategoryId;
-			return await base.UpdateAsync(original);
+		internal override async Task<ProductCategoryModel?> FindAsync(ProductCategoryModel model)
+		{
+			return await FindByIdAsync(m => m.ProductCategoryId == model.ProductCategoryId);
 		}
 
-		public async Task<IServiceResult<IEnumerable<ProductCategoryModel>>> UpdateBatchAsync(IEnumerable<ProductCategoryModel> models)
+		internal override bool IsModelDirty(ProductCategoryModel original, ProductCategoryModel mutated)
 		{
-			if (models == null || !models.Any())
-			{
-				var retval = models ?? Array.Empty<ProductCategoryModel>();
-				return ServiceResult<IEnumerable<ProductCategoryModel>>.Failure(retval, "Please select some records to update!");
-			}
-			List<ProductCategoryModel> modelsToUpdate = [];
-			foreach (var model in models.AsParallel())
-			{
-				var original = await FindAsync(model.ProductCategoryId);
-				if (original == null || original.Equals(model))
-					continue;
-				original.Name = model.Name;
-				original.ParentProductCategoryId = model.ParentProductCategoryId;
-				modelsToUpdate.Add(original);
-			}
-
-			return await base.UpdateAsync(modelsToUpdate);
+			return !original.Name.Equals(mutated.Name)
+				|| !original.ParentProductCategoryId.Equals(mutated.ParentProductCategoryId);
 		}
 
 		internal override Task PreDataMutationAsync(ProductCategory entity)
 		{
 			entity.ModifiedDate = timeProvider.GetLocalNow().DateTime;
 			return base.PreDataMutationAsync(entity);
+		}
+
+		internal override void TransposeModel(ProductCategoryModel original,
+											  ProductCategoryModel mutated)
+		{
+			original.Name = mutated.Name;
+			original.ParentProductCategoryId = mutated.ParentProductCategoryId;
 		}
 	}
 }

@@ -29,40 +29,24 @@ namespace AdventureWorksDemo.Data.Services
 
 		public async Task<AddressModel?> FindAsync(int id) => await base.FindByIdAsync(m => m.AddressId == id);
 
-		public override async Task<IServiceResult<AddressModel>> UpdateAsync(AddressModel model)
+		public async Task<IServiceResult<AddressModel>> UpdateAsync(AddressModel model)
 		{
-			var original = await FindAsync(model.AddressId);
-			if (original == null)
-			{
-				return ServiceResult<AddressModel>.Failure(model, "Unable to locate record to update!");
-			}
-			else if (original.Equals(model))
-			{
-				return ServiceResult<AddressModel>.Success(original, "Record is already up to date!");
-			}
-
-			TransposeModel(original, model);
-			return await base.UpdateAsync(original);
+			return await base.UpdateAsync(model, m => m.AddressId == model.AddressId);
 		}
 
-		public async Task<IServiceResult<IEnumerable<AddressModel>>> UpdateBatchAsync(IEnumerable<AddressModel> models)
+		internal override async Task<AddressModel?> FindAsync(AddressModel model)
 		{
-			if (models == null || !models.Any())
-			{
-				var retval = models ?? Array.Empty<AddressModel>();
-				return ServiceResult<IEnumerable<AddressModel>>.Failure(retval, "Please select some records to update!");
-			}
-			List<AddressModel> modelsToUpdate = [];
-			foreach (var model in models.AsParallel())
-			{
-				var original = await FindAsync(model.AddressId);
-				if (original == null || original.Equals(model))
-					continue;
-				TransposeModel(original, model);
-				modelsToUpdate.Add(original);
-			}
+			return await FindAsync(model.AddressId);
+		}
 
-			return await base.UpdateAsync(modelsToUpdate);
+		internal override bool IsModelDirty(AddressModel original, AddressModel mutated)
+		{
+			return !original.AddressLine1.Equals(mutated.AddressLine1)
+				|| !original.AddressLine2.Equals(mutated.AddressLine2)
+				|| !original.StateProvince.Equals(mutated.StateProvince)
+				|| !original.CountryRegion.Equals(mutated.CountryRegion)
+				|| !original.City.Equals(mutated.City)
+				|| !original.PostalCode.Equals(mutated.PostalCode);
 		}
 
 		internal override Task PreDataMutationAsync(Address entity)
@@ -71,7 +55,7 @@ namespace AdventureWorksDemo.Data.Services
 			return base.PreDataMutationAsync(entity);
 		}
 
-		private void TransposeModel(AddressModel original, AddressModel mutated)
+		internal override void TransposeModel(AddressModel original, AddressModel mutated)
 		{
 			original.AddressLine1 = TransposeIfNotNull(original.AddressLine1, mutated.AddressLine1);
 

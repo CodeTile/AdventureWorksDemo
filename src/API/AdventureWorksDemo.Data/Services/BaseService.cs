@@ -81,9 +81,22 @@ namespace AdventureWorksDemo.Data.Services
 			return EntityPagedListToModelPagedList(result);
 		}
 
-		public virtual async Task<IServiceResult<TModel>> UpdateAsync(TModel model)
+		public async Task<IServiceResult<TModel>> UpdateAsync(TModel model,
+															  Expression<Func<TEntity, bool>> predictate)
 		{
-			var validationResult = ValidateRecord(model, out TEntity entity);
+			var recordToUpdate = await FindByIdAsync(predictate);
+			if (recordToUpdate == null)
+			{
+				return ServiceResult<TModel>.Failure(model, "Unable to locate record to update!");
+			}
+			else if (recordToUpdate.Equals(model))
+			{
+				return ServiceResult<TModel>.Success(recordToUpdate, "Record is already up to date!");
+			}
+
+			TransposeModel(recordToUpdate, model);
+
+			var validationResult = ValidateRecord(recordToUpdate, out TEntity entity);
 			if (validationResult.IsFailure)
 				return validationResult;
 
@@ -100,7 +113,27 @@ namespace AdventureWorksDemo.Data.Services
 
 		public virtual async Task<IServiceResult<IEnumerable<TModel>>> UpdateAsync(IEnumerable<TModel> models)
 		{
-			IServiceResult<IEnumerable<IServiceResult<TModel>>> validationResult = ValidateRecords(models, out IEnumerable<TEntity> entities);
+			List<TModel> modelsToUpdate = [];
+			foreach (var model in models.AsParallel())
+			{
+				var original = await FindAsync(model);
+				if (original == null || !IsModelDirty(original, model))
+					continue;
+				TransposeModel(original, model);
+				modelsToUpdate.Add(original);
+			}
+			if (modelsToUpdate.Count == 0)
+			{
+				return new ServiceResult<IEnumerable<TModel>>()
+				{
+					IsSuccess = false,
+					Message = "Please select some records to update!",
+					Value = models,
+				};
+			}
+			IServiceResult<IEnumerable<IServiceResult<TModel>>> validationResult = ValidateRecords(modelsToUpdate,
+				out IEnumerable<TEntity> entities);
+
 			if (validationResult.IsFailure)
 			{
 				return new ServiceResult<IEnumerable<TModel>>()
@@ -121,9 +154,21 @@ namespace AdventureWorksDemo.Data.Services
 			};
 		}
 
-		public virtual IServiceResult<IEnumerable<IServiceResult<TModel>>> ValidateRecords(IEnumerable<TModel> models, out IEnumerable<TEntity> entities)
+		public virtual IServiceResult<IEnumerable<IServiceResult<TModel>>> ValidateRecords(IEnumerable<TModel> models,
+																					   out IEnumerable<TEntity> entities)
 		{
 			var result = new ServiceResult<IEnumerable<IServiceResult<TModel>>>() { IsSuccess = true };
+
+			if (models == null || !models.Any())
+			{
+				entities = [];
+				return new ServiceResult<IEnumerable<IServiceResult<TModel>>>()
+				{
+					IsSuccess = false,
+					Value = [],
+					Message = "Please select some records to update!"
+				};
+			}
 
 			if (_validator != null)
 			{
@@ -164,10 +209,21 @@ namespace AdventureWorksDemo.Data.Services
 			};
 		}
 
+		internal virtual async Task<TModel?> FindAsync(TModel model)
+		{
+			await Task.Delay(0);
+			throw new NotImplementedException(nameof(FindAsync));
+		}
+
 		internal virtual async Task<TModel> FindByIdAsync(Expression<Func<TEntity, bool>> predictate)
 		{
 			TEntity? result = (await _genericRepo.GetByIdAsync(predictate));
 			return _mapper.Map<TModel>(result);
+		}
+
+		internal virtual bool IsModelDirty(TModel original, TModel mutated)
+		{
+			throw new NotImplementedException(nameof(IsModelDirty));
 		}
 
 		internal virtual async Task PreDataMutationAsync(IEnumerable<TEntity> entities)
@@ -188,6 +244,11 @@ namespace AdventureWorksDemo.Data.Services
 			if (mutated != null && !original.Equals(mutated))
 				original = mutated;
 			return original;
+		}
+
+		internal virtual void TransposeModel(TModel original, TModel mutated)
+		{
+			throw new NotImplementedException(nameof(TransposeModel));
 		}
 
 		internal virtual IServiceResult<TModel> ValidateRecord(TModel model, out TEntity entity)

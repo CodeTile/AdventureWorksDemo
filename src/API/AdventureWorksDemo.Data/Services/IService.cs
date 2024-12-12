@@ -33,7 +33,7 @@ namespace AdventureWorksDemo.Data.Services
 
 	public interface IUpdateBatchService<T> : IService
 	{
-		Task<IServiceResult<IEnumerable<T>>> UpdateBatchAsync(IEnumerable<T> models);
+		Task<IServiceResult<IEnumerable<T>>> UpdateAsync(IEnumerable<T> models);
 	}
 
 	public interface IUpdateService<T> : IService

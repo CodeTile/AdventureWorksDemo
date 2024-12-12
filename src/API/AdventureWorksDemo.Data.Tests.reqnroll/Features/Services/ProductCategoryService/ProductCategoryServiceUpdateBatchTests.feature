@@ -1,6 +1,6 @@
 ﻿Feature: ProductCategoryServiceUpdateBatchTests
 System tests for the ProductCategoryService
-Testing the methods UpdateBatchAsync
+Testing the methods UpdateAsync with a list of ProductCategoryModel
 
 
 Background:
@@ -16,7 +16,7 @@ Scenario: UpdateBatchAsync01
 		| ProductCategoryId | Name        | ParentProductCategoryId |
 		| 41                | Ping Pong   | 3                       |
 		| 42                | Donald Duck | 12                      |
-	And I call the method 'UpdateBatchAsync' with the parameter values
+	And I call the method 'UpdateAsync' with the parameter values
 		| Key    | Value      | TypeName                                                         |
 		| models | {{models}} | IEnumerable<AdventureWorksDemo.Data.Models.ProductCategoryModel> |
 	Then the result is of type
@@ -38,7 +38,7 @@ Scenario: UpdateBatchAsync02
 	Given I don't reset the database after the scenario
 	When I populate a list of the model 'AdventureWorksDemo.Data.Models.ProductCategoryModel'
 		| ProductCategoryId | Name | ParentProductCategoryId |
-	And I call the method 'UpdateBatchAsync' with the parameter values
+	And I call the method 'UpdateAsync' with the parameter values
 		| Key    | Value      | TypeName                                                         |
 		| models | {{models}} | IEnumerable<AdventureWorksDemo.Data.Models.ProductCategoryModel> |
 	Then the result is of type

@@ -1,6 +1,6 @@
 ﻿Feature: AddressServiceUpdateBatchTests
 System tests for the AddressService
-Testing the methods UpdateBatchAsync
+Testing the methods UpdateAsync with a list of AddressModel
 
 
 Background:
@@ -13,7 +13,7 @@ Scenario: UpdateBatchAsync01
 		| AddressId | AddressLine1 |
 		| 640       | Ping         |
 		| 1092      | Pong         |
-	And I call the method 'UpdateBatchAsync' with the parameter values
+	And I call the method 'UpdateAsync' with the parameter values
 		| Key    | Value      | TypeName                                                 |
 		| models | {{models}} | IEnumerable<AdventureWorksDemo.Data.Models.AddressModel> |
 	Then the result is of type
@@ -41,7 +41,7 @@ Scenario: UpdateBatchAsyncNoRecords
 	Given I don't reset the database after the scenario
 	When I populate a list of the model 'AdventureWorksDemo.Data.Models.AddressModel'
 		| AddressId | AddressLine1 |
-	And I call the method 'UpdateBatchAsync' with the parameter values
+	And I call the method 'UpdateAsync' with the parameter values
 		| Key    | Value      | TypeName                                                 |
 		| models | {{models}} | IEnumerable<AdventureWorksDemo.Data.Models.AddressModel> |
 	Then the result is of type
