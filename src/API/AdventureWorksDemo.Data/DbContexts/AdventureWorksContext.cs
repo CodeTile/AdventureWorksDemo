@@ -7,11 +7,11 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AdventureWorksDemo.Data.DbContexts;
 
-public partial class dbContext : DbContext
+public partial class AdventureWorksDbContext : DbContext
 {
-    public dbContext()
+    public AdventureWorksDbContext()
     { }
-    public dbContext(DbContextOptions<dbContext> options)
+    public AdventureWorksDbContext(DbContextOptions<AdventureWorksDbContext> options)
         : base(options)
     {
     }

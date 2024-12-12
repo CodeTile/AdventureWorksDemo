@@ -89,19 +89,18 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 					case "pageingfilter":
 						return typeof(PageingFilter);
 
-					case "productcategoryservice":
-						return typeof(ProductCategoryService);
+					case "addressservice": return typeof(AddressModel);
+					case "productcategoryservice": return typeof(ProductCategoryService);
+					case "productdescriptionservice": return typeof(ProductDescriptionService);
 
-					case "productdescriptionservice":
-						return typeof(ProductDescriptionService);
+					case "adventureworksdemo.data.models.addressmodel":
+					case "addressmodel": return typeof(AddressModel);
 
 					case "adventureworksdemo.data.models.productcategorymodel":
-					case "productcategorymodel":
-						return typeof(ProductCategoryModel);
+					case "productcategorymodel": return typeof(ProductCategoryModel);
 
 					case "adventureworksdemo.data.models.productdescriptionmodel":
-					case "productdescriptionmodel":
-						return typeof(ProductDescriptionModel);
+					case "productdescriptionmodel": return typeof(ProductDescriptionModel);
 
 					default:
 						throw new NotImplementedException($"Type [{typeName.ToLower()}] is not implemented!");

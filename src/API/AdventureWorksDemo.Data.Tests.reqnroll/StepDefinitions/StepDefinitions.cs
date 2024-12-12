@@ -27,6 +27,11 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 		{
 			switch (uotName)
 			{
+				case "AdventureWorksDemo.Data.Services.IAddressService":
+				case "AdventureWorksDemo.Data.Services.AddressService":
+					Helper.ScenarioContexts.AddToContext(ScenarioContextKey.UOT, Helper.Ioc.ResolveObject<IAddressService>());
+					break;
+
 				case "AdventureWorksDemo.Data.Services.IProductCategoryService":
 				case "AdventureWorksDemo.Data.Services.ProductCategoryService":
 					Helper.ScenarioContexts.AddToContext(ScenarioContextKey.UOT, Helper.Ioc.ResolveObject<IProductCategoryService>());
@@ -76,6 +81,15 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 
 				case Exception:
 					table.CompareToSet(new List<string>() { resultTypeName });
+					break;
+
+				case AdventureWorksDemo.Data.Models.AddressModel:
+					table.CompareToSet([(AddressModel)contextResult]);
+					break;
+
+				case AdventureWorksDemo.Data.Models.AddressModel[]:
+				case IEnumerable<AddressModel>:
+					table.CompareToSet((AddressModel[])contextResult);
 					break;
 
 				case AdventureWorksDemo.Data.Models.ProductCategoryModel:
@@ -145,6 +159,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			switch (resultTypeName)
 			{
 				case "System.Exception": table.CompareToSet([resultTypeName]); break;
+				case "AdventureWorksDemo.Data.Models.AddressModel": table.CompareToSet((IEnumerable<AddressModel>)actual); break;
 				case "AdventureWorksDemo.Data.Models.ProductCategoryModel": table.CompareToSet((IEnumerable<ProductCategoryModel>)actual); break;
 				case "AdventureWorksDemo.Data.Models.ProductDescriptionModel": table.CompareToSet((IEnumerable<ProductDescriptionModel>)actual); break;
 				default: throw new NotImplementedException($"Type [{resultTypeName}] is not implemented!");
@@ -232,6 +247,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			var valueType = values.GetType();
 			string valueTypeName = valueType.FullNameReadable();
 			if (valueTypeName.Contains(nameof(ProductCategoryModel))) datatable.CompareToSet(values.Cast<ProductCategoryModel>());
+			else if (valueTypeName.Contains(nameof(AddressModel))) datatable.CompareToSet(values.Cast<AddressModel>());
 			else if (valueTypeName.Contains(nameof(ProductDescriptionModel))) datatable.CompareToSet(values.Cast<ProductDescriptionModel>());
 			else if (valueTypeName.Contains(nameof(ServiceResult))) datatable.CompareToSet(values.Cast<IServiceResult>());
 			else if (valueTypeName.Contains(nameof(ValueExpectedResult))) datatable.CompareToSet(values.Cast<ValueExpectedResult>());
