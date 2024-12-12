@@ -9,6 +9,7 @@ namespace AdventureWorksDemo.Data.Validation
 		public AddressValidator()
 		{
 			RuleFor(m => m.AddressLine1).Length(3, 60);
+			RuleFor(m => m.AddressLine2).Length(3, 60);
 			RuleFor(m => m.City).Length(3, 30);
 			RuleFor(m => m.StateProvince).Length(3, 50);
 			RuleFor(m => m.CountryRegion).Length(3, 50);

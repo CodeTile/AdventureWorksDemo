@@ -27,11 +27,6 @@ namespace AdventureWorksDemo.Data.Services
 		Task<TModel?> FindAsync(TId id);
 	}
 
-	////public interface ISearchService<Tentity, TModel, TId> : IService
-	////{
-	////	Task<PagedList<TModel>> FindAllAsync(PageingFilter pageingFilter, Expression<Func<Tentity, bool>>? predictate = null);
-	////}
-
 	public interface IService
 	{
 	}
