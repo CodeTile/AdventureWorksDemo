@@ -9,13 +9,24 @@ using Microsoft.EntityFrameworkCore;
 namespace AdventureWorksDemo.Data.Tests.MSTest
 {
 	[TestClass]
-	public sealed class GenericCrudRepositoryTests
+	public sealed class GenericCrudRepositoryTests : IDisposable
 	{
+		public GenericCrudRepositoryTests()
+		{
+			var options = new DbContextOptionsBuilder<AdventureWorksDbContext>()
+				.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
+				.Options;
+
+			_dbContext = new AdventureWorksDbContext(options);
+			_repository = new GenericCrudRepository<ProductDescription>(_dbContext);
+		}
+
+		private readonly GenericCrudRepository<ProductDescription> _repository;
+
 		private readonly ProductDescription[] TestEntities = [new() { ProductDescriptionId = 1, Description = "Ping Pong", Rowguid = ToGuid(1), ModifiedDate = Convert.ToDateTime("21 Jan 2024 12:34:56") },
 															  new() { ProductDescriptionId = 2, Description = "How Now", Rowguid = ToGuid(2), ModifiedDate = Convert.ToDateTime("21 Feb 2024 12:34:56") }];
 
 		private AdventureWorksDbContext _dbContext;
-		private GenericCrudRepository<ProductDescription> _repository;
 
 		public static Guid ToGuid(int value)
 		{
@@ -70,6 +81,11 @@ namespace AdventureWorksDemo.Data.Tests.MSTest
 			_dbContext.Set<ProductDescription>().Should().Contain(e => e.Description.Contains(TestEntities[0].Description));
 		}
 
+		public void Dispose()
+		{
+			_dbContext!.Dispose();
+		}
+
 		[TestMethod]
 		public void FindEntities_Should_ReturnFilteredactuals()
 		{
@@ -102,21 +118,9 @@ namespace AdventureWorksDemo.Data.Tests.MSTest
 			actual.Should().BeEquivalentTo(entity);
 		}
 
-		[TestCleanup]
-		public void TestCleanup()
-		{
-			_dbContext.Dispose();
-		}
-
 		[TestInitialize]
 		public void TestInitialize()
 		{
-			var options = new DbContextOptionsBuilder<AdventureWorksDbContext>()
-				.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
-				.Options;
-
-			_dbContext = new AdventureWorksDbContext(options);
-			_repository = new GenericCrudRepository<ProductDescription>(_dbContext);
 		}
 
 		[TestMethod]

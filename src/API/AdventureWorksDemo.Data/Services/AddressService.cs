@@ -49,16 +49,14 @@ namespace AdventureWorksDemo.Data.Services
 				|| !original.PostalCode.Equals(mutated.PostalCode);
 		}
 
-		internal override Task PreDataMutationAsync(Address entity)
+		internal override void PreDataMutation(Address entity)
 		{
 			entity.ModifiedDate = timeProvider.GetLocalNow().DateTime;
-			return base.PreDataMutationAsync(entity);
 		}
 
 		internal override void TransposeModel(AddressModel original, AddressModel mutated)
 		{
 			original.AddressLine1 = TransposeIfNotNull(original.AddressLine1, mutated.AddressLine1);
-
 			original.AddressLine2 = TransposeIfNotNull(original.AddressLine2, mutated.AddressLine2);
 			original.StateProvince = TransposeIfNotNull(original.StateProvince, mutated.StateProvince);
 			original.CountryRegion = TransposeIfNotNull(original.CountryRegion, mutated.CountryRegion);

@@ -43,10 +43,9 @@ namespace AdventureWorksDemo.Data.Services
 			return !original.Description.Trim().Equals(mutated.Description.Trim());
 		}
 
-		internal override Task PreDataMutationAsync(ProductDescription entity)
+		internal override void PreDataMutation(ProductDescription entity)
 		{
 			entity.ModifiedDate = timeProvider.GetLocalNow().DateTime;
-			return base.PreDataMutationAsync(entity);
 		}
 
 		internal override void TransposeModel(ProductDescriptionModel original, ProductDescriptionModel mutated)

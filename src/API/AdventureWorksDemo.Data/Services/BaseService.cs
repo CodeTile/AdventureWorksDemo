@@ -10,19 +10,20 @@ using FluentValidation;
 
 namespace AdventureWorksDemo.Data.Services
 {
-	public abstract class BaseService<TEntity, TModel>(IMapper mapper,
-													   IGenericCrudRepository<TEntity> genericRepo,
-													   IValidator<TEntity>? validator)
-		where TEntity : class
-		where TModel : class
+	public abstract class BaseService<TEntity, TModel>(
+	IMapper mapper,
+	IGenericCrudRepository<TEntity> repository,
+	IValidator<TEntity>? validator)
+	where TEntity : class
+	where TModel : class
 	{
 		/// <summary>
 		/// based on:- https://medium.com/@abdulwariis/building-a-generic-service-for-crud-operations-in-c-net-core-3db40c2c8c8a
 		/// </summary>
 
-		internal readonly IGenericCrudRepository<TEntity> _genericRepo = genericRepo;
-		internal readonly IMapper _mapper = mapper;
-		internal readonly IValidator<TEntity>? _validator = validator;
+		protected readonly IMapper _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
+		protected readonly IGenericCrudRepository<TEntity> _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+		protected readonly IValidator<TEntity>? _validator = validator;
 
 		public virtual async Task<IServiceResult<TModel>> AddAsync(TModel model)
 		{
@@ -30,20 +31,31 @@ namespace AdventureWorksDemo.Data.Services
 
 			if (validationResult.IsFailure)
 				return validationResult;
-			await PreDataMutationAsync(entity);
 
-			IServiceResult<TEntity> result = await _genericRepo.AddAsync(entity);
-			var mapped = _mapper.Map<TModel>(result.Value);
+			PreDataMutation(entity);
+
+			IServiceResult<TEntity> result = await _repository.AddAsync(entity);
 			return new ServiceResult<TModel>()
 			{
 				IsSuccess = result.IsSuccess,
 				Message = result.Message,
-				Value = mapped,
+				Value = _mapper.Map<TModel>(result.Value),
 			};
 		}
 
 		public virtual async Task<IServiceResult<IEnumerable<TModel>>> AddBatchAsync(IEnumerable<TModel> models)
 		{
+			// Early exit for empty collections
+			if (models == null || !models.Any())
+			{
+				return new ServiceResult<IEnumerable<TModel>>()
+				{
+					IsSuccess = false,
+					Message = "No records provided for addition.",
+					Value = models,
+				};
+			}
+
 			IServiceResult<IEnumerable<IServiceResult<TModel>>> validationResult = ValidateRecords(models, out IEnumerable<TEntity> entities);
 			if (validationResult.IsFailure)
 			{
@@ -55,7 +67,8 @@ namespace AdventureWorksDemo.Data.Services
 				};
 			}
 			await PreDataMutationAsync(entities);
-			var result = await _genericRepo.AddBatchAsync(entities);
+			var result = await _repository.AddBatchAsync(entities);
+
 			return new ServiceResult<IEnumerable<TModel>>()
 			{
 				IsSuccess = result.IsSuccess,
@@ -64,17 +77,15 @@ namespace AdventureWorksDemo.Data.Services
 			};
 		}
 
-		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter pageingFilter)
-		{
-			return await FindAllAsync(pageingFilter, null);
-		}
+		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter pageingFilter) => await FindAllAsync(pageingFilter, null);
 
 		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter paging,
-																   Expression<Func<TEntity, bool>>? predictate)
+																   Expression<Func<TEntity, bool>>? predicate)
 		{
-			IQueryable<TEntity>? query = _genericRepo.FindEntities(predictate);
+			IQueryable<TEntity>? query = _repository.FindEntities(predicate);
 			if (query == null)
 				return [];
+
 			PagedList<TEntity> result = await PagedList<TEntity>.CreateAsync(query
 														, paging.PageNumber
 														, paging.PageSize);
@@ -82,9 +93,9 @@ namespace AdventureWorksDemo.Data.Services
 		}
 
 		public async Task<IServiceResult<TModel>> UpdateAsync(TModel model,
-															  Expression<Func<TEntity, bool>> predictate)
+															  Expression<Func<TEntity, bool>> predicate)
 		{
-			var recordToUpdate = await FindByIdAsync(predictate);
+			var recordToUpdate = await FindByIdAsync(predicate);
 			if (recordToUpdate == null)
 			{
 				return ServiceResult<TModel>.Failure(model, "Unable to locate record to update!");
@@ -100,9 +111,9 @@ namespace AdventureWorksDemo.Data.Services
 			if (validationResult.IsFailure)
 				return validationResult;
 
-			await PreDataMutationAsync(entity);
+			PreDataMutation(entity);
 
-			var result = await _genericRepo.UpdateAsync(entity);
+			var result = await _repository.UpdateAsync(entity);
 			return new ServiceResult<TModel>()
 			{
 				IsSuccess = result.IsSuccess,
@@ -142,10 +153,10 @@ namespace AdventureWorksDemo.Data.Services
 					Message = validationResult.Message,
 					Value = models,
 				};
-			};
+			}
 			await PreDataMutationAsync(entities);
 
-			var result = await _genericRepo.UpdateAsync(entities);
+			var result = await _repository.UpdateAsync(entities);
 			return new ServiceResult<IEnumerable<TModel>>()
 			{
 				IsSuccess = result.IsSuccess,
@@ -154,8 +165,70 @@ namespace AdventureWorksDemo.Data.Services
 			};
 		}
 
-		public virtual IServiceResult<IEnumerable<IServiceResult<TModel>>> ValidateRecords(IEnumerable<TModel> models,
-																					   out IEnumerable<TEntity> entities)
+		internal static string TransposeIfNotNull(string original, string mutated)
+		{
+			if (mutated != null && !original.Equals(mutated))
+				original = mutated;
+			return original;
+		}
+
+		internal virtual async Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predicate)
+		{
+			return await _repository.DeleteAsync(predicate);
+		}
+
+		internal virtual PagedList<TModel> EntityPagedListToModelPagedList(PagedList<TEntity> source)
+		{
+			var mappedItems = _mapper.Map<TModel[]>(source.ToArray());
+			return new PagedList<TModel>(mappedItems, source.TotalCount, source.CurrentPage, source.PageSize)
+			{
+				TotalPages = source.TotalPages,
+			};
+		}
+
+		internal abstract Task<TModel?> FindAsync(TModel model);
+
+		internal virtual async Task<TModel> FindByIdAsync(Expression<Func<TEntity, bool>> predicate)
+		{
+			TEntity? result = (await _repository.GetByIdAsync(predicate));
+			return _mapper.Map<TModel>(result);
+		}
+
+		internal abstract bool IsModelDirty(TModel original, TModel mutated);
+
+		internal abstract void PreDataMutation(TEntity entity);
+
+		internal virtual async Task PreDataMutationAsync(IEnumerable<TEntity> entities)
+		{
+			await Task.Delay(0);
+			foreach (TEntity entity in entities.AsParallel())
+			{
+				PreDataMutation(entity);
+			}
+		}
+
+		internal abstract void TransposeModel(TModel original, TModel mutated);
+
+		internal virtual IServiceResult<TModel> ValidateRecord(TModel model, out TEntity entity)
+		{
+			var result = new ServiceResult<TModel>() { IsSuccess = true };
+
+			entity = _mapper.Map<TEntity>(model);
+
+			if (_validator != null)
+			{
+				var validationResult = _validator.Validate(entity);
+				if (!validationResult.IsValid)
+				{
+					result.IsSuccess = false;
+					result.Message = validationResult.ToString();
+					result.Value = model;
+				}
+			}
+			return result;
+		}
+
+		internal virtual IServiceResult<IEnumerable<IServiceResult<TModel>>> ValidateRecords(IEnumerable<TModel> models, out IEnumerable<TEntity> entities)
 		{
 			var result = new ServiceResult<IEnumerable<IServiceResult<TModel>>>() { IsSuccess = true };
 
@@ -191,82 +264,6 @@ namespace AdventureWorksDemo.Data.Services
 			else
 				entities = _mapper.Map<IEnumerable<TEntity>>(models);
 
-			return result;
-		}
-
-		internal virtual async Task<IServiceResult<bool>> DeleteAsync(Expression<Func<TEntity, bool>> predictate)
-		{
-			//TODO: Add validation on delete.
-			return await _genericRepo.DeleteAsync(predictate);
-		}
-
-		internal virtual PagedList<TModel> EntityPagedListToModelPagedList(PagedList<TEntity> source)
-		{
-			var mappedItems = _mapper.Map<TModel[]>(source.ToArray());
-			return new PagedList<TModel>(mappedItems, source.TotalCount, source.CurrentPage, source.PageSize)
-			{
-				TotalPages = source.TotalPages,
-			};
-		}
-
-		internal virtual async Task<TModel?> FindAsync(TModel model)
-		{
-			await Task.Delay(0);
-			throw new NotImplementedException(nameof(FindAsync));
-		}
-
-		internal virtual async Task<TModel> FindByIdAsync(Expression<Func<TEntity, bool>> predictate)
-		{
-			TEntity? result = (await _genericRepo.GetByIdAsync(predictate));
-			return _mapper.Map<TModel>(result);
-		}
-
-		internal virtual bool IsModelDirty(TModel original, TModel mutated)
-		{
-			throw new NotImplementedException(nameof(IsModelDirty));
-		}
-
-		internal virtual async Task PreDataMutationAsync(IEnumerable<TEntity> entities)
-		{
-			foreach (TEntity entity in entities.AsParallel())
-			{
-				await PreDataMutationAsync(entity);
-			}
-		}
-
-		internal virtual async Task PreDataMutationAsync(TEntity entity)
-		{
-			await Task.Delay(0);
-		}
-
-		internal string TransposeIfNotNull(string original, string mutated)
-		{
-			if (mutated != null && !original.Equals(mutated))
-				original = mutated;
-			return original;
-		}
-
-		internal virtual void TransposeModel(TModel original, TModel mutated)
-		{
-			throw new NotImplementedException(nameof(TransposeModel));
-		}
-
-		internal virtual IServiceResult<TModel> ValidateRecord(TModel model, out TEntity entity)
-		{
-			var result = new ServiceResult<TModel>() { IsSuccess = true };
-
-			entity = _mapper.Map<TEntity>(model);
-
-			if (_validator != null)
-			{
-				var validationResult = _validator.Validate(entity);
-				if (!validationResult.IsValid)
-				{
-					result.IsSuccess = false;
-					result.Message = validationResult.ToString();
-					result.Value = model;
-				}
-			}
 			return result;
 		}
 	}

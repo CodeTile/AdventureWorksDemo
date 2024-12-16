@@ -41,10 +41,10 @@ namespace AdventureWorksDemo.Data.Services
 				|| !original.ParentProductCategoryId.Equals(mutated.ParentProductCategoryId);
 		}
 
-		internal override Task PreDataMutationAsync(ProductCategory entity)
+		internal override void PreDataMutation(ProductCategory entity)
 		{
 			entity.ModifiedDate = timeProvider.GetLocalNow().DateTime;
-			return base.PreDataMutationAsync(entity);
+			//return base.PreDataMutation(entity);
 		}
 
 		internal override void TransposeModel(ProductCategoryModel original,

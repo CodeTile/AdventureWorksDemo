@@ -9,9 +9,10 @@ Print '
 
 
 use [$TARGET_DB_NAME]
-PRINT '---------------------------
+PRINT '
+*****************************************
     Delete all records in database
----------------------------'
+*****************************************'
 Truncate table BuildVersion;
 Truncate Table ErrorLog;
 
@@ -31,7 +32,7 @@ SELECT @sql += N'ALTER TABLE ' + obj + N' NOCHECK CONSTRAINT ALL;
 
 EXEC sys.sp_executesql @sql;
 GO
--------
+-- -----
 
 Declare @TableName nvarchar(256) ;
 SET @TableName = '';
