@@ -17,7 +17,7 @@ namespace AdventureWorksDemo.Data.Repository
 		/// <summary>
 		/// Adds multiple entities to the repository.
 		/// </summary>
-		Task<IServiceResult<IEnumerable<TEntity>>> AddBatchAsync(IQueryable<TEntity> entities, params Expression<Func<TEntity, object>>[] references);
+		Task<IServiceResult<IEnumerable<TEntity>>> AddBatchAsync(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] references);
 
 		/// <summary>
 		/// Deletes entities matching the specified predicate.
@@ -69,7 +69,7 @@ namespace AdventureWorksDemo.Data.Repository
 			};
 		}
 
-		public async Task<IServiceResult<IEnumerable<TEntity>>> AddBatchAsync(IQueryable<TEntity> entities, params Expression<Func<TEntity, object>>[] references)
+		public async Task<IServiceResult<IEnumerable<TEntity>>> AddBatchAsync(IEnumerable<TEntity> entities, params Expression<Func<TEntity, object>>[] references)
 		{
 			ArgumentNullException.ThrowIfNull(entities);
 
@@ -79,7 +79,7 @@ namespace AdventureWorksDemo.Data.Repository
 			var result = await _dbContext.SaveChangesAsync();
 			return new ServiceResult<IEnumerable<TEntity>>()
 			{
-				IsSuccess = (await entities.CountAsync()) == result,
+				IsSuccess = (entities.Count()) == result,
 				Value = entities,
 			};
 		}
