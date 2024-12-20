@@ -21,8 +21,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorksDemo.API", "A
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{9D6855CA-A743-45EC-BB4B-8BDE8A160DBD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorksDemo.Data.Tests.MSTest", "AdventureWorksDemo.Data.Tests.MSTest\AdventureWorksDemo.Data.Tests.MSTest.csproj", "{33CD0317-1C3C-4700-BC39-01900C4B6C00}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,10 +47,6 @@ Global
 		{144FC8D9-C245-468B-90BB-A21917B42AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{144FC8D9-C245-468B-90BB-A21917B42AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{144FC8D9-C245-468B-90BB-A21917B42AD2}.Release|Any CPU.Build.0 = Release|Any CPU
-		{33CD0317-1C3C-4700-BC39-01900C4B6C00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{33CD0317-1C3C-4700-BC39-01900C4B6C00}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{33CD0317-1C3C-4700-BC39-01900C4B6C00}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{33CD0317-1C3C-4700-BC39-01900C4B6C00}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,7 +55,6 @@ Global
 		{3320669D-677E-4016-AD40-FDE03106809B} = {9D6855CA-A743-45EC-BB4B-8BDE8A160DBD}
 		{21A4B543-EC69-441F-A9FF-1EA9359ECA4C} = {9D6855CA-A743-45EC-BB4B-8BDE8A160DBD}
 		{FFA1B5BA-6670-448E-8516-F01E9772F48E} = {9D6855CA-A743-45EC-BB4B-8BDE8A160DBD}
-		{33CD0317-1C3C-4700-BC39-01900C4B6C00} = {9D6855CA-A743-45EC-BB4B-8BDE8A160DBD}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B392A9A-E58C-44EB-BA80-051A0183B5DE}

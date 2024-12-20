@@ -67,7 +67,7 @@ namespace AdventureWorksDemo.Data.Services
 				};
 			}
 			await PreDataMutationAsync(entities);
-			var result = await _repository.AddBatchAsync(entities);
+			var result = await _repository.AddBatchAsync(entities.AsQueryable());
 
 			return new ServiceResult<IEnumerable<TModel>>()
 			{

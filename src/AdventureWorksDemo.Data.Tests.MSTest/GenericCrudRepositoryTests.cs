@@ -6,6 +6,9 @@ using FluentAssertions;
 
 using Microsoft.EntityFrameworkCore;
 
+using MockQueryable;
+using MockQueryable.Moq;
+
 namespace AdventureWorksDemo.Data.Tests.MSTest
 {
 	[TestClass]
@@ -13,6 +16,12 @@ namespace AdventureWorksDemo.Data.Tests.MSTest
 	{
 		public GenericCrudRepositoryTests()
 		{
+			//create data
+			TestEntities = [ProductDescription1, ProductDescription2];
+			//build mock
+			var mockDbSet = TestEntities.AsQueryable().BuildMockDbSet();
+			//setup the mock as Queryable for Moq
+
 			var options = new DbContextOptionsBuilder<AdventureWorksDbContext>()
 				.UseInMemoryDatabase(databaseName: Guid.NewGuid().ToString())
 				.Options;
@@ -23,8 +32,9 @@ namespace AdventureWorksDemo.Data.Tests.MSTest
 
 		private readonly GenericCrudRepository<ProductDescription> _repository;
 
-		private readonly ProductDescription[] TestEntities = [new() { ProductDescriptionId = 1, Description = "Ping Pong", Rowguid = ToGuid(1), ModifiedDate = Convert.ToDateTime("21 Jan 2024 12:34:56") },
-															  new() { ProductDescriptionId = 2, Description = "How Now", Rowguid = ToGuid(2), ModifiedDate = Convert.ToDateTime("21 Feb 2024 12:34:56") }];
+		private readonly ProductDescription ProductDescription1 = new() { ProductDescriptionId = 1, Description = "Ping Pong", Rowguid = ToGuid(1), ModifiedDate = Convert.ToDateTime("21 Jan 2024 12:34:56") };
+		private readonly ProductDescription ProductDescription2 = new() { ProductDescriptionId = 2, Description = "How Now", Rowguid = ToGuid(2), ModifiedDate = Convert.ToDateTime("21 Feb 2024 12:34:56") };
+		private readonly ProductDescription[] TestEntities;
 
 		private AdventureWorksDbContext _dbContext;
 
@@ -56,7 +66,7 @@ namespace AdventureWorksDemo.Data.Tests.MSTest
 			// Arrange
 
 			// Act
-			var actual = await _repository.AddBatchAsync(TestEntities);
+			var actual = await _repository.AddBatchAsync(TestEntities.AsQueryable());
 
 			// Assert
 			actual.IsSuccess.Should().BeTrue();
