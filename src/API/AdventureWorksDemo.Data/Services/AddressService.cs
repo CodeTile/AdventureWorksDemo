@@ -6,8 +6,6 @@ using AutoMapper;
 
 using FluentValidation;
 
-using Microsoft.IdentityModel.Tokens;
-
 namespace AdventureWorksDemo.Data.Services
 {
 	public interface IAddressService :

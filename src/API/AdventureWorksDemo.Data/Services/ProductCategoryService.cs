@@ -44,7 +44,6 @@ namespace AdventureWorksDemo.Data.Services
 		internal override void PreDataMutation(ProductCategory entity)
 		{
 			entity.ModifiedDate = timeProvider.GetLocalNow().DateTime;
-			//return base.PreDataMutation(entity);
 		}
 
 		internal override void TransposeModel(ProductCategoryModel original,

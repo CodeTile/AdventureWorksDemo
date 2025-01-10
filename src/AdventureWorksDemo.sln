@@ -25,6 +25,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Backend", "Backend", "{1F79
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Frontend", "Frontend", "{B922BF81-0D47-41E8-BDC8-37C09BFA6167}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdventureWorksDemo.MudBlazor", "AdventureWorksDemo.MudBlazor\AdventureWorksDemo.MudBlazor.csproj", "{9D41FFEC-DE7B-4397-84CE-F6FFEE612AF2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{144FC8D9-C245-468B-90BB-A21917B42AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{144FC8D9-C245-468B-90BB-A21917B42AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{144FC8D9-C245-468B-90BB-A21917B42AD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9D41FFEC-DE7B-4397-84CE-F6FFEE612AF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9D41FFEC-DE7B-4397-84CE-F6FFEE612AF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9D41FFEC-DE7B-4397-84CE-F6FFEE612AF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9D41FFEC-DE7B-4397-84CE-F6FFEE612AF2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -61,6 +67,7 @@ Global
 		{21A4B543-EC69-441F-A9FF-1EA9359ECA4C} = {9D6855CA-A743-45EC-BB4B-8BDE8A160DBD}
 		{FFA1B5BA-6670-448E-8516-F01E9772F48E} = {9D6855CA-A743-45EC-BB4B-8BDE8A160DBD}
 		{144FC8D9-C245-468B-90BB-A21917B42AD2} = {1F7959F3-B8EC-43C1-BA68-47A80F511DA5}
+		{9D41FFEC-DE7B-4397-84CE-F6FFEE612AF2} = {B922BF81-0D47-41E8-BDC8-37C09BFA6167}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {6B392A9A-E58C-44EB-BA80-051A0183B5DE}

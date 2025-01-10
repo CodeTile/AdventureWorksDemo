@@ -1,0 +1,29 @@
+﻿@page "/productDescription"
+@using global::MudBlazor
+@* @inject HttpClient httpClient *@
+
+
+
+<PageTitle>Product Description</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Product Description</MudText>
+
+<MudDataGrid T="Models.ProductDescriptionModel" Items="@records.Take(4)">
+        <Columns>
+            <PropertyColumn Property="x => x.ProductDescriptionId" Title="Nr" />
+            <PropertyColumn Property="x => x.ModifiedDate" />
+            <PropertyColumn Property="x => x.Description" />
+        </Columns>
+    </MudDataGrid>
+
+@code {
+
+    private List<ProductDescriptionModel> records = new();
+    protected override async Task OnInitializedAsync()
+    {
+        // Simulate asynchronous loading to demonstrate a loading indicator
+
+        records = await httpClient.GetFromJsonAsync<List<ProductDescriptionModel>>("https://localhost:7277/api/ProductDescription");
+    }
+
+}
