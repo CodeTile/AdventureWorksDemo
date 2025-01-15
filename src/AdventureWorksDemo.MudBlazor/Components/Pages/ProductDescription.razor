@@ -1,29 +1,35 @@
 ﻿@page "/productDescription"
 @using global::MudBlazor
-@* @inject HttpClient httpClient *@
-
-
+@using Microsoft.Extensions.Configuration
+@inject IConfiguration Configuration
 
 <PageTitle>Product Description</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Product Description</MudText>
 
-<MudDataGrid T="Models.ProductDescriptionModel" Items="@records.Take(4)">
-        <Columns>
-            <PropertyColumn Property="x => x.ProductDescriptionId" Title="Nr" />
-            <PropertyColumn Property="x => x.ModifiedDate" />
-            <PropertyColumn Property="x => x.Description" />
-        </Columns>
-    </MudDataGrid>
+<MudDataGrid T="ProductDescriptionModel" Items="@records">
+    <Columns>
+        <PropertyColumn Property="x => x.ProductDescriptionId" Title="Id" />
+        <PropertyColumn Property="x => x.ModifiedDate" Format="d" Title="Modified" />
+        <PropertyColumn Property="x => x.Description" />
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="ProductDescriptionModel"  />
+    </PagerContent>
+</MudDataGrid>
 
 @code {
+
+
 
     private List<ProductDescriptionModel> records = new();
     protected override async Task OnInitializedAsync()
     {
+
         // Simulate asynchronous loading to demonstrate a loading indicator
 
-        records = await httpClient.GetFromJsonAsync<List<ProductDescriptionModel>>("https://localhost:7277/api/ProductDescription");
+        string url = Configuration["Api:base"]+ Configuration["Api:productdescription"];
+        records = (await httpClient.GetFromJsonAsync<List<ProductDescriptionModel>>(url) ?? new());
     }
 
 }
