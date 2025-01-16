@@ -1,15 +1,22 @@
 ﻿@page "/productDescription"
 @using global::MudBlazor
-@using Microsoft.Extensions.Configuration
+
 @inject IConfiguration Configuration
 
 <PageTitle>Product Description</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Product Description</MudText>
+<MudText Typo="Typo.body1" GutterBottom="true">Modify the product descriptions.</MudText>
 
-<MudDataGrid T="ProductDescriptionModel" Items="@records">
+<MudDataGrid T="ProductDescriptionModel" Items="@records" SortMode="SortMode.Multiple" Filterable="true" QuickFilter="@_quickFilter">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Periodic Elements</MudText>
+        <MudSpacer />
+        <MudTextField @bind-Value="_searchString" Placeholder="Search" Adornment="Adornment.Start" Immediate="true"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+    </ToolBarContent>
     <Columns>
-        <PropertyColumn Property="x => x.ProductDescriptionId" Title="Id" />
+        <PropertyColumn Property="x => x.ProductDescriptionId" Title="Id" Hidden="true" />
         <PropertyColumn Property="x => x.ModifiedDate" Format="d" Title="Modified" />
         <PropertyColumn Property="x => x.Description" />
     </Columns>
@@ -20,8 +27,9 @@
 
 @code {
 
+    // this page loads all records into the page as there are not many and it is a lookup table.
 
-
+    private string? _searchString;
     private List<ProductDescriptionModel> records = new();
     protected override async Task OnInitializedAsync()
     {
@@ -31,5 +39,15 @@
         string url = Configuration["Api:base"]+ Configuration["Api:productdescription"];
         records = (await httpClient.GetFromJsonAsync<List<ProductDescriptionModel>>(url) ?? new());
     }
+    // quick filter - filter globally across multiple columns with the same input
+    private Func<ProductDescriptionModel, bool> _quickFilter => x =>
+    {
+        if (string.IsNullOrWhiteSpace(_searchString)
+            || x.Description!.Contains(_searchString, StringComparison.OrdinalIgnoreCase)
+            || x.ModifiedDate!.ToShortDateString().Contains(_searchString, StringComparison.OrdinalIgnoreCase)
+            || x.ModifiedDate!.ToLongDateString().Contains(_searchString, StringComparison.OrdinalIgnoreCase))
+            return true;
 
+        return false;
+    };
 }
