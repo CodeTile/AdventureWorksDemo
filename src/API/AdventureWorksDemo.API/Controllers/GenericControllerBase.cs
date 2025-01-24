@@ -45,7 +45,7 @@ namespace AdventureWorksDemo.API.Controllers
 		[HttpGet()]
 		[ProducesResponseType<Product>(StatusCodes.Status200OK)]
 		[ProducesResponseType(StatusCodes.Status404NotFound)]
-		public virtual async Task<IActionResult> FindAllAsync([FromQuery] PageingFilter pageingFilter)
+		public virtual async Task<IActionResult> FindAllAsync([FromBody] PageingFilter pageingFilter)
 		{
 			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(FindAllAsync), "pageingFilter");
 
