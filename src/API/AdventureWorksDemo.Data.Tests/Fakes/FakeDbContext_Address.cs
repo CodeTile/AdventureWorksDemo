@@ -1,9 +1,18 @@
-﻿using AdventureWorksDemo.Data.Entities;
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace AdventureWorksDemo.Data.Tests.nUnit.Helpers
+using AdventureWorksDemo.Data.Entities;
+
+namespace AdventureWorksDemo.Data.Tests.Fakes
 {
+	[ExcludeFromCodeCoverage]
 	internal static class FakeDbContext
 	{
+		[ExcludeFromCodeCoverage]
 		internal static List<Address> FakeAddresses
 		{
 			get

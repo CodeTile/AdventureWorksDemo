@@ -82,6 +82,8 @@ namespace AdventureWorksDemo.Data.Services
 		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter paging,
 																   Expression<Func<TEntity, bool>>? predicate)
 		{
+			paging.VerifyValues();
+
 			IQueryable<TEntity>? query = _repository.FindEntities(predicate);
 			if (query == null)
 				return [];

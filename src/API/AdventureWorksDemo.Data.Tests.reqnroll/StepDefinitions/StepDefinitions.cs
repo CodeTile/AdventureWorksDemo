@@ -63,7 +63,9 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 		public void ThenThePagedListValuesAre(DataTable expected)
 		{
 			IPagedList actual = (IPagedList)Helper.ScenarioContexts.GetResult;
-			expected.CompareToInstance(actual);
+			List<IPagedList> actualAsList = new() { actual };
+
+			expected.CompareToSet(actualAsList);
 		}
 
 		[Then("the result is")]

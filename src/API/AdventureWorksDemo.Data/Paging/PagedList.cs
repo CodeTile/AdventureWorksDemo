@@ -45,6 +45,13 @@ namespace AdventureWorksDemo.Data.Paging
 			if (source == null)
 				return new PagedList<T>([], 0, pageNumber, pageSize);
 			var count = await source.CountAsync();
+			var totalPages = (decimal)count % (decimal)pageSize;
+			if (pageNumber > totalPages)
+			{
+				var answer = Math.Ceiling(totalPages);
+				var debug = Math.Ceiling((decimal)25);
+			}
+
 			var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
 			return new PagedList<T>(items ?? [], count, pageNumber, pageSize);
 		}
@@ -54,6 +61,7 @@ namespace AdventureWorksDemo.Data.Paging
 	{
 		private int _pageNumber = 1;
 		private int _pageSize = 25;
+		public string[]? Filter { get; set; } = null;
 
 		public int PageNumber
 		{
@@ -73,10 +81,19 @@ namespace AdventureWorksDemo.Data.Paging
 			{
 				_pageSize = (value > MaxPageSize) ? MaxPageSize : value;
 				if (_pageSize < 1)
-					_pageNumber = 25;
+					_pageSize = 25;
 			}
 		}
 
+		public string[]? Sorting { get; set; } = null;
 		internal int MaxPageSize { get; set; } = 100;
+
+		internal void VerifyValues()
+		{
+			if (PageSize < 1)
+				PageSize = 25;
+			if (PageNumber < 1)
+				PageNumber = 1;
+		}
 	}
 }
