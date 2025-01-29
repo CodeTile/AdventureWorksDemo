@@ -49,7 +49,6 @@ namespace AdventureWorksDemo.Data.Paging
 			if (pageNumber > totalPages)
 			{
 				var answer = Math.Ceiling(totalPages);
-				var debug = Math.Ceiling((decimal)25);
 			}
 
 			var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
