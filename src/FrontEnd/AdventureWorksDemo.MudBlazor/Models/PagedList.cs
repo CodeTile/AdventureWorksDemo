@@ -35,7 +35,12 @@ namespace AdventureWorksDemo.MudBlazor.Models
 	public class PageingFilter
 	{
 		public string[]? Filter { get; set; } = null;
+
+		/// <summary>
+		/// PageNumber is zero based
+		/// </summary>
 		public int PageNumber { get; set; } = 1;
+
 		public int PageSize { get; set; } = 25;
 		public string[]? Sorting { get; set; } = null;
 
@@ -62,7 +67,7 @@ namespace AdventureWorksDemo.MudBlazor.Models
 				return null;
 
 			return (from m in sortDefinitions
-					select $"{m.SortBy} | {DescendingText(m.Descending)}"
+					select $"{m.SortBy} {DescendingText(m.Descending)}"
 				).ToArray();
 		}
 	}

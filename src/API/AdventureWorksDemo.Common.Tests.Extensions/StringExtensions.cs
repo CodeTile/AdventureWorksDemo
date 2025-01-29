@@ -47,6 +47,7 @@
 				var replacementText = character.PadRight(iterations, Convert.ToChar(character));
 				value = value.Replace(textToReplace, replacementText);
 			}
+
 			return value;
 		}
 	}

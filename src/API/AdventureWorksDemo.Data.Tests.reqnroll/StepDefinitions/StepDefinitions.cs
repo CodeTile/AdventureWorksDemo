@@ -22,6 +22,12 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			Helper.ScenarioContexts.Context = scenarioContext;
 		}
 
+		[Given("I clear the previous results")]
+		public void GivenIClearThePreviousResults()
+		{
+			Helper.ScenarioContexts.ClearResult();
+		}
+
 		[Given("The service to test is {string}")]
 		public void GivenTheServiceToTestIs(string uotName)
 		{
@@ -148,24 +154,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 		[Then("the results are")]
 		public void ThenTheResultsAre(DataTable table)
 		{
-			IEnumerable actual = (IEnumerable)Helper.ScenarioContexts.GetResult;
-			string? resultTypeName = Helper.ScenarioContexts.GetContextResultTypeName();
-
-			if (actual is Array)
-				resultTypeName = resultTypeName!.ToString().Split('[')[0];
-			else
-				resultTypeName = resultTypeName!.ToString().Replace("`1", "").Replace("[", "<").Replace("]", ">")
-													.Replace(">", "")
-													.Split('<')[1];
-
-			switch (resultTypeName)
-			{
-				case "System.Exception": table.CompareToSet([resultTypeName]); break;
-				case "AdventureWorksDemo.Data.Models.AddressModel": table.CompareToSet((IEnumerable<AddressModel>)actual); break;
-				case "AdventureWorksDemo.Data.Models.ProductCategoryModel": table.CompareToSet((IEnumerable<ProductCategoryModel>)actual); break;
-				case "AdventureWorksDemo.Data.Models.ProductDescriptionModel": table.CompareToSet((IEnumerable<ProductDescriptionModel>)actual); break;
-				default: throw new NotImplementedException($"Type [{resultTypeName}] is not implemented!");
-			}
+			CompareResults(table, false);
 		}
 
 		[Then("the results property {string} contains")]
@@ -187,12 +176,18 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			}
 			else if (value is not IEnumerable)
 			{
-				values = createList(valueType);
+				values = CreateList(valueType);
 				values.Add(value);
 			}
 			else
 				values = (IList?)value;
 			CompareDataTableWithResult(dataTable, values);
+		}
+
+		[Then("the sorted results are")]
+		public void ThenTheSortedResultsAre(DataTable table)
+		{
+			CompareResults(table, true);
 		}
 
 		[When("I call the method {string} with the parameter values")]
@@ -226,11 +221,27 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			Helper.ScenarioContexts.AddToContext(ScenarioContextKey.ListOfObjects, models);
 		}
 
+		//[When("I populate a list of type {string}")]
+		//public void WhenIPopulateAListOfStrings(string typeName, DataTable dataTable)
+		//{
+		//	var list = Helper.Types.CreateListByTypeName(typeName);
+		//	for (int i = 0; i < dataTable.Rows.Count; i++)
+		//	{
+		//		list.Add(dataTable.Rows[i][0]);
+		//	}
+		//	Helper.ScenarioContexts.AddToContext(ScenarioContextKey.ListOfObjects, list);
+		//}
 		[When("I populate the model {string}")]
 		public void WhenIPopulateTheModel(string modelTypeName, DataTable dataTable)
 		{
 			var model = Helper.Types.PopulateModelFromRow(modelTypeName, dataTable.Rows[0], null);
 			Helper.ScenarioContexts.AddToContext(ScenarioContextKey.Model, model);
+		}
+		[When("I update the model {string}")]
+		public void WhenIUpdateTheModel(string modelTypeName, DataTable dataTable)
+		{
+			var model = Helper.Types.PopulateModelFromRow(modelTypeName, dataTable.Rows[0], null);
+			Helper.ScenarioContexts.UpdateObjectInContext(ScenarioContextKey.Model, model);
 		}
 
 		private void CompareDataTableWithResult(DataTable datatable, object value)
@@ -239,7 +250,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			{
 				value = ServiceResult.Simple(result);
 			}
-			IList? values = createList(value.GetType());
+			IList? values = CreateList(value.GetType());
 			values.Add(value);
 			CompareDataTableWithResult(datatable, values);
 		}
@@ -257,7 +268,29 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 				throw new NotImplementedException($"unhandled type!!!\r\n {valueTypeName}");
 		}
 
-		private IList createList(Type myType)
+		private void CompareResults(DataTable table, bool compareSorted)
+		{
+			IEnumerable actual = (IEnumerable)Helper.ScenarioContexts.GetResult;
+			string? resultTypeName = Helper.ScenarioContexts.GetContextResultTypeName();
+
+			if (actual is Array)
+				resultTypeName = resultTypeName!.ToString().Split('[')[0];
+			else
+				resultTypeName = resultTypeName!.ToString().Replace("`1", "").Replace("[", "<").Replace("]", ">")
+													.Replace(">", "")
+													.Split('<')[1];
+
+			switch (resultTypeName)
+			{
+				case "System.Exception": table.CompareToSet([resultTypeName]); break;
+				case "AdventureWorksDemo.Data.Models.AddressModel": table.CompareToSet((IEnumerable<AddressModel>)actual, compareSorted); break;
+				case "AdventureWorksDemo.Data.Models.ProductCategoryModel": table.CompareToSet((IEnumerable<ProductCategoryModel>)actual, compareSorted); break;
+				case "AdventureWorksDemo.Data.Models.ProductDescriptionModel": table.CompareToSet((IEnumerable<ProductDescriptionModel>)actual, compareSorted); break;
+				default: throw new NotImplementedException($"Type [{resultTypeName}] is not implemented!");
+			}
+		}
+
+		private IList CreateList(Type myType)
 		{
 			Type genericListType = typeof(List<>).MakeGenericType(myType);
 			return (IList)Activator.CreateInstance(genericListType);

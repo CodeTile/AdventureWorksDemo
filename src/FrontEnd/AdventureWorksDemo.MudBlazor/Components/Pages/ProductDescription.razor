@@ -12,12 +12,13 @@
 
 @* *@
 <MudDataGrid  T="ProductDescriptionModel" ServerData="ServerReload" EditMode="DataGridEditMode.Form" ReadOnly="false"
+SortMode="@SortMode.Single"
 ShowFilterIcons="true"
 Filterable="true">
     <ToolBarContent>
         <MudText Typo="Typo.h6">Product Description</MudText>
         <MudSpacer />
-  @*       <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
+        @*       <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
         AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-1"
                       Clearable="true" ClearIcon="@Icons.Material.Filled.Clear"  /> *@
     </ToolBarContent> 
@@ -28,7 +29,7 @@ Filterable="true">
         <PropertyColumn Property="x => x.Description" />
     </Columns>
     <PagerContent>
-        <MudDataGridPager T="ProductDescriptionModel" />
+        <MudDataGridPager T="ProductDescriptionModel"  PageSizeOptions=[5,10,25,50,100,1000]/>
     </PagerContent>
 </MudDataGrid> 
 
@@ -65,44 +66,13 @@ Filterable="true">
         if (response.IsSuccessStatusCode)
         {
             data = (await response!.Content!.ReadFromJsonAsync<List<ProductDescriptionModel>>()) ?? new List<ProductDescriptionModel>();
-            paging = PagedList.FromIEnumerable(response.Headers.GetValues("X-Pagination").SingleOrDefault());
-
+            paging = PagedList.FromIEnumerable(response.Headers.GetValues("X-Pagination").SingleOrDefault());            
         }
-
-        await Task.Delay(300);
-        // data = data.Where(item =>
-        // {
-        //     if (string.IsNullOrWhiteSpace(searchString))
-        //         return true;
-        //     if ($"{item.Description} {item.ModifiedDate.ToString("d")}".Contains(searchString))
-        //         return true;
-        //     return false;
-        // }).ToArray();
-
-        // var sortDefinition = state.SortDefinitions.FirstOrDefault();
-        // if (sortDefinition != null)
-        // {
-        //     switch (sortDefinition.SortBy)
-        //     {
-        //         case nameof(ProductDescriptionModel.Description):
-        //             data = data.OrderByDirection(
-        //                 sortDefinition.Descending ? SortDirection.Descending : SortDirection.Ascending,
-        //                 o => o.Description
-        //             );
-        //             break;
-        //         case nameof(ProductDescriptionModel.ModifiedDate):
-        //             data = data.OrderByDirection(
-        //                 sortDefinition.Descending ? SortDirection.Descending : SortDirection.Ascending,
-        //                 o => o.ModifiedDate
-        //             );
-        //             break;
-        //     }
-        // }
 
         return new GridData<ProductDescriptionModel>
             {
                 TotalItems = paging.TotalCount,
-                Items = data,
+                Items = data,                
             };
     }
 
