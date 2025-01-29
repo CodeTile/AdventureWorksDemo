@@ -12,8 +12,8 @@
 			set
 			{
 				_pageNumber = value;
-				if (value < 1)
-					_pageNumber = 1;
+				if (value < 0)
+					_pageNumber = 0;
 			}
 		}
 
@@ -29,16 +29,19 @@
 		}
 
 		public int Skip
-		{ get { return (PageNumber - 1) * PageSize; } }
+		{ get { return (PageNumber) * PageSize; } }
+
 		public string[]? Sorting { get; set; } = null;
 		internal int MaxPageSize { get; set; } = 100;
 
-		internal void VerifyValues()
+		internal void Sanitise()
 		{
 			if (PageSize < 1)
 				PageSize = 25;
-			if (PageNumber < 1)
-				PageNumber = 1;
+			if (PageSize > MaxPageSize)
+				PageSize = MaxPageSize;
+			if (PageNumber < 0)
+				PageNumber = 0;
 		}
 	}
 }

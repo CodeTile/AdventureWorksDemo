@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using AdventureWorksDemo.Data.Extentions;
 
 namespace AdventureWorksDemo.Data.Paging
 {
@@ -21,13 +22,16 @@ namespace AdventureWorksDemo.Data.Paging
 
 		public PagedList(IEnumerable<T> items, int count, int currentPage, int pageSize)
 		{
-			CurrentPage = currentPage;
 			TotalPages = (int)Math.Ceiling(count / (double)pageSize);
+			CurrentPage = (currentPage > TotalPages) ? TotalPages : currentPage;
 			PageSize = pageSize;
 			TotalCount = count;
 			AddRange(items);
 		}
 
+		/// <summary>
+		/// zero index, for example the first page is page 0
+		/// </summary>
 		public int CurrentPage { get; set; }
 
 		public int PageSize { get; set; }
@@ -36,23 +40,25 @@ namespace AdventureWorksDemo.Data.Paging
 
 		public int TotalPages { get; set; }
 
-		public static async Task<PagedList<T>> CreateAsync(IQueryable<T> source, int pageNumber, int pageSize)
+		public static int CalculateLastPageNumber(int recordCount, int pageSize)
 		{
-			if (pageNumber <= 0)
-				throw new ArgumentOutOfRangeException(nameof(pageNumber), $"Parameter {nameof(pageNumber)} must be positive");
-			if (pageSize <= 0)
-				throw new ArgumentOutOfRangeException(nameof(pageSize), $"Parameter {nameof(pageSize)} must be positive");
-			if (source == null)
-				return new PagedList<T>([], 0, pageNumber, pageSize);
-			var count = await source.CountAsync();
-			var totalPages = (decimal)count % (decimal)pageSize;
-			if (pageNumber > totalPages)
-			{
-				var answer = Math.Ceiling(totalPages);
-			}
+			if (recordCount < pageSize)
+				return 0;
+			return (int)Math.Floor((decimal)recordCount / (decimal)pageSize);
+		}
 
-			var items = await source.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToListAsync();
-			return new PagedList<T>(items ?? [], count, pageNumber, pageSize);
+		public static async Task<PagedList<T>> CreateAsync(IQueryable<T>? source, PageingFilter filter)
+		{
+			filter.Sanitise();
+			if (source == null)
+				return new PagedList<T>([], 0, 0, filter.PageSize);
+			var count = await source.CountAsync();
+			var lastPageNumber = CalculateLastPageNumber(count, filter.PageSize);
+			if (filter.PageNumber > lastPageNumber)
+				filter.PageNumber = lastPageNumber;
+			var items = await source.ApplyPageing<T>(filter)!.ToListAsync();
+
+			return new PagedList<T>(items ?? [], count, filter.PageNumber, filter.PageSize);
 		}
 	}
 }

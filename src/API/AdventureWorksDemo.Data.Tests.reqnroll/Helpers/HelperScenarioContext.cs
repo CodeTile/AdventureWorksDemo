@@ -18,7 +18,17 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 
 			internal static void AddToContext(ScenarioContextKey key, object? value)
 			{
-				Context?.Add(key.ToString(), value);
+				if (Context == null)
+					return;
+				if (Context!.ContainsKey(key.ToString()))
+					throw new ArgumentException( $"{key} already exists in the ScenarioContext!");
+				Context!.Add(key.ToString(), value);
+			}
+
+			internal static void ClearResult()
+			{
+				RemoveObjectFromContext(ScenarioContextKey.Result);
+				RemoveObjectFromContext(ScenarioContextKey.ResultType);
 			}
 
 			internal static dynamic Get(ScenarioContextKey key) => Context!.Get<dynamic>(key.ToString());
@@ -68,6 +78,18 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 
 					AddToContext(key, flag);
 				}
+			}
+
+			internal static void UpdateObjectInContext(ScenarioContextKey key, object? value)
+			{
+				RemoveObjectFromContext(key);
+				AddToContext(key, value);
+			}
+
+			private static void RemoveObjectFromContext(ScenarioContextKey key)
+			{
+				if (Context!.ContainsKey(key.ToString()))
+					Context!.Remove(key.ToString());
 			}
 		}
 	}

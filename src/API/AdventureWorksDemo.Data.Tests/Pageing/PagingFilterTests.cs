@@ -13,7 +13,7 @@ namespace AdventureWorksDemo.Tests.Data.Paging
 			var filter = new PageingFilter { PageNumber = -5 };
 
 			// Assert
-			Assert.AreEqual(1, filter.PageNumber);
+			Assert.AreEqual(0, filter.PageNumber);
 		}
 
 		[TestMethod]
@@ -37,27 +37,31 @@ namespace AdventureWorksDemo.Tests.Data.Paging
 		}
 
 		[TestMethod]
-		public void Skip_CalculatesCorrectly()
-		{
-			// Arrange
-			var filter = new PageingFilter { PageNumber = 3, PageSize = 20 };
-
-			// Assert
-			Assert.AreEqual(40, filter.Skip);
-		}
-
-		[TestMethod]
-		public void VerifyValues_ResetsInvalidValues()
+		public void Sanitise_ResetsInvalidValues()
 		{
 			// Arrange
 			var filter = new PageingFilter { PageNumber = 0, PageSize = 0 };
 
 			// Act
-			filter.VerifyValues();
+			filter.Sanitise();
 
 			// Assert
-			Assert.AreEqual(1, filter.PageNumber);
+			Assert.AreEqual(0, filter.PageNumber);
 			Assert.AreEqual(25, filter.PageSize);
+		}
+
+		[DataRow(0, 5, 0)]
+		[DataRow(0, 20, 0)]
+		[DataRow(1, 20, 20)]
+		[DataRow(2, 20, 40)]
+		[TestMethod]
+		public void Skip_CalculatesCorrectly(int pageNumber, int pageSize, int expectedSkip)
+		{
+			// Arrange
+			var filter = new PageingFilter { PageNumber = pageNumber, PageSize = pageSize };
+
+			// Assert
+			Assert.AreEqual(expectedSkip, filter.Skip);
 		}
 	}
 }

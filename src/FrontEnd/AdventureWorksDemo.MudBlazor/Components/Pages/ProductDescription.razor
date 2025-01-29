@@ -10,25 +10,25 @@
 <MudText Typo="Typo.body1" GutterBottom="true">Modify the product descriptions.</MudText>
 
 
-@* *@
 <MudDataGrid  T="ProductDescriptionModel" ServerData="ServerReload" EditMode="DataGridEditMode.Form" ReadOnly="false"
-ShowFilterIcons="true"
-Filterable="true">
+SortMode="@SortMode.Single" 
+ShowFilterIcons="true" 
+Filterable="true"
+>
+
     <ToolBarContent>
         <MudText Typo="Typo.h6">Product Description</MudText>
         <MudSpacer />
-  @*       <MudTextField T="string" ValueChanged="@(s=>OnSearch(s))" Placeholder="Search" Adornment="Adornment.Start"
-        AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-1"
-                      Clearable="true" ClearIcon="@Icons.Material.Filled.Clear"  /> *@
-    </ToolBarContent> 
 
+    </ToolBarContent> 
     <Columns>
-        <PropertyColumn Property="x => x.ProductDescriptionId" Hidden="true" />
-        <PropertyColumn Property="x => x.ModifiedDate" Format="d" Title="Modified" />
-        <PropertyColumn Property="x => x.Description" />
+
+        <PropertyColumn Property="x => x.ProductDescriptionId" Hidden="true" xs="0" Editable="false"  Filterable="false" />
+        <PropertyColumn Property="x => x.ModifiedDate" Format="d" Title="Modified" xs="3" Sortable="true" Editable="false" Filterable="true"/>
+        <PropertyColumn Property="x => x.Description" Sortable="true" Editable="true" Filterable="true" Required="true"/>
     </Columns>
     <PagerContent>
-        <MudDataGridPager T="ProductDescriptionModel" />
+        <MudDataGridPager T="ProductDescriptionModel"  PageSizeOptions=[5,10,25,50,100,1000]/>
     </PagerContent>
 </MudDataGrid> 
 
@@ -38,25 +38,22 @@ Filterable="true">
     // this page loads all records into the page as there are not many and it is a lookup table.
     // private string? _searchString;
     // private List<ProductDescriptionModel> records = new();
-    private MudDataGrid<ProductDescriptionModel> dataGrid = new();
+    public MudDataGrid<ProductDescriptionModel>? dataGrid ;
     string? searchString = null;
 
 
     private async Task<GridData<ProductDescriptionModel>> ServerReload(GridState<ProductDescriptionModel> state)
     {
 
-
         PagedList paging = new();
         IEnumerable<ProductDescriptionModel> data = new List<ProductDescriptionModel>();
-        PageingFilter filter = PageingFilter.SetByGridState<ProductDescriptionModel>(state);
-
+        PageingFilter filter = PageingFilter.SetByGridState<ProductDescriptionModel>(state, "Description");
         string url = $"{Configuration["Api:base"]}{Configuration["Api:productdescription"]}";
-        var json = System.Text.Json.JsonSerializer.Serialize(filter);
         var request = new HttpRequestMessage
         {
             Method= HttpMethod.Get,
                 RequestUri = new Uri(url),
-                Content = new StringContent(json,
+                Content = new StringContent(filter.ToJSON(),
                                             Encoding.UTF8,
                                             MediaTypeNames.Application.Json),
         };
@@ -64,56 +61,26 @@ Filterable="true">
         var response = await httpClient.SendAsync(request).ConfigureAwait(false);
         if (response.IsSuccessStatusCode)
         {
-            data = (await response!.Content!.ReadFromJsonAsync<List<ProductDescriptionModel>>()) ?? new List<ProductDescriptionModel>();
-            paging = PagedList.FromIEnumerable(response.Headers.GetValues("X-Pagination").SingleOrDefault());
-
+            data = (await response!.Content!.ReadFromJsonAsync<List<ProductDescriptionModel>>()) ?? new ();
+            paging = PagedList.FromIEnumerable(response.Headers.GetValues("X-Pagination").SingleOrDefault());            
         }
-
-        await Task.Delay(300);
-        // data = data.Where(item =>
-        // {
-        //     if (string.IsNullOrWhiteSpace(searchString))
-        //         return true;
-        //     if ($"{item.Description} {item.ModifiedDate.ToString("d")}".Contains(searchString))
-        //         return true;
-        //     return false;
-        // }).ToArray();
-
-        // var sortDefinition = state.SortDefinitions.FirstOrDefault();
-        // if (sortDefinition != null)
-        // {
-        //     switch (sortDefinition.SortBy)
-        //     {
-        //         case nameof(ProductDescriptionModel.Description):
-        //             data = data.OrderByDirection(
-        //                 sortDefinition.Descending ? SortDirection.Descending : SortDirection.Ascending,
-        //                 o => o.Description
-        //             );
-        //             break;
-        //         case nameof(ProductDescriptionModel.ModifiedDate):
-        //             data = data.OrderByDirection(
-        //                 sortDefinition.Descending ? SortDirection.Descending : SortDirection.Ascending,
-        //                 o => o.ModifiedDate
-        //             );
-        //             break;
-        //     }
-        // }
 
         return new GridData<ProductDescriptionModel>
             {
-                TotalItems = paging.TotalCount,
-                Items = data,
+                TotalItems = paging.TotalCount,               
+                Items = data,                
             };
     }
 
     private Task OnClear()
     {
         searchString = null;
-        return dataGrid.ReloadServerData();
+        return dataGrid!.ReloadServerData();
     }
     private Task OnSearch(string text)
     {
         searchString = text;
-        return dataGrid.ReloadServerData();
+        return dataGrid!.ReloadServerData();
     }
+   
 }
