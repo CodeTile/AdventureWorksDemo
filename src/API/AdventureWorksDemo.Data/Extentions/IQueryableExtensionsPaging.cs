@@ -5,8 +5,57 @@ using AdventureWorksDemo.Data.Paging;
 
 namespace AdventureWorksDemo.Data.Extentions
 {
-	public static class IQueryableExtensionsPaging
+	public static class IQueryableExtensions
 	{
+		#region ApplyFilters
+		public static IQueryable<T>? ApplyFilters<T>(this IQueryable<T> query, PageingFilter? pagingfilter)
+		{
+			if (pagingfilter == null || query == null || !query!.Any())
+				return query;
+
+			pagingfilter.Sanitise();
+
+
+			foreach (var filter in pagingfilter.Filter!)
+			{
+				var parts = filter.Split('|');
+				if (parts.Length != 3)
+					throw new ArgumentException("Invalid filter format. Expected format: 'PropertyName | Expression | Value'");
+
+				string propertyName = parts[0].Trim();
+				string expression = parts[1].Trim();
+				string value = parts[2].Trim();
+
+				query = ApplyFilter(query, propertyName, expression, value);
+			}
+			return query;
+		}
+		private static IQueryable<T> ApplyFilter<T>(IQueryable<T> query, string propertyName, string expression, string value)
+		{
+			var parameter = Expression.Parameter(typeof(T), "x");
+			var property = Expression.Property(parameter, propertyName);
+			var propertyType = property.Type;
+
+			object convertedValue = Convert.ChangeType(value, propertyType);
+			var constant = Expression.Constant(convertedValue);
+
+			Expression comparison = expression.ToLower() switch
+			{
+				"equals" => Expression.Equal(property, constant),
+				"notequals" => Expression.NotEqual(property, constant),
+				"greaterthan" => Expression.GreaterThan(property, constant),
+				"lessthan" => Expression.LessThan(property, constant),
+				"greaterthanorequal" => Expression.GreaterThanOrEqual(property, constant),
+				"lessthanorequal" => Expression.LessThanOrEqual(property, constant),
+				"contains" => Expression.Call(property, typeof(string).GetMethod("Contains", [typeof(string)]), constant),
+				_ => throw new ArgumentException($"Invalid expression: {expression}")
+			};
+
+			var lambda = Expression.Lambda<Func<T, bool>>(comparison, parameter);
+			return query.Where(lambda);
+		}
+		#endregion
+
 		public static IQueryable<T>? ApplyPageing<T>(this IQueryable<T>? query, PageingFilter? filter) //where T : class
 		{
 			if (filter == null || !query.Any())

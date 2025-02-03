@@ -4,7 +4,7 @@ using AdventureWorksDemo.Data.Paging;
 namespace AdventureWorksDemo.Data.Tests.Extentions
 {
 	[TestClass]
-	public class QueryExtensionsApplySliceTests
+	public class QueryExtensionsApplyPagingTests
 	{
 		private readonly List<string> _data = ["A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5", "C1", "C2", "C3", "C4", "C5"];
 
@@ -46,18 +46,6 @@ namespace AdventureWorksDemo.Data.Tests.Extentions
 			CollectionAssert.AreEqual(_data[0..2], resultNegativeSkip.ToList());
 		}
 
-		//[TestMethod]
-		//public void ApplySlice_NullQuery_ReturnsDefault()
-		//{
-		//	// Arrange
-		//	IQueryable<string>? query = null;
-		//	var filter = new PageingFilter() { PageNumber = 1, PageSize = 5 };
-		//	// Act
-		//	var result = query!.ApplyPageing(filter);
-
-		//	// Assert
-		//	Assert.IsNull(result);
-		//}
 
 		[TestMethod]
 		public void ApplySlice_PageSizeGreaterThanRemaining_ReturnsRemainingElements_WithPagingFilter()

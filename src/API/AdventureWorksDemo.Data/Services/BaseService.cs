@@ -78,17 +78,18 @@ namespace AdventureWorksDemo.Data.Services
 			};
 		}
 
-		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter filter) => await FindAllAsync(filter, null);
+		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter pagingfilter) => await FindAllAsync(pagingfilter, null);
 
-		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter filter,
+		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter pagingfilter,
 																   Expression<Func<TEntity, bool>>? predicate)
 		{
 			IQueryable<TEntity>? query = _repository.FindEntities(predicate)!
-													.ApplySorting(filter);
+													.ApplyFilters(pagingfilter)
+													.ApplySorting(pagingfilter);
 			if (query == null)
 				return [];
 
-			PagedList<TEntity> result = await PagedList<TEntity>.CreateAsync(query, filter);
+			PagedList<TEntity> result = await PagedList<TEntity>.CreateAsync(query, pagingfilter);
 			return EntityPagedListToModelPagedList(result);
 		}
 
