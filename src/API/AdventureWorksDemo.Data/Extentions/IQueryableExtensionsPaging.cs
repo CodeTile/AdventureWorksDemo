@@ -10,7 +10,8 @@ namespace AdventureWorksDemo.Data.Extentions
 		#region ApplyFilters
 		public static IQueryable<T>? ApplyFilters<T>(this IQueryable<T> query, PageingFilter? pagingfilter)
 		{
-			if (pagingfilter == null || query == null || !query!.Any())
+			if (pagingfilter == null || query == null || !query!.Any()
+					|| pagingfilter.Filter==null)
 				return query;
 
 			pagingfilter.Sanitise();
