@@ -4,6 +4,8 @@ namespace AdventureWorksDemo.Common.Tests.Extensions
 {
 	public static class StringExtensions
 	{
+		private const string DateTimeFormat = "dd MMM yyyy hh:mm:ss";
+
 		public static string FullNameReadable(this Type t)
 		{
 			var sb = new StringBuilder();
@@ -28,11 +30,11 @@ namespace AdventureWorksDemo.Common.Tests.Extensions
 			}
 
 			value = value.Replace("{{pipe}}", "|")
-						 .Replace("{{DateTime.Now}}", DateTime.Now.ToString("dd MMM yyyy hh:mm:ss"))
-						 .Replace("{{DateTime.UtcNow}}", DateTime.UtcNow.ToString("dd MMM yyyy hh:mm:ss"))
-						 .Replace("{{DateTime.UTCLastWeek}}", DateTime.UtcNow.AddDays(-7).ToString("dd MMM yyyy hh:mm:ss"))
-						 .Replace("{{DateTime.UTCNextWeek}}", DateTime.UtcNow.AddDays(7).ToString("dd MMM yyyy hh:mm:ss"))
-						 .Replace("{{DateTime.UTCLastWeek}}", DateTime.UtcNow.AddDays(-7).ToString("dd MMM yyyy hh:mm:ss"))
+						 .Replace("{{DateTime.Now}}", DateTime.Now.ToString(DateTimeFormat))
+						 .Replace("{{DateTime.UtcNow}}", DateTime.UtcNow.ToString(DateTimeFormat))
+						 .Replace("{{DateTime.UTCLastWeek}}", DateTime.UtcNow.AddDays(-7).ToString(DateTimeFormat))
+						 .Replace("{{DateTime.UTCNextWeek}}", DateTime.UtcNow.AddDays(7).ToString(DateTimeFormat))
+						 .Replace("{{DateTime.UTCLastWeek}}", DateTime.UtcNow.AddDays(-7).ToString(DateTimeFormat))
 						 .Replace("{{DateTime.Tomorrow}}", DateTime.Today.AddDays(1).ToString("dd MMM yyyy"))
 						 .Replace("{{DateTime.TomorrowResult}}", DateTime.Today.AddDays(1).ToString("M/d/yyyy 12:00:00 AM"))
 						 .Replace("{{CrLf}}", "\r\n");
