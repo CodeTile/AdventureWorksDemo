@@ -48,8 +48,8 @@ namespace AdventureWorksDemo.Data.Extentions
 				"lessthan" => Expression.LessThan(property, constant),
 				"greaterthanorequal" => Expression.GreaterThanOrEqual(property, constant),
 				"lessthanorequal" => Expression.LessThanOrEqual(property, constant),
-				"contains" => Expression.Call(property, typeof(string).GetMethod("Contains", [typeof(string)]), constant),
-				"not contains" => Expression.Call(property, typeof(string).GetMethod("Not Contains", [typeof(string)]), constant),
+				"contains" => Expression.Call(property, typeof(string).GetMethod("Contains", [typeof(string)])!, constant),
+				"not contains" => Expression.Call(property, typeof(string).GetMethod("Not Contains", [typeof(string)])!, constant),
 				_ => throw new ArgumentException($"Invalid expression: {expression}")
 			};
 

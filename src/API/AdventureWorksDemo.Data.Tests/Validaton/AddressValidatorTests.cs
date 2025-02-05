@@ -3,6 +3,7 @@ using AdventureWorksDemo.Data.Validation;
 
 using AdventureWorksDemo.Common.Tests.Extensions;
 using FluentValidation.TestHelper;
+using Moq;
 
 namespace AdventureWorksDemo.Data.Tests.Validaton
 {
@@ -21,7 +22,7 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 		{
 			// arrange
 			var entity = _address;
-			entity.AddressLine1 = value.InterpretValue();
+			entity!.AddressLine1 = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
@@ -38,7 +39,7 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 		{
 			// arrange
 			var entity = _address;
-			entity.AddressLine1 = value.InterpretValue();
+			entity!.AddressLine1 = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
@@ -53,7 +54,7 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 		{
 			// arrange
 			var entity = _address;
-			entity.AddressLine2 = value.InterpretValue();
+			entity!.AddressLine2 = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
@@ -70,7 +71,7 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 		{
 			// arrange
 			var entity = _address;
-			entity.AddressLine2 = value.InterpretValue();
+			entity!.AddressLine2 = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
@@ -86,7 +87,7 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 		{
 			// arrange
 			var entity = _address;
-			entity.City = value.InterpretValue();
+			entity!.City = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
@@ -103,7 +104,7 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 		{
 			// arrange
 			var entity = _address;
-			entity.City = value.InterpretValue();
+			entity!.City = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
@@ -119,7 +120,7 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 		{
 			// arrange
 			var entity = _address;
-			entity.CountryRegion = value.InterpretValue();
+			entity!.CountryRegion = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
@@ -136,7 +137,7 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 		{
 			// arrange
 			var entity = _address;
-			entity.CountryRegion = value.InterpretValue();
+			entity!.CountryRegion = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
@@ -152,7 +153,7 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 		{
 			// arrange
 			var entity = _address;
-			entity.PostalCode = value.InterpretValue();
+			entity!.PostalCode = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
@@ -169,7 +170,7 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 		{
 			// arrange
 			var entity = _address;
-			entity.PostalCode = value.InterpretValue();
+			entity!.PostalCode = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
@@ -185,7 +186,7 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 		{
 			// arrange
 			var entity = _address;
-			entity.StateProvince = value.InterpretValue();
+			entity!.StateProvince = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
@@ -202,7 +203,7 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 		{
 			// arrange
 			var entity = _address;
-			entity.StateProvince = value.InterpretValue();
+			entity!.StateProvince = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert

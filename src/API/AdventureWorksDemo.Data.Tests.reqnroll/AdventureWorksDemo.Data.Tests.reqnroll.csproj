@@ -4,9 +4,11 @@
     <TargetFramework>net9.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+  <PropertyGroup>
+    <!-- Exclude the project from analysis -->
     <SonarQubeExclude>true</SonarQubeExclude>
   </PropertyGroup>
-
   <ItemGroup>
     <UpToDateCheckInput Remove="Features\Services\ProductCategoryService\ProductCategoryServiceUpdateTests.feature" />
   </ItemGroup>

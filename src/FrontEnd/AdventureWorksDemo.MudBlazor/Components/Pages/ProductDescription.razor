@@ -35,12 +35,9 @@ Filterable="true"
 
 @code {
 
-    // this page loads all records into the page as there are not many and it is a lookup table.
-    // private string? _searchString;
-    // private List<ProductDescriptionModel> records = new();
+   
     public MudDataGrid<ProductDescriptionModel>? dataGrid ;
-    string? searchString = null;
-
+    
 
     private async Task<GridData<ProductDescriptionModel>> ServerReload(GridState<ProductDescriptionModel> state)
     {
@@ -74,12 +71,12 @@ Filterable="true"
 
     private Task OnClear()
     {
-        searchString = null;
         return dataGrid!.ReloadServerData();
     }
+
     private Task OnSearch(string text)
     {
-        searchString = text;
+        
         return dataGrid!.ReloadServerData();
     }
    
