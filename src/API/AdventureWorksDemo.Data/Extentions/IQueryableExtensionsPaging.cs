@@ -49,6 +49,7 @@ namespace AdventureWorksDemo.Data.Extentions
 				"greaterthanorequal" => Expression.GreaterThanOrEqual(property, constant),
 				"lessthanorequal" => Expression.LessThanOrEqual(property, constant),
 				"contains" => Expression.Call(property, typeof(string).GetMethod("Contains", [typeof(string)]), constant),
+				"not contains" => Expression.Call(property, typeof(string).GetMethod("Not Contains", [typeof(string)]), constant),
 				_ => throw new ArgumentException($"Invalid expression: {expression}")
 			};
 
@@ -59,7 +60,7 @@ namespace AdventureWorksDemo.Data.Extentions
 
 		public static IQueryable<T>? ApplyPageing<T>(this IQueryable<T>? query, PageingFilter? filter) //where T : class
 		{
-			if (filter == null || !query.Any())
+			if (filter == null)
 				return query;
 			if (query == null || !query.Any())
 				return default!;
@@ -95,9 +96,11 @@ namespace AdventureWorksDemo.Data.Extentions
 				var propertyAccess = Expression.Property(parameter, property);
 				var lambda = Expression.Lambda(propertyAccess, parameter);
 
+#pragma warning disable S3358 // Ternary operators should not be nested
 				var methodName = orderedQuery == null
 					? (descending ? "OrderByDescending" : "OrderBy")
 					: (descending ? "ThenByDescending" : "ThenBy");
+#pragma warning restore S3358 // Ternary operators should not be nested
 
 				var method = typeof(Queryable).GetMethods()
 					.First(m => m.Name == methodName &&
