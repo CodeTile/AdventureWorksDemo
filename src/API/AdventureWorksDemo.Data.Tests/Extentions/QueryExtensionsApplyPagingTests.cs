@@ -8,17 +8,6 @@ namespace AdventureWorksDemo.Data.Tests.Extentions
 	{
 		private readonly List<string> _data = ["A1", "A2", "A3", "A4", "A5", "B1", "B2", "B3", "B4", "B5", "C1", "C2", "C3", "C4", "C5"];
 
-		//[TestMethod]
-		//public void ApplySlice_EmptyQuery_ReturnsDefault()
-		//{
-		//	// Arrange
-		//	var query = Enumerable.Empty<string>().AsQueryable();
-
-		// // Act var result = query.ApplyPageing(new PageingFilter());
-
-		//	// Assert
-		//	Assert.AreEqual(Array.Empty<string>(), result);
-		//}
 
 		[TestMethod]
 		public void ApplySlice_NegativePageSize_ReturnsOriginalQuery()
@@ -27,10 +16,10 @@ namespace AdventureWorksDemo.Data.Tests.Extentions
 			var query = _data.AsQueryable();
 			var filterNegativePageSize = new PageingFilter() { PageNumber = 0, PageSize = -2 };
 			// Act
-			var resultNegativePageSize = query.ApplyPageing(filterNegativePageSize);
+			var result = query.ApplyPageing(filterNegativePageSize);
 
 			// Assert
-			CollectionAssert.AreEqual(_data, resultNegativePageSize.ToList());
+			CollectionAssert.AreEqual(_data, result!.ToList());
 		}
 
 		[TestMethod]
@@ -40,10 +29,10 @@ namespace AdventureWorksDemo.Data.Tests.Extentions
 			var query = _data.AsQueryable();
 			var filterNegativeSkip = new PageingFilter() { PageNumber = -1, PageSize = 2 };
 			// Act
-			var resultNegativeSkip = query.ApplyPageing(filterNegativeSkip);
+			var result = query.ApplyPageing(filterNegativeSkip);
 
 			// Assert
-			CollectionAssert.AreEqual(_data[0..2], resultNegativeSkip.ToList());
+			CollectionAssert.AreEqual(_data[0..2], result!.ToList());
 		}
 
 
@@ -57,7 +46,7 @@ namespace AdventureWorksDemo.Data.Tests.Extentions
 			var result = query.ApplyPageing(filter);
 
 			// Assert
-			CollectionAssert.AreEqual(_data[15..15], result.ToList());
+			CollectionAssert.AreEqual(_data[15..15], result!.ToList());
 		}
 
 		[TestMethod]
@@ -71,7 +60,7 @@ namespace AdventureWorksDemo.Data.Tests.Extentions
 			var result = query.ApplyPageing(filter);
 
 			// Assert
-			Assert.AreEqual(0, result.Count());
+			Assert.AreEqual(0, result!.Count());
 		}
 
 		[DataRow(0, 2, 0, 2)]
