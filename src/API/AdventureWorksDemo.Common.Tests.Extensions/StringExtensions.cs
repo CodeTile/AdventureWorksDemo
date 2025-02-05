@@ -1,20 +1,23 @@
-﻿namespace AdventureWorksDemo.Common.Tests.Extensions
+﻿using System.Text;
+
+namespace AdventureWorksDemo.Common.Tests.Extensions
 {
 	public static class StringExtensions
 	{
 		public static string FullNameReadable(this Type t)
 		{
-			var value = t.FullName;
+			var sb = new StringBuilder();
+			sb.Append(t.FullName);
 
-			if (!value!.Contains('[')) return value;
-			value = t.FullName!.Split('`')[0] + "<";
+			if (!sb.ToString()!.Contains('[')) 
+				return sb.ToString();
+			sb.Clear();
+			sb.Append(t.FullName!.Split('`')[0] + "<");
 			foreach (var item in t.GenericTypeArguments)
 			{
-				value += item.FullName + ", ";
+				sb.Append(item.FullName + ", ");
 			}
-			value = (value + ">").Replace(", >", ">");
-
-			return value;
+			return (sb.ToString() + ">").Replace(", >", ">");
 		}
 
 		public static string InterpretValue(this string value)

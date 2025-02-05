@@ -34,7 +34,7 @@ namespace AdventureWorksDemo.Common.Tests
 		}
 
 		public readonly string DatabaseName;
-		internal Microsoft.Extensions.Configuration.IConfiguration? configuration;
+		// internal Microsoft.Extensions.Configuration.IConfiguration? configuration;
 		private const string Image = "mcr.microsoft.com/mssql/server";
 		private const string Password = "!Passw0rd";
 		private const string Tag = "latest";

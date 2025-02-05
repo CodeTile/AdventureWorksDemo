@@ -87,9 +87,9 @@ namespace AdventureWorksDemo.Data.Extentions
 				bool descending = parts.Length > 1 && parts[1].Equals("DESC", StringComparison.OrdinalIgnoreCase);
 
 				// Get the property info
-				var property = typeof(T).GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
-				if (property == null)
-					throw new ArgumentException($"Property '{propertyName}' not found on type '{typeof(T).Name}'.");
+				var property = typeof(T).GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase) 
+								?? throw new ArgumentException($"Property '{propertyName}' not found on type '{typeof(T).Name}'.");
+
 
 				// Build the sorting expression dynamically
 				var parameter = Expression.Parameter(typeof(T), "x");
