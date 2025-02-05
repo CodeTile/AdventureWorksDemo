@@ -112,7 +112,7 @@ namespace AdventureWorksDemo.Data.Repository
 		public IQueryable<TEntity>? FindEntities(Expression<Func<TEntity, bool>>? predicate = null,
 												params string[] includes)
 		{
-			var query = ApplyIncludes(_dbContext.Set<TEntity>(), includes);
+			var query = GenericCrudRepository<TEntity>.ApplyIncludes(_dbContext.Set<TEntity>(), includes);
 
 			return predicate != null ? query.Where(predicate) : query;
 		}
@@ -122,7 +122,7 @@ namespace AdventureWorksDemo.Data.Repository
 		{
 			ArgumentNullException.ThrowIfNull(predicate);
 
-			var query = ApplyIncludes(_dbContext.Set<TEntity>(), includes);
+			var query = GenericCrudRepository<TEntity>.ApplyIncludes(_dbContext.Set<TEntity>(), includes);
 			return await query.AsNoTracking().FirstOrDefaultAsync(predicate);
 		}
 
@@ -161,6 +161,11 @@ namespace AdventureWorksDemo.Data.Repository
 			return result == 1;
 		}
 
+		private static IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
+		{
+			return includes.Aggregate(query, (current, include) => current.Include(include));
+		}
+
 		private static string ConvertExceptionToUserMessage(Exception ex)
 		{
 			ArgumentNullException.ThrowIfNull(ex);
@@ -177,11 +182,6 @@ namespace AdventureWorksDemo.Data.Repository
 			}
 
 			return message;
-		}
-
-		private IQueryable<TEntity> ApplyIncludes(IQueryable<TEntity> query, IEnumerable<string> includes)
-		{
-			return includes.Aggregate(query, (current, include) => current.Include(include));
 		}
 
 		private async Task LoadReferences(TEntity entity, IEnumerable<Expression<Func<TEntity, object>>> references)

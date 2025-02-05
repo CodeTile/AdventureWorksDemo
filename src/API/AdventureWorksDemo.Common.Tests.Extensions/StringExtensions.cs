@@ -1,20 +1,25 @@
-﻿namespace AdventureWorksDemo.Common.Tests.Extensions
+﻿using System.Text;
+
+namespace AdventureWorksDemo.Common.Tests.Extensions
 {
 	public static class StringExtensions
 	{
+		private const string DateTimeFormat = "dd MMM yyyy hh:mm:ss";
+
 		public static string FullNameReadable(this Type t)
 		{
-			var value = t.FullName;
+			var sb = new StringBuilder();
+			sb.Append(t.FullName);
 
-			if (!value!.Contains('[')) return value;
-			value = t.FullName!.Split('`')[0] + "<";
+			if (!sb.ToString()!.Contains('[')) 
+				return sb.ToString();
+			sb.Clear();
+			sb.Append(t.FullName!.Split('`')[0] + "<");
 			foreach (var item in t.GenericTypeArguments)
 			{
-				value += item.FullName + ", ";
+				sb.Append(item.FullName + ", ");
 			}
-			value = (value + ">").Replace(", >", ">");
-
-			return value;
+			return (sb.ToString() + ">").Replace(", >", ">");
 		}
 
 		public static string InterpretValue(this string value)
@@ -25,11 +30,11 @@
 			}
 
 			value = value.Replace("{{pipe}}", "|")
-						 .Replace("{{DateTime.Now}}", DateTime.Now.ToString("dd MMM yyyy hh:mm:ss"))
-						 .Replace("{{DateTime.UtcNow}}", DateTime.UtcNow.ToString("dd MMM yyyy hh:mm:ss"))
-						 .Replace("{{DateTime.UTCLastWeek}}", DateTime.UtcNow.AddDays(-7).ToString("dd MMM yyyy hh:mm:ss"))
-						 .Replace("{{DateTime.UTCNextWeek}}", DateTime.UtcNow.AddDays(7).ToString("dd MMM yyyy hh:mm:ss"))
-						 .Replace("{{DateTime.UTCLastWeek}}", DateTime.UtcNow.AddDays(-7).ToString("dd MMM yyyy hh:mm:ss"))
+						 .Replace("{{DateTime.Now}}", DateTime.Now.ToString(DateTimeFormat))
+						 .Replace("{{DateTime.UtcNow}}", DateTime.UtcNow.ToString(DateTimeFormat))
+						 .Replace("{{DateTime.UTCLastWeek}}", DateTime.UtcNow.AddDays(-7).ToString(DateTimeFormat))
+						 .Replace("{{DateTime.UTCNextWeek}}", DateTime.UtcNow.AddDays(7).ToString(DateTimeFormat))
+						 .Replace("{{DateTime.UTCLastWeek}}", DateTime.UtcNow.AddDays(-7).ToString(DateTimeFormat))
 						 .Replace("{{DateTime.Tomorrow}}", DateTime.Today.AddDays(1).ToString("dd MMM yyyy"))
 						 .Replace("{{DateTime.TomorrowResult}}", DateTime.Today.AddDays(1).ToString("M/d/yyyy 12:00:00 AM"))
 						 .Replace("{{CrLf}}", "\r\n");
@@ -47,6 +52,7 @@
 				var replacementText = character.PadRight(iterations, Convert.ToChar(character));
 				value = value.Replace(textToReplace, replacementText);
 			}
+
 			return value;
 		}
 	}

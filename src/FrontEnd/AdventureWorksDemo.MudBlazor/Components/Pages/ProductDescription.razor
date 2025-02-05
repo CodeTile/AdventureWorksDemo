@@ -1,0 +1,83 @@
+﻿@page "/productDescription"
+@using System.Text
+@using System.Net.Mime
+@using global::MudBlazor
+@inject IConfiguration Configuration
+
+<PageTitle>Product Description</PageTitle>
+
+<MudText Typo="Typo.h3" GutterBottom="true">Product Description</MudText>
+<MudText Typo="Typo.body1" GutterBottom="true">Modify the product descriptions.</MudText>
+
+
+<MudDataGrid  T="ProductDescriptionModel" ServerData="ServerReload" EditMode="DataGridEditMode.Form" ReadOnly="false"
+SortMode="@SortMode.Single" 
+ShowFilterIcons="true" 
+Filterable="true"
+>
+
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">Product Description</MudText>
+        <MudSpacer />
+
+    </ToolBarContent> 
+    <Columns>
+
+        <PropertyColumn Property="x => x.ProductDescriptionId" Hidden="true" xs="0" Editable="false"  Filterable="false" />
+        <PropertyColumn Property="x => x.ModifiedDate" Format="d" Title="Modified" xs="3" Sortable="true" Editable="false" Filterable="true"/>
+        <PropertyColumn Property="x => x.Description" Sortable="true" Editable="true" Filterable="true" Required="true"/>
+    </Columns>
+    <PagerContent>
+        <MudDataGridPager T="ProductDescriptionModel"  PageSizeOptions=[5,10,25,50,100]/>
+    </PagerContent>
+</MudDataGrid> 
+
+
+@code {
+
+   
+    public MudDataGrid<ProductDescriptionModel>? dataGrid ;
+    
+
+    private async Task<GridData<ProductDescriptionModel>> ServerReload(GridState<ProductDescriptionModel> state)
+    {
+
+        PagedList paging = new();
+        IEnumerable<ProductDescriptionModel> data = new List<ProductDescriptionModel>();
+        PageingFilter filter = PageingFilter.SetByGridState<ProductDescriptionModel>(state, "Description");
+        string url = $"{Configuration["Api:base"]}{Configuration["Api:productdescription"]}";
+        var request = new HttpRequestMessage
+        {
+            Method= HttpMethod.Get,
+                RequestUri = new Uri(url),
+                Content = new StringContent(filter.ToJSON(),
+                                            Encoding.UTF8,
+                                            MediaTypeNames.Application.Json),
+        };
+
+        var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+        if (response.IsSuccessStatusCode)
+        {
+            data = (await response!.Content!.ReadFromJsonAsync<List<ProductDescriptionModel>>()) ?? new ();
+            paging = PagedList.FromIEnumerable(response.Headers.GetValues("X-Pagination").SingleOrDefault());            
+        }
+
+        return new GridData<ProductDescriptionModel>
+            {
+                TotalItems = paging.TotalCount,               
+                Items = data,                
+            };
+    }
+
+    private Task OnClear()
+    {
+        return dataGrid!.ReloadServerData();
+    }
+
+    private Task OnSearch(string text)
+    {
+        
+        return dataGrid!.ReloadServerData();
+    }
+   
+}

@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 
+using AdventureWorksDemo.Data.Extentions;
 using AdventureWorksDemo.Data.Models;
 using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Repository;
@@ -77,18 +78,18 @@ namespace AdventureWorksDemo.Data.Services
 			};
 		}
 
-		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter pageingFilter) => await FindAllAsync(pageingFilter, null);
+		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter pagingfilter) => await FindAllAsync(pagingfilter, null);
 
-		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter paging,
+		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter pagingfilter,
 																   Expression<Func<TEntity, bool>>? predicate)
 		{
-			IQueryable<TEntity>? query = _repository.FindEntities(predicate);
+			IQueryable<TEntity>? query = _repository.FindEntities(predicate)!
+													.ApplyFilters(pagingfilter)
+													.ApplySorting(pagingfilter);
 			if (query == null)
 				return [];
 
-			PagedList<TEntity> result = await PagedList<TEntity>.CreateAsync(query
-														, paging.PageNumber
-														, paging.PageSize);
+			PagedList<TEntity> result = await PagedList<TEntity>.CreateAsync(query, pagingfilter);
 			return EntityPagedListToModelPagedList(result);
 		}
 

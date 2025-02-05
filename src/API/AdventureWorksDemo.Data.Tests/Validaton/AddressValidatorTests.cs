@@ -1,188 +1,217 @@
-﻿using System;
-
-using AdventureWorksDemo.Common.Tests.Extensions;
-using AdventureWorksDemo.Data.Entities;
+﻿using AdventureWorksDemo.Data.Entities;
 using AdventureWorksDemo.Data.Validation;
 
-using FluentAssertions;
-
+using AdventureWorksDemo.Common.Tests.Extensions;
 using FluentValidation.TestHelper;
+using Moq;
 
-using NUnit.Framework;
-
-namespace AdventureWorksDemo.Data.Tests.nUnit.Validation
+namespace AdventureWorksDemo.Data.Tests.Validaton
 {
-	[TestFixture]
+	[TestClass]
 	public class AddressValidatorTests
 	{
-		private Address _address;
+		private Address? _address;
+
 		private AddressValidator _validator = new();
 
-		[TestCase("123")]
-		[TestCase("{{PadRight:X:59}}")]
-		[TestCase("{{PadRight:X:60}}")]
-		[Test]
+		[DataRow("123")]
+		[DataRow("{{PadRight:X:59}}")]
+		[DataRow("{{PadRight:X:60}}")]
+		[TestMethod]
 		public void AddressLine1_Length_Between_3_And_60(string value)
 		{
 			// arrange
 			var entity = _address;
-			entity.AddressLine1 = value.InterpretValue();
+			entity!.AddressLine1 = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
 			result.ShouldNotHaveValidationErrorFor(m => m.AddressLine1);
 		}
 
-		[TestCase("")]
-		[TestCase("1")]
-		[TestCase("12")]
-		[TestCase("66")]
-		[TestCase("{{PadRight:X:61}}")]
-		[Test]
+		[DataRow("")]
+		[DataRow("1")]
+		[DataRow("12")]
+		[DataRow("66")]
+		[DataRow("{{PadRight:X:61}}")]
+		[TestMethod]
 		public void AddressLine1_Length_Not_Between_3_And_60(string value)
 		{
 			// arrange
 			var entity = _address;
-			entity.AddressLine1 = value.InterpretValue();
+			entity!.AddressLine1 = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
 			result.ShouldHaveValidationErrorFor(m => m.AddressLine1);
 		}
 
-		[TestCase("123")]
-		[TestCase("{{PadRight:X:59}}")]
-		[TestCase("{{PadRight:X:60}}")]
-		[Test]
+		[DataRow("123")]
+		[DataRow("{{PadRight:X:59}}")]
+		[DataRow("{{PadRight:X:60}}")]
+		[TestMethod]
 		public void AddressLine2_Length_Between_3_And_60(string value)
 		{
 			// arrange
 			var entity = _address;
-			entity.AddressLine2 = value.InterpretValue();
+			entity!.AddressLine2 = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
 			result.ShouldNotHaveValidationErrorFor(m => m.AddressLine2);
 		}
 
-		[TestCase("")]
-		[TestCase("1")]
-		[TestCase("12")]
-		[TestCase("66")]
-		[TestCase("{{PadRight:X:61}}")]
-		[Test]
+		[DataRow("")]
+		[DataRow("1")]
+		[DataRow("12")]
+		[DataRow("66")]
+		[DataRow("{{PadRight:X:61}}")]
+		[TestMethod]
 		public void AddressLine2_Length_Not_Between_3_And_60(string value)
 		{
 			// arrange
 			var entity = _address;
-			entity.AddressLine2 = value.InterpretValue();
+			entity!.AddressLine2 = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
 			result.ShouldHaveValidationErrorFor(m => m.AddressLine2);
 		}
 
-		[TestCase("{{PadRight:X:3}}")]
-		[TestCase("{{PadRight:X:4}}")]
-		[TestCase("{{PadRight:X:30}}")]
-		[TestCase("{{PadRight:X:29}}")]
-		[Test]
+		[DataRow("{{PadRight:X:3}}")]
+		[DataRow("{{PadRight:X:4}}")]
+		[DataRow("{{PadRight:X:30}}")]
+		[DataRow("{{PadRight:X:29}}")]
+		[TestMethod]
 		public void City_Should_Have_Length_Between_3_And_30(string value)
 		{
 			// arrange
 			var entity = _address;
-			entity.City = value.InterpretValue();
+			entity!.City = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
 			result.ShouldNotHaveValidationErrorFor(m => m.City);
 		}
 
-		[TestCase("")]
-		[TestCase("1")]
-		[TestCase("12")]
-		[TestCase("66")]
-		[TestCase("{{PadRight:X:31}}")]
-		[Test]
+		[DataRow("")]
+		[DataRow("1")]
+		[DataRow("12")]
+		[DataRow("66")]
+		[DataRow("{{PadRight:X:31}}")]
+		[TestMethod]
 		public void City_Should_Not_Have_Length_Between_3_And_30(string value)
 		{
 			// arrange
 			var entity = _address;
-			entity.City = value.InterpretValue();
+			entity!.City = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
 			result.ShouldHaveValidationErrorFor(m => m.City);
 		}
 
-		[TestCase("{{PadRight:X:3}}")]
-		[TestCase("{{PadRight:X:4}}")]
-		[TestCase("{{PadRight:X:49}}")]
-		[TestCase("{{PadRight:X:50}}")]
-		[Test]
+		[DataRow("{{PadRight:X:3}}")]
+		[DataRow("{{PadRight:X:4}}")]
+		[DataRow("{{PadRight:X:49}}")]
+		[DataRow("{{PadRight:X:50}}")]
+		[TestMethod]
 		public void CountryRegion_Should_Have_Length_Between_3_And_50(string value)
 		{
 			// arrange
 			var entity = _address;
-			entity.CountryRegion = value.InterpretValue();
+			entity!.CountryRegion = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
 			result.ShouldNotHaveValidationErrorFor(m => m.CountryRegion);
 		}
 
-		[TestCase("")]
-		[TestCase("1")]
-		[TestCase("12")]
-		[TestCase("66")]
-		[TestCase("{{PadRight:X:51}}")]
-		[Test]
+		[DataRow("")]
+		[DataRow("1")]
+		[DataRow("12")]
+		[DataRow("66")]
+		[DataRow("{{PadRight:X:51}}")]
+		[TestMethod]
 		public void CountryRegion_Should_NotHave_Length_Between_3_And_50(string value)
 		{
 			// arrange
 			var entity = _address;
-			entity.CountryRegion = value.InterpretValue();
+			entity!.CountryRegion = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
 			result.ShouldHaveValidationErrorFor(m => m.CountryRegion);
 		}
 
-		[TestCase("{{PadRight:X:3}}")]
-		[TestCase("{{PadRight:X:4}}")]
-		[TestCase("{{PadRight:X:14}}")]
-		[TestCase("{{PadRight:X:15}}")]
-		[Test]
+		[DataRow("{{PadRight:X:3}}")]
+		[DataRow("{{PadRight:X:4}}")]
+		[DataRow("{{PadRight:X:14}}")]
+		[DataRow("{{PadRight:X:15}}")]
+		[TestMethod]
 		public void PostalCode_Should_Have_Length_Between_3_And_15(string value)
 		{
 			// arrange
 			var entity = _address;
-			entity.PostalCode = value.InterpretValue();
+			entity!.PostalCode = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
 			result.ShouldNotHaveValidationErrorFor(m => m.PostalCode);
 		}
 
-		[TestCase("")]
-		[TestCase("1")]
-		[TestCase("12")]
-		[TestCase("66")]
-		[TestCase("{{PadRight:X:16}}")]
-		[Test]
+		[DataRow("")]
+		[DataRow("1")]
+		[DataRow("12")]
+		[DataRow("66")]
+		[DataRow("{{PadRight:X:16}}")]
+		[TestMethod]
 		public void PostalCode_Should_NotHave_Length_Between_3_And_15(string value)
 		{
 			// arrange
 			var entity = _address;
-			entity.PostalCode = value.InterpretValue();
+			entity!.PostalCode = value.InterpretValue();
 			//act
 			var result = _validator.TestValidate(entity);
 			//assert
 			result.ShouldHaveValidationErrorFor(m => m.PostalCode);
 		}
 
-		[SetUp]
-		public void SetUp()
+		[DataRow("{{PadRight:X:3}}")]
+		[DataRow("{{PadRight:X:4}}")]
+		[DataRow("{{PadRight:X:49}}")]
+		[DataRow("{{PadRight:X:50}}")]
+		[TestMethod]
+		public void StateProvince_Should_Have_Length_Between_3_And_50(string value)
+		{
+			// arrange
+			var entity = _address;
+			entity!.StateProvince = value.InterpretValue();
+			//act
+			var result = _validator.TestValidate(entity);
+			//assert
+			result.ShouldNotHaveValidationErrorFor(m => m.StateProvince);
+		}
+
+		[DataRow("")]
+		[DataRow("1")]
+		[DataRow("12")]
+		[DataRow("66")]
+		[DataRow("{{PadRight:X:51}}")]
+		[TestMethod]
+		public void StateProvince_Should_NotHave_Length_Between_3_And_50(string value)
+		{
+			// arrange
+			var entity = _address;
+			entity!.StateProvince = value.InterpretValue();
+			//act
+			var result = _validator.TestValidate(entity);
+			//assert
+			result.ShouldHaveValidationErrorFor(m => m.StateProvince);
+		}
+
+		[TestInitialize]
+		public void TestInitialize()
 		{
 			_validator = new AddressValidator();
 			_address = new Address()
@@ -195,46 +224,5 @@ namespace AdventureWorksDemo.Data.Tests.nUnit.Validation
 				PostalCode = "12345"
 			};
 		}
-
-		[TestCase("{{PadRight:X:3}}")]
-		[TestCase("{{PadRight:X:4}}")]
-		[TestCase("{{PadRight:X:49}}")]
-		[TestCase("{{PadRight:X:50}}")]
-		[Test]
-		public void StateProvince_Should_Have_Length_Between_3_And_50(string value)
-		{
-			// arrange
-			var entity = _address;
-			entity.StateProvince = value.InterpretValue();
-			//act
-			var result = _validator.TestValidate(entity);
-			//assert
-			result.ShouldNotHaveValidationErrorFor(m => m.StateProvince);
-		}
-
-		[TestCase("")]
-		[TestCase("1")]
-		[TestCase("12")]
-		[TestCase("66")]
-		[TestCase("{{PadRight:X:51}}")]
-		[Test]
-		public void StateProvince_Should_NotHave_Length_Between_3_And_50(string value)
-		{
-			// arrange
-			var entity = _address;
-			entity.StateProvince = value.InterpretValue();
-			//act
-			var result = _validator.TestValidate(entity);
-			//assert
-			result.ShouldHaveValidationErrorFor(m => m.StateProvince);
-		}
-
-		//[Test]
-		//public void StateProvince_Should_Have_Length_Between_3_And_50()
-		//{
-		//	_validator.ShouldHaveValidationErrorFor(a => a.StateProvince, "ST");
-		//	_validator.ShouldHaveValidationErrorFor(a => a.StateProvince, new string('S', 51));
-		//	_validator.ShouldNotHaveValidationErrorFor(a => a.StateProvince, "Valid State");
-		//}
 	}
 }

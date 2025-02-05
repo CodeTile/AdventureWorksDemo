@@ -4,7 +4,7 @@ using MockQueryable.Moq;
 
 using Moq;
 
-namespace AdventureWorksDemo.Data.Tests.nUnit.Helpers
+namespace AdventureWorksDemo.Data.Tests.Fakes
 {
 	internal static class MockedDbContext
 	{

@@ -214,6 +214,12 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Helpers
 						pi.SetValue(entity, ls, null);
 						continue;
 					}
+					if (pi.PropertyType == typeof(string[]))
+					{
+						var ls = row[fieldname].Split(',').Select(item => item.InterpretValue().Trim()).ToArray();
+						pi.SetValue(entity, ls, null);
+						continue;
+					}
 					var t = Nullable.GetUnderlyingType(pi.PropertyType) ?? pi.PropertyType;
 					var safeValue = (row[fieldname] == null) ? null : Convert.ChangeType(row[fieldname].InterpretValue(), t);
 					pi.SetValue(entity, safeValue, null);

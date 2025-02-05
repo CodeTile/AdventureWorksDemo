@@ -1,18 +1,27 @@
-﻿namespace AdventureWorksDemo.Data.Tests.nUnit
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace AdventureWorksDemo.Data.Tests.nUnit
 {
-	public class ResultTests
+	public class Tests
 	{
 		private FakeTimeProvider? _fakeTimeProvider;
 
-		[SetUp]
-		public void Setup()
+		[Test]
+		public void IsFailure()
 		{
-			_fakeTimeProvider = new FakeTimeProvider();
-			_fakeTimeProvider.SetUtcNow(new DateTimeOffset(new DateTime(2024, 8, 17, 12, 34, 56, DateTimeKind.Local)));
+			// Arrange
+			dynamic? expectedValue = "Hello";
+			string expectedMessage = "World";
+			// Act
+			IServiceResult<string> actual = ServiceResult<string>.Failure(expectedValue, expectedMessage);
+
+			Assert.That(actual.IsSuccess, Is.False);
+			Assert.That(actual.IsFailure, Is.True);
+			Assert.That(actual.Message, Is.EqualTo(expectedMessage));
 		}
 
 		[Test]
-		public void TestResult()
+		public void IsSuccess()
 		{
 			// Arrange
 			dynamic? expectedValue = "Hello";
@@ -20,11 +29,16 @@
 			// Act
 			IServiceResult<string> actual = ServiceResult<string>.Success(expectedValue, expectedMessage);
 
-			// Assert
-			actual.IsSuccess.Should().BeTrue();
-			actual.IsFailure.Should().BeFalse();
+			Assert.That(actual.IsSuccess, Is.True);
+			Assert.That(actual.IsFailure, Is.False);
+			Assert.That(actual.Message, Is.EqualTo(expectedMessage));
+		}
 
-			actual.Message.Should().Be(expectedMessage);
+		[SetUp]
+		public void Setup()
+		{
+			_fakeTimeProvider = new FakeTimeProvider();
+			_fakeTimeProvider.SetUtcNow(new DateTimeOffset(new DateTime(2024, 8, 17, 12, 34, 56, DateTimeKind.Local)));
 		}
 	}
 }
