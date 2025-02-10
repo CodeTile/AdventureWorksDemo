@@ -1,31 +1,29 @@
 ﻿using System.Text.RegularExpressions;
 
-using Microsoft.Playwright;
-using Microsoft.Playwright.MSTest;
 namespace AdventureWorksDemo.MudBlazor.Tests.Playwright
 {
 	[TestClass]
-	public sealed class Test1
+	public class Test1 : PageTest
 	{
 		[TestMethod]
-		public async Task HasTitle()
+		public async Task HomepageHasPlaywrightInTitleAndGetStartedLinkLinkingToTheIntroPage()
 		{
 			await Page.GotoAsync("https://playwright.dev");
 
 			// Expect a title "to contain" a substring.
 			await Expect(Page).ToHaveTitleAsync(new Regex("Playwright"));
-		}
 
-		[TestMethod]
-		public async Task GetStartedLink()
-		{
-			await Page.GotoAsync("https://playwright.dev");
+			// create a locator
+			var getStarted = Page.Locator("text=Get Started");
+
+			// Expect an attribute "to be strictly equal" to the value.
+			await Expect(getStarted).ToHaveAttributeAsync("href", "/docs/intro");
 
 			// Click the get started link.
-			await Page.GetByRole(AriaRole.Link, new() { Name = "Get started" }).ClickAsync();
+			await getStarted.ClickAsync();
 
-			// Expects page to have a heading with the name of Installation.
-			await Expect(Page.GetByRole(AriaRole.Heading, new() { Name = "Installation" })).ToBeVisibleAsync();
+			// Expects the URL to contain intro.
+			await Expect(Page).ToHaveURLAsync(new Regex(".*intro"));
 		}
 	}
 }
