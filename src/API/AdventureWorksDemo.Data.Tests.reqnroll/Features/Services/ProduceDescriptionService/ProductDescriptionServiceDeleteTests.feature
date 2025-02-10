@@ -18,10 +18,8 @@ Scenario: DeleteAsync12345
 		| AdventureWorksDemo.Data.Models.ServiceResult<System.Boolean> |
 	And the result is
 		| IsFailure | IsSuccess | Message                          |
-		| True      | False     | Unable to find record to delete! |
-
-	
-	And the ServiceResult is of type 'System.Boolean' with the value
+		| True      | False     | Unable to find record to delete! |	
+	And the result is of type 'System.Boolean' with the value
 		| Expected |
 		| False    |
 	And the table 'SalesLT.ProductDescription' filtered by 'ProductDescriptionId > 1500' contains
