@@ -1,3 +1,4 @@
+using AdventureWorksDemo.MudBlazor.Common;
 using AdventureWorksDemo.MudBlazor.Components;
 
 using MudBlazor.Services;
@@ -22,6 +23,9 @@ namespace AdventureWorksDemo.MudBlazor
 			{
 				BaseAddress = new Uri(builder.Configuration["Api:Base"] ?? "")
 			});
+			builder.Services.AddSingleton(typeof(IUrl), typeof(Url));
+			builder.Services.AddScoped(typeof(ICommonResponseGet), typeof(CommonResponseGet));
+			
 			var app = builder.Build();
 
 			// Configure the HTTP request pipeline.
