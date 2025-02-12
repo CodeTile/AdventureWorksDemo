@@ -9,25 +9,20 @@
 <MudText Typo="Typo.h3" GutterBottom="true">Product Description</MudText>
 <MudText Typo="Typo.body1" GutterBottom="true">Modify the product descriptions.</MudText>
 
-<MudDataGrid  T="ProductDescriptionModel" ServerData="ServerReload" EditMode="DataGridEditMode.Form" ReadOnly="false"
-SortMode="@SortMode.Multiple" 
-ShowFilterIcons="true" 
-Filterable="true"
-ColumnResizeMode="ResizeMode.Container"
-
+<MudDataGrid  T="ProductDescriptionModel" ServerData="ServerReload" 
+    ShowFilterIcons="true" 
+    Filterable="true"    
+    Dense="true"    
 >
-
     <ToolBarContent>
         <MudText Typo="Typo.h6">Product Description</MudText>
         <MudSpacer />
+	</ToolBarContent>          
 
-    </ToolBarContent> 
-    <Columns >
-
-		<PropertyColumn xs="0" Property="x => x.ProductDescriptionId" Hidden="true" Editable="false" Filterable="false"  />
-        <PropertyColumn xs="2" Property="x => x.ModifiedDate" Format="d" Title="Modified" Sortable="true" Editable="false" Filterable="true" Resizable="false" Class="pa-4" />
-        <PropertyColumn xs="9" Property="x => x.Description" Sortable="true" Editable="true" Filterable="true" Required="true" Resizable="true" />
-            
+    <Columns>
+		<PropertyColumn Property="x => x.ProductDescriptionId" Hidden="true" Editable="false" Filterable="false" />
+        <PropertyColumn Property="x => x.ModifiedDate" Format="d" Title="Modified" Sortable="true" Editable="false" Filterable="true" CellStyle="width: 150px; " />
+        <PropertyColumn Property="x => x.Description" Sortable="true" Editable="true" Filterable="true" Required="true" />            
     </Columns>
     <PagerContent >
         <MudDataGridPager T="ProductDescriptionModel"  PageSizeOptions=[5,10,25,50,100,250] Class="pa-4" />
@@ -51,10 +46,10 @@ ColumnResizeMode="ResizeMode.Container"
         return dataGrid!.ReloadServerData();
     }
 
-    private Task OnSearch(string text)
-    {
+    // private Task OnSearch(string text)
+    // {
         
-        return dataGrid!.ReloadServerData();
-    }
+    //     return dataGrid!.ReloadServerData();
+    // }
    
 }
