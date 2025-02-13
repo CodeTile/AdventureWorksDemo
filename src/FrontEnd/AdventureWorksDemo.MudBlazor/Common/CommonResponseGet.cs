@@ -1,5 +1,8 @@
-﻿using System.Net.Mime;
+﻿using System.Data;
+using System.Net.Http;
+using System.Net.Mime;
 using System.Text;
+using System.Threading.Tasks;
 
 using AdventureWorksDemo.MudBlazor.Models;
 
@@ -10,6 +13,7 @@ namespace AdventureWorksDemo.MudBlazor.Common
 	public interface ICommonResponseGet
 	{
 		Task<GridData<T>> FindAllAsync<T>(GridState<T> state, string defaultSorting, HttpClient httpClient);
+		Task UpdateAsync<T>(T item, HttpClient httpClient);
 	}
 
 	public class CommonResponseGet(IUrl Url) : ICommonResponseGet
@@ -42,6 +46,24 @@ namespace AdventureWorksDemo.MudBlazor.Common
 				TotalItems = paging.TotalCount,
 				Items = data,
 			};
+		}
+		public async Task UpdateAsync<T>(T item, HttpClient httpClient)
+		{
+			var json = System.Text.Json.JsonSerializer.Serialize<T>(item);
+			var request = new HttpRequestMessage
+			{
+				Method = HttpMethod.Put,
+				RequestUri = Url.GetByModelType(item!.GetType()),
+				Content = new StringContent(json,
+											Encoding.UTF8,
+											MediaTypeNames.Application.Json),
+			};
+
+			var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+			if(response.IsSuccessStatusCode)
+			{
+
+			}
 		}
 	}
 }
