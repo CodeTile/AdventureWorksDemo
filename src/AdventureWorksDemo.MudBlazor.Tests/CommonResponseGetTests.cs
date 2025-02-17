@@ -16,7 +16,7 @@ namespace AdventureWorksDemo.MudBlazor.Tests
 		private HttpClient? _httpClient;
 		private Mock<HttpMessageHandler>? _mockHttpHandler;
 		private Mock<IUrl>? _mockUrl;
-		private CommonResponseGet? _service;
+		private CommonResponse? _service;
 
 		[TestMethod]
 		public async Task FindAllAsync_ReturnsDataOnSuccess()
@@ -80,7 +80,7 @@ namespace AdventureWorksDemo.MudBlazor.Tests
 			_mockHttpHandler = new Mock<HttpMessageHandler>();
 			_httpClient = new HttpClient(_mockHttpHandler.Object);
 
-			_service = new CommonResponseGet(_mockUrl.Object);
+			_service = new CommonResponse(_mockUrl.Object);
 		}
 
 		private class TestModel

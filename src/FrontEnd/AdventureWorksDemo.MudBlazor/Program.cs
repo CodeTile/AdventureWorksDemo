@@ -24,7 +24,7 @@ namespace AdventureWorksDemo.MudBlazor
 				BaseAddress = new Uri(builder.Configuration["Api:Base"] ?? "")
 			});
 			builder.Services.AddSingleton(typeof(IUrl), typeof(Url));
-			builder.Services.AddScoped(typeof(ICommonResponseGet), typeof(CommonResponseGet));
+			builder.Services.AddScoped(typeof(ICommonResponseGet), typeof(CommonResponse));
 			
 			var app = builder.Build();
 

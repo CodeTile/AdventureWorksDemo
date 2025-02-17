@@ -1,7 +1,11 @@
-﻿namespace AdventureWorksDemo.MudBlazor.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AdventureWorksDemo.MudBlazor.Models
 {
 	public record ProductDescriptionModel
 	{
+		[Required]
+		[StringLength(400)]
 		public string? Description { get; set; }
 
 		/// <summary>

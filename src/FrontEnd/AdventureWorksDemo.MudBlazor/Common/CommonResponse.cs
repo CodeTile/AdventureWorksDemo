@@ -1,8 +1,7 @@
-﻿using System.Data;
-using System.Net.Http;
+﻿using System.Net;
 using System.Net.Mime;
 using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 
 using AdventureWorksDemo.MudBlazor.Models;
 
@@ -13,10 +12,11 @@ namespace AdventureWorksDemo.MudBlazor.Common
 	public interface ICommonResponseGet
 	{
 		Task<GridData<T>> FindAllAsync<T>(GridState<T> state, string defaultSorting, HttpClient httpClient);
-		Task UpdateAsync<T>(T item, HttpClient httpClient);
+
+		Task<IServiceResult<T>> UpdateAsync<T>(T item, HttpClient httpClient);
 	}
 
-	public class CommonResponseGet(IUrl Url) : ICommonResponseGet
+	public class CommonResponse(IUrl Url) : ICommonResponseGet
 	{
 		public async Task<GridData<T>> FindAllAsync<T>(GridState<T> state, string defaultSorting, HttpClient httpClient)
 		{
@@ -47,7 +47,8 @@ namespace AdventureWorksDemo.MudBlazor.Common
 				Items = data,
 			};
 		}
-		public async Task UpdateAsync<T>(T item, HttpClient httpClient)
+
+		public async Task<IServiceResult<T>> UpdateAsync<T>(T item, HttpClient httpClient)
 		{
 			var json = System.Text.Json.JsonSerializer.Serialize<T>(item);
 			var request = new HttpRequestMessage
@@ -60,10 +61,19 @@ namespace AdventureWorksDemo.MudBlazor.Common
 			};
 
 			var response = await httpClient.SendAsync(request).ConfigureAwait(false);
-			if(response.IsSuccessStatusCode)
+			if (response.IsSuccessStatusCode)
 			{
-
+				// Handle BadRequest and extract message
+				var errorContent = await response.Content.ReadAsStringAsync();
+				return JsonSerializer.Deserialize<ServiceResult<T>>(errorContent, DeserialiseOptions()) ?? new ServiceResult<T>() { Value = item, IsFailure = true, IsSuccess = false };
 			}
+			else
+				return new ServiceResult<T>() { Value = item, IsFailure = true, IsSuccess = false, Message = "System error!" };
 		}
+
+		private static JsonSerializerOptions DeserialiseOptions() => new()
+		{
+			PropertyNameCaseInsensitive = true // ✅ Allows matching lowercase JSON keys
+		};
 	}
 }

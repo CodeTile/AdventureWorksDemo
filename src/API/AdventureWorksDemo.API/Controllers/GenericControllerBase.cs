@@ -67,15 +67,11 @@ namespace AdventureWorksDemo.API.Controllers
 
 		[HttpPut()]
 		[ProducesResponseType<Product>(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public virtual async Task<IActionResult> UpdateAsync([FromBody] TModel model)
 		{
 			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(UpdateAsync), "model");
-			var result = await ((IUpdateService<TModel>)_service).UpdateAsync(model);
-			if (result != null)
-				return Ok(result);
-			else
-				return BadRequest(result);
+			IServiceResult<TModel>? result = await ((IUpdateService<TModel>)_service).UpdateAsync(model);
+			return Ok(result);
 		}
 
 		internal void WriteToTraceLog(string namespaceName, string methodName, string parmeterNames = "")

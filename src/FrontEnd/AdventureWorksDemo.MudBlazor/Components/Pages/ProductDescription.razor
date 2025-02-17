@@ -10,16 +10,16 @@
 <MudText Typo="Typo.body1" GutterBottom="true">Modify the product descriptions.</MudText>
 
 <MudDataGrid  T="ProductDescriptionModel" ServerData="ServerReload" 
-ShowFilterIcons="true" 
-Filterable="true"
-Editable="true"
-Dense="true"
-ReadOnly="false"
-CommittedItemChanges="@OnRowEditCommit"
-EditMode="DataGridEditMode.Form"      
-EditTrigger="DataGridEditTrigger.OnRowClick"
-             ref="dataGrid"
->
+                ShowFilterIcons="true" 
+                Filterable="true"
+                Editable="true"
+                Dense="true"
+                ReadOnly="false"
+                CommittedItemChanges="@OnRowEditCommit"
+                EditMode="DataGridEditMode.Form"      
+                EditTrigger="DataGridEditTrigger.OnRowClick"
+                ref="dataGrid"
+             EditDialogProps="new DialogOptions { CloseOnEscapeKey = true, CloseButton=true  }">
 
     <ToolBarContent>
         <MudText Typo="Typo.h6">Product Description</MudText>
@@ -31,13 +31,22 @@ EditTrigger="DataGridEditTrigger.OnRowClick"
             <EditTemplate/>
         </PropertyColumn>
         <PropertyColumn Property="x => x.ModifiedDate" Format="d" Title="Modified" Sortable="true" Editable="false" Filterable="true" CellStyle="width: 150px; " />
-        <PropertyColumn Property="x => x.Description" Sortable="true" Editable="true" Filterable="true" Required="true" />
+        <PropertyColumn Property="x => x.Description" Sortable="true" Editable="true" Filterable="true" Required="true"  >
+            <EditTemplate>
+                <InputTextArea @bind-Value="context.Item.Description"/>
+            </EditTemplate>
+            </PropertyColumn>
     </Columns>
     <PagerContent >
         <MudDataGridPager T="ProductDescriptionModel"  PageSizeOptions=[5,10,25,50,100,250] Class="pa-4" />
     </PagerContent>
 </MudDataGrid> 
-
+<style>
+    .custom-dialog {
+        width: 800px !important;
+        max-width: 90vw;
+    }
+</style>
 
 @code {
 
@@ -51,7 +60,8 @@ EditTrigger="DataGridEditTrigger.OnRowClick"
     }
     async Task OnRowEditCommit(ProductDescriptionModel item)
     {
-        await response.UpdateAsync<ProductDescriptionModel>(item,httpClient);    
+        var result = await response.UpdateAsync<ProductDescriptionModel>(item,httpClient);    
+
         if (dataGrid != null)
         {
             await dataGrid.ReloadServerData();
