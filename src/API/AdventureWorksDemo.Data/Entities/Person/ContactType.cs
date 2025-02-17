@@ -9,35 +9,32 @@ using Microsoft.EntityFrameworkCore;
 namespace AdventureWorksDemo.Data.Entities;
 
 /// <summary>
-/// Current version number of the AdventureWorksLT 2012 sample database. 
+/// Lookup table containing the types of business entity contacts.
 /// </summary>
-[Keyless]
-[Table("BuildVersion")]
-public partial class BuildVersion
+[Table("ContactType", Schema = "Person")]
+[Index("Name", Name = "AK_ContactType_Name", IsUnique = true)]
+public partial class ContactType
 {
     /// <summary>
-    /// Primary key for BuildVersion records.
+    /// Primary key for ContactType records.
     /// </summary>
-    [Column("SystemInformationID")]
-    public byte SystemInformationId { get; set; }
+    [Key]
+    [Column("ContactTypeID")]
+    public int ContactTypeId { get; set; }
 
     /// <summary>
-    /// Version number of the database in 9.yy.mm.dd.00 format.
+    /// Contact type description.
     /// </summary>
     [Required]
-    [Column("Database Version")]
-    [StringLength(25)]
-    public string DatabaseVersion { get; set; }
-
-    /// <summary>
-    /// Date and time the record was last updated.
-    /// </summary>
-    [Column(TypeName = "datetime")]
-    public DateTime VersionDate { get; set; }
+    [StringLength(50)]
+    public string Name { get; set; }
 
     /// <summary>
     /// Date and time the record was last updated.
     /// </summary>
     [Column(TypeName = "datetime")]
     public DateTime ModifiedDate { get; set; }
+
+    [InverseProperty("ContactType")]
+    public virtual ICollection<BusinessEntityContact> BusinessEntityContacts { get; set; } = new List<BusinessEntityContact>();
 }

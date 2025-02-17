@@ -34,8 +34,10 @@ namespace AdventureWorksDemo.Common.Tests
 		}
 
 		public readonly string DatabaseName;
+
 		// internal Microsoft.Extensions.Configuration.IConfiguration? configuration;
 		private const string Image = "mcr.microsoft.com/mssql/server";
+
 		private const string Password = "!Passw0rd";
 		private const string Tag = "latest";
 		private static readonly int ContainerPort = 1433;
@@ -136,19 +138,33 @@ namespace AdventureWorksDemo.Common.Tests
 			return false;
 		}
 
-		private void CloneBackUpFile()
+		private async Task CloneBackUpFileAsync()
 		{
 			var url = AppSettings["GitHub:BackUpFile"];
-			if (!Directory.Exists(GetBackupLocation)) { Directory.CreateDirectory(GetBackupLocation!); }
-			using WebClient wc = new WebClient();
-			wc.Headers.Add("a", "a");
+			if (string.IsNullOrWhiteSpace(url))
+			{
+				Console.WriteLine("Backup URL is not configured.");
+				return;
+			}
+
+			var backupLocation = GetBackupLocation;
+			var backupFileName = GetBackupFullName;
+
 			try
 			{
-				wc.DownloadFile(url!, GetBackupFullName!);
+				Directory.CreateDirectory(backupLocation);
+
+				using HttpClient client = new();
+				client.DefaultRequestHeaders.Add("a", "a");
+
+				byte[] fileBytes = await client.GetByteArrayAsync(url);
+				await File.WriteAllBytesAsync(backupFileName, fileBytes);
+
+				Console.WriteLine("Backup downloaded successfully.");
 			}
 			catch (Exception ex)
 			{
-				Console.WriteLine(ex.ToString());
+				Console.WriteLine($"Error downloading backup: {ex}");
 			}
 		}
 
@@ -158,7 +174,7 @@ namespace AdventureWorksDemo.Common.Tests
 			{
 				try
 				{
-					CloneBackUpFile();
+					await CloneBackUpFileAsync();
 					await semaphore.WaitAsync();
 
 					if (_sqlServerContainer == null)

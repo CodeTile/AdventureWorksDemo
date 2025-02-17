@@ -20,9 +20,9 @@ GO
 DROP DATABASE [AdventureWorks]
 
 USE [master]
-RESTORE DATABASE [AdventureWorks] FROM DISK = N'/var/opt/mssql/backup/SampleDatabase.bak' WITH  FILE = 1,
-      MOVE N'AdventureWorksLT2022_Data' TO N'/var/opt/mssql/data/AdventureWorks.mdf',
-      MOVE N'AdventureWorksLT2022_Log' TO N'/var/opt/mssql/data/AdventureWorks_log.ldf',
+RESTORE DATABASE [AdventureWorks] FROM DISK = N'/var/opt/mssql/backup/AdventureWorks.bak' WITH  FILE = 1,
+      MOVE N'AdventureWorks2022' TO N'/var/opt/mssql/data/AdventureWorks.mdf',
+      MOVE N'AdventureWorks2022_Log' TO N'/var/opt/mssql/data/AdventureWorks_log.ldf',
       NOUNLOAD,
       STATS = 5
 

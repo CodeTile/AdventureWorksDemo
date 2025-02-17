@@ -9,33 +9,33 @@ using Microsoft.EntityFrameworkCore;
 namespace AdventureWorksDemo.Data.Entities;
 
 /// <summary>
-/// Cross-reference table mapping customers to their address(es).
+/// Where to send a person email.
 /// </summary>
-[PrimaryKey("CustomerId", "AddressId")]
-[Table("CustomerAddress", Schema = "SalesLT")]
-[Index("Rowguid", Name = "AK_CustomerAddress_rowguid", IsUnique = true)]
-public partial class CustomerAddress
+[PrimaryKey("BusinessEntityId", "EmailAddressId")]
+[Table("EmailAddress", Schema = "Person")]
+[Index("EmailAddress1", Name = "IX_EmailAddress_EmailAddress")]
+public partial class EmailAddress
 {
     /// <summary>
-    /// Primary key. Foreign key to Customer.CustomerID.
+    /// Primary key. Person associated with this email address.  Foreign key to Person.BusinessEntityID
     /// </summary>
     [Key]
-    [Column("CustomerID")]
-    public int CustomerId { get; set; }
+    [Column("BusinessEntityID")]
+    public int BusinessEntityId { get; set; }
 
     /// <summary>
-    /// Primary key. Foreign key to Address.AddressID.
+    /// Primary key. ID of this email address.
     /// </summary>
     [Key]
-    [Column("AddressID")]
-    public int AddressId { get; set; }
+    [Column("EmailAddressID")]
+    public int EmailAddressId { get; set; }
 
     /// <summary>
-    /// The kind of Address. One of: Archive, Billing, Home, Main Office, Primary, Shipping
+    /// E-mail address for the person.
     /// </summary>
-    [Required]
+    [Column("EmailAddress")]
     [StringLength(50)]
-    public string AddressType { get; set; }
+    public string EmailAddress1 { get; set; }
 
     /// <summary>
     /// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
@@ -49,11 +49,7 @@ public partial class CustomerAddress
     [Column(TypeName = "datetime")]
     public DateTime ModifiedDate { get; set; }
 
-    [ForeignKey("AddressId")]
-    [InverseProperty("CustomerAddresses")]
-    public virtual Address Address { get; set; }
-
-    [ForeignKey("CustomerId")]
-    [InverseProperty("CustomerAddresses")]
-    public virtual Customer Customer { get; set; }
+    [ForeignKey("BusinessEntityId")]
+    [InverseProperty("EmailAddresses")]
+    public virtual Person BusinessEntity { get; set; }
 }

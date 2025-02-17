@@ -9,12 +9,12 @@ using Microsoft.EntityFrameworkCore;
 namespace AdventureWorksDemo.Data.Entities;
 
 /// <summary>
-/// Street address information for customers.
+/// Street address information for customers, employees, and vendors.
 /// </summary>
-[Table("Address", Schema = "SalesLT")]
+[Table("Address", Schema = "Person")]
 [Index("Rowguid", Name = "AK_Address_rowguid", IsUnique = true)]
-[Index("AddressLine1", "AddressLine2", "City", "StateProvince", "PostalCode", "CountryRegion", Name = "IX_Address_AddressLine1_AddressLine2_City_StateProvince_PostalCode_CountryRegion")]
-[Index("StateProvince", Name = "IX_Address_StateProvince")]
+[Index("AddressLine1", "AddressLine2", "City", "StateProvinceId", "PostalCode", Name = "IX_Address_AddressLine1_AddressLine2_City_StateProvinceID_PostalCode", IsUnique = true)]
+[Index("StateProvinceId", Name = "IX_Address_StateProvinceID")]
 public partial class Address
 {
     /// <summary>
@@ -45,15 +45,10 @@ public partial class Address
     public string City { get; set; }
 
     /// <summary>
-    /// Name of state or province.
+    /// Unique identification number for the state or province. Foreign key to StateProvince table.
     /// </summary>
-    [Required]
-    [StringLength(50)]
-    public string StateProvince { get; set; }
-
-    [Required]
-    [StringLength(50)]
-    public string CountryRegion { get; set; }
+    [Column("StateProvinceID")]
+    public int StateProvinceId { get; set; }
 
     /// <summary>
     /// Postal code for the street address.
@@ -75,11 +70,15 @@ public partial class Address
     public DateTime ModifiedDate { get; set; }
 
     [InverseProperty("Address")]
-    public virtual ICollection<CustomerAddress> CustomerAddresses { get; set; } = new List<CustomerAddress>();
+    public virtual ICollection<BusinessEntityAddress> BusinessEntityAddresses { get; set; } = new List<BusinessEntityAddress>();
 
     [InverseProperty("BillToAddress")]
     public virtual ICollection<SalesOrderHeader> SalesOrderHeaderBillToAddresses { get; set; } = new List<SalesOrderHeader>();
 
     [InverseProperty("ShipToAddress")]
     public virtual ICollection<SalesOrderHeader> SalesOrderHeaderShipToAddresses { get; set; } = new List<SalesOrderHeader>();
+
+    [ForeignKey("StateProvinceId")]
+    [InverseProperty("Addresses")]
+    public virtual StateProvince StateProvince { get; set; }
 }

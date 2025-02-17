@@ -10,5 +10,6 @@
   <ItemGroup>
     <PackageReference Include="MudBlazor" Version="8.2.0" />
     <PackageReference Include="MudBlazor.ThemeManager" Version="3.0.0" />
+    <PackageReference Include="System.Text.Json" Version="9.0.2" />
   </ItemGroup>
 </Project>

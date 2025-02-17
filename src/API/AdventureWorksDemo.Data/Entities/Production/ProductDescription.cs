@@ -11,7 +11,7 @@ namespace AdventureWorksDemo.Data.Entities;
 /// <summary>
 /// Product descriptions in several languages.
 /// </summary>
-[Table("ProductDescription", Schema = "SalesLT")]
+[Table("ProductDescription", Schema = "Production")]
 [Index("Rowguid", Name = "AK_ProductDescription_rowguid", IsUnique = true)]
 public partial class ProductDescription
 {
@@ -42,5 +42,5 @@ public partial class ProductDescription
     public DateTime ModifiedDate { get; set; }
 
     [InverseProperty("ProductDescription")]
-    public virtual ICollection<ProductModelProductDescription> ProductModelProductDescriptions { get; set; } = new List<ProductModelProductDescription>();
+    public virtual ICollection<ProductModelProductDescriptionCulture> ProductModelProductDescriptionCultures { get; set; } = new List<ProductModelProductDescriptionCulture>();
 }

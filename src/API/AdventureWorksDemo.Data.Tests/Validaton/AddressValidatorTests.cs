@@ -111,38 +111,22 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 			result.ShouldHaveValidationErrorFor(m => m.City);
 		}
 
-		[DataRow("{{PadRight:X:3}}")]
-		[DataRow("{{PadRight:X:4}}")]
-		[DataRow("{{PadRight:X:49}}")]
-		[DataRow("{{PadRight:X:50}}")]
-		[TestMethod]
-		public void CountryRegion_Should_Have_Length_Between_3_And_50(string value)
-		{
-			// arrange
-			var entity = _address;
-			entity!.CountryRegion = value.InterpretValue();
-			//act
-			var result = _validator.TestValidate(entity);
-			//assert
-			result.ShouldNotHaveValidationErrorFor(m => m.CountryRegion);
-		}
-
-		[DataRow("")]
-		[DataRow("1")]
-		[DataRow("12")]
-		[DataRow("66")]
-		[DataRow("{{PadRight:X:51}}")]
-		[TestMethod]
-		public void CountryRegion_Should_NotHave_Length_Between_3_And_50(string value)
-		{
-			// arrange
-			var entity = _address;
-			entity!.CountryRegion = value.InterpretValue();
-			//act
-			var result = _validator.TestValidate(entity);
-			//assert
-			result.ShouldHaveValidationErrorFor(m => m.CountryRegion);
-		}
+		//[DataRow("")]
+		//[DataRow("1")]
+		//[DataRow("12")]
+		//[DataRow("66")]
+		//[DataRow("{{PadRight:X:51}}")]
+		//[TestMethod]
+		//public void CountryRegion_Should_NotHave_Length_Between_3_And_50(string value)
+		//{
+		//	// arrange
+		//	var entity = _address;
+		//	entity!.CountryRegion = value.InterpretValue();
+		//	//act
+		//	var result = _validator.TestValidate(entity);
+		//	//assert
+		//	result.ShouldHaveValidationErrorFor(m => m.CountryRegion);
+		//}
 
 		[DataRow("{{PadRight:X:3}}")]
 		[DataRow("{{PadRight:X:4}}")]
@@ -177,38 +161,38 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 			result.ShouldHaveValidationErrorFor(m => m.PostalCode);
 		}
 
-		[DataRow("{{PadRight:X:3}}")]
-		[DataRow("{{PadRight:X:4}}")]
-		[DataRow("{{PadRight:X:49}}")]
-		[DataRow("{{PadRight:X:50}}")]
-		[TestMethod]
-		public void StateProvince_Should_Have_Length_Between_3_And_50(string value)
-		{
-			// arrange
-			var entity = _address;
-			entity!.StateProvince = value.InterpretValue();
-			//act
-			var result = _validator.TestValidate(entity);
-			//assert
-			result.ShouldNotHaveValidationErrorFor(m => m.StateProvince);
-		}
+		//[DataRow("{{PadRight:X:3}}")]
+		//[DataRow("{{PadRight:X:4}}")]
+		//[DataRow("{{PadRight:X:49}}")]
+		//[DataRow("{{PadRight:X:50}}")]
+		//[TestMethod]
+		//public void StateProvince_Should_Have_Length_Between_3_And_50(string value)
+		//{
+		//	// arrange
+		//	var entity = _address;
+		//	entity!.StateProvince = value.InterpretValue();
+		//	//act
+		//	var result = _validator.TestValidate(entity);
+		//	//assert
+		//	result.ShouldNotHaveValidationErrorFor(m => m.StateProvince);
+		//}
 
-		[DataRow("")]
-		[DataRow("1")]
-		[DataRow("12")]
-		[DataRow("66")]
-		[DataRow("{{PadRight:X:51}}")]
-		[TestMethod]
-		public void StateProvince_Should_NotHave_Length_Between_3_And_50(string value)
-		{
-			// arrange
-			var entity = _address;
-			entity!.StateProvince = value.InterpretValue();
-			//act
-			var result = _validator.TestValidate(entity);
-			//assert
-			result.ShouldHaveValidationErrorFor(m => m.StateProvince);
-		}
+		//[DataRow("")]
+		//[DataRow("1")]
+		//[DataRow("12")]
+		//[DataRow("66")]
+		//[DataRow("{{PadRight:X:51}}")]
+		//[TestMethod]
+		//public void StateProvince_Should_NotHave_Length_Between_3_And_50(string value)
+		//{
+		//	// arrange
+		//	var entity = _address;
+		//	entity!.StateProvince = value.InterpretValue();
+		//	//act
+		//	var result = _validator.TestValidate(entity);
+		//	//assert
+		//	result.ShouldHaveValidationErrorFor(m => m.StateProvince);
+		//}
 
 		[TestInitialize]
 		public void TestInitialize()
@@ -220,7 +204,7 @@ namespace AdventureWorksDemo.Data.Tests.Validaton
 				AddressLine1 = "12345",
 				AddressLine2 = "12345",
 				City = "12345",
-				CountryRegion = "12345",
+				StateProvinceId = 12345,
 				PostalCode = "12345"
 			};
 		}

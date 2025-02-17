@@ -11,10 +11,11 @@ namespace AdventureWorksDemo.Data.Entities;
 /// <summary>
 /// General sales order information.
 /// </summary>
-[Table("SalesOrderHeader", Schema = "SalesLT")]
+[Table("SalesOrderHeader", Schema = "Sales")]
 [Index("SalesOrderNumber", Name = "AK_SalesOrderHeader_SalesOrderNumber", IsUnique = true)]
 [Index("Rowguid", Name = "AK_SalesOrderHeader_rowguid", IsUnique = true)]
 [Index("CustomerId", Name = "IX_SalesOrderHeader_CustomerID")]
+[Index("SalesPersonId", Name = "IX_SalesOrderHeader_SalesPersonID")]
 public partial class SalesOrderHeader
 {
     /// <summary>
@@ -77,29 +78,46 @@ public partial class SalesOrderHeader
     public string AccountNumber { get; set; }
 
     /// <summary>
-    /// Customer identification number. Foreign key to Customer.CustomerID.
+    /// Customer identification number. Foreign key to Customer.BusinessEntityID.
     /// </summary>
     [Column("CustomerID")]
     public int CustomerId { get; set; }
 
     /// <summary>
-    /// The ID of the location to send goods.  Foreign key to the Address table.
+    /// Sales person who created the sales order. Foreign key to SalesPerson.BusinessEntityID.
     /// </summary>
-    [Column("ShipToAddressID")]
-    public int? ShipToAddressId { get; set; }
+    [Column("SalesPersonID")]
+    public int? SalesPersonId { get; set; }
 
     /// <summary>
-    /// The ID of the location to send invoices.  Foreign key to the Address table.
+    /// Territory in which the sale was made. Foreign key to SalesTerritory.SalesTerritoryID.
+    /// </summary>
+    [Column("TerritoryID")]
+    public int? TerritoryId { get; set; }
+
+    /// <summary>
+    /// Customer billing address. Foreign key to Address.AddressID.
     /// </summary>
     [Column("BillToAddressID")]
-    public int? BillToAddressId { get; set; }
+    public int BillToAddressId { get; set; }
+
+    /// <summary>
+    /// Customer shipping address. Foreign key to Address.AddressID.
+    /// </summary>
+    [Column("ShipToAddressID")]
+    public int ShipToAddressId { get; set; }
 
     /// <summary>
     /// Shipping method. Foreign key to ShipMethod.ShipMethodID.
     /// </summary>
-    [Required]
-    [StringLength(50)]
-    public string ShipMethod { get; set; }
+    [Column("ShipMethodID")]
+    public int ShipMethodId { get; set; }
+
+    /// <summary>
+    /// Credit card identification number. Foreign key to CreditCard.CreditCardID.
+    /// </summary>
+    [Column("CreditCardID")]
+    public int? CreditCardId { get; set; }
 
     /// <summary>
     /// Approval code provided by the credit card company.
@@ -107,6 +125,12 @@ public partial class SalesOrderHeader
     [StringLength(15)]
     [Unicode(false)]
     public string CreditCardApprovalCode { get; set; }
+
+    /// <summary>
+    /// Currency exchange rate used. Foreign key to CurrencyRate.CurrencyRateID.
+    /// </summary>
+    [Column("CurrencyRateID")]
+    public int? CurrencyRateId { get; set; }
 
     /// <summary>
     /// Sales subtotal. Computed as SUM(SalesOrderDetail.LineTotal)for the appropriate SalesOrderID.
@@ -135,6 +159,7 @@ public partial class SalesOrderHeader
     /// <summary>
     /// Sales representative comments.
     /// </summary>
+    [StringLength(128)]
     public string Comment { get; set; }
 
     /// <summary>
@@ -153,6 +178,14 @@ public partial class SalesOrderHeader
     [InverseProperty("SalesOrderHeaderBillToAddresses")]
     public virtual Address BillToAddress { get; set; }
 
+    [ForeignKey("CreditCardId")]
+    [InverseProperty("SalesOrderHeaders")]
+    public virtual CreditCard CreditCard { get; set; }
+
+    [ForeignKey("CurrencyRateId")]
+    [InverseProperty("SalesOrderHeaders")]
+    public virtual CurrencyRate CurrencyRate { get; set; }
+
     [ForeignKey("CustomerId")]
     [InverseProperty("SalesOrderHeaders")]
     public virtual Customer Customer { get; set; }
@@ -160,7 +193,22 @@ public partial class SalesOrderHeader
     [InverseProperty("SalesOrder")]
     public virtual ICollection<SalesOrderDetail> SalesOrderDetails { get; set; } = new List<SalesOrderDetail>();
 
+    [InverseProperty("SalesOrder")]
+    public virtual ICollection<SalesOrderHeaderSalesReason> SalesOrderHeaderSalesReasons { get; set; } = new List<SalesOrderHeaderSalesReason>();
+
+    [ForeignKey("SalesPersonId")]
+    [InverseProperty("SalesOrderHeaders")]
+    public virtual SalesPerson SalesPerson { get; set; }
+
+    [ForeignKey("ShipMethodId")]
+    [InverseProperty("SalesOrderHeaders")]
+    public virtual ShipMethod ShipMethod { get; set; }
+
     [ForeignKey("ShipToAddressId")]
     [InverseProperty("SalesOrderHeaderShipToAddresses")]
     public virtual Address ShipToAddress { get; set; }
+
+    [ForeignKey("TerritoryId")]
+    [InverseProperty("SalesOrderHeaders")]
+    public virtual SalesTerritory Territory { get; set; }
 }

@@ -9,28 +9,28 @@ using Microsoft.EntityFrameworkCore;
 namespace AdventureWorksDemo.Data.Entities;
 
 /// <summary>
-/// High-level product categorization.
+/// Product subcategories. See ProductCategory table.
 /// </summary>
-[Table("ProductCategory", Schema = "SalesLT")]
-[Index("Name", Name = "AK_ProductCategory_Name", IsUnique = true)]
-[Index("Rowguid", Name = "AK_ProductCategory_rowguid", IsUnique = true)]
-public partial class ProductCategory
+[Table("ProductSubcategory", Schema = "Production")]
+[Index("Name", Name = "AK_ProductSubcategory_Name", IsUnique = true)]
+[Index("Rowguid", Name = "AK_ProductSubcategory_rowguid", IsUnique = true)]
+public partial class ProductSubcategory
 {
     /// <summary>
-    /// Primary key for ProductCategory records.
+    /// Primary key for ProductSubcategory records.
     /// </summary>
     [Key]
+    [Column("ProductSubcategoryID")]
+    public int ProductSubcategoryId { get; set; }
+
+    /// <summary>
+    /// Product category identification number. Foreign key to ProductCategory.ProductCategoryID.
+    /// </summary>
     [Column("ProductCategoryID")]
     public int ProductCategoryId { get; set; }
 
     /// <summary>
-    /// Product category identification number of immediate ancestor category. Foreign key to ProductCategory.ProductCategoryID.
-    /// </summary>
-    [Column("ParentProductCategoryID")]
-    public int? ParentProductCategoryId { get; set; }
-
-    /// <summary>
-    /// Category description.
+    /// Subcategory description.
     /// </summary>
     [Required]
     [StringLength(50)]
@@ -48,13 +48,10 @@ public partial class ProductCategory
     [Column(TypeName = "datetime")]
     public DateTime ModifiedDate { get; set; }
 
-    [InverseProperty("ParentProductCategory")]
-    public virtual ICollection<ProductCategory> InverseParentProductCategory { get; set; } = new List<ProductCategory>();
+    [ForeignKey("ProductCategoryId")]
+    [InverseProperty("ProductSubcategories")]
+    public virtual ProductCategory ProductCategory { get; set; }
 
-    [ForeignKey("ParentProductCategoryId")]
-    [InverseProperty("InverseParentProductCategory")]
-    public virtual ProductCategory ParentProductCategory { get; set; }
-
-    [InverseProperty("ProductCategory")]
+    [InverseProperty("ProductSubcategory")]
     public virtual ICollection<Product> Products { get; set; } = new List<Product>();
 }
