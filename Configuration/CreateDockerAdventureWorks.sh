@@ -11,7 +11,7 @@ mkdir $LOCAL_BACKUP_FOLDER
 clear
 
    echo "Download AdventureWorks Lite backup file"
-   curl -L -o $LOCAL_BACKUP_FOLDER/SampleDatabase.bak 'https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorksLT2022.bak'
+   curl -L -o $LOCAL_BACKUP_FOLDER/AdventureWorks.bak 'https://github.com/Microsoft/sql-server-samples/releases/download/adventureworks/AdventureWorks2022.bak'
 
 echo "pull"
 docker pull mcr.microsoft.com/mssql/server
@@ -31,6 +31,8 @@ docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=$SA_PASSWORD" \
 
 Open up SSMS and connect to your newly created database server.
 
+
+/*
  ---------------------------------------------------------------
    Server name    : localhost,1433
    Authentication : SQL server Authentication
@@ -41,13 +43,16 @@ Open up SSMS and connect to your newly created database server.
 
 Open a new query window and restore the database using the query below
  ---------------------------------------------------------------
-
+*/
 USE [master]
-RESTORE DATABASE [$TARGET_DB_NAME] FROM DISK = N'/var/opt/mssql/backup/SampleDatabase.bak' WITH  FILE = 1,  
-      MOVE N'AdventureWorksLT2022_Data' TO N'/var/opt/mssql/data/"$TARGET_DB_NAME".mdf',  
-      MOVE N'AdventureWorksLT2022_Log' TO N'/var/opt/mssql/data/"$TARGET_DB_NAME"_log.ldf',  
-      NOUNLOAD,  
-      STATS = 5
+	RESTORE DATABASE AdventureWorks 
+		FROM  DISK = N'/var/opt/mssql/backup/AdventureWorks.bak' WITH  FILE = 1,  
+		MOVE N'AdventureWorks2022' TO N'/var/opt/mssql/data/AdventureWorks.mdf',  
+		MOVE N'AdventureWorks2022_log' TO N'/var/opt/mssql/data/AdventureWorks_log.ldf', 
+		NOUNLOAD,  
+		REPLACE,  
+		STATS = 5
+
 
 GO
 
