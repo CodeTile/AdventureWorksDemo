@@ -9,7 +9,4 @@
     <!-- Exclude the project from analysis -->
     <SonarQubeExclude>true</SonarQubeExclude>
   </PropertyGroup>
-  <ItemGroup>
-    <PackageReference Include="System.Text.Json" Version="9.0.2" />
-  </ItemGroup>
 </Project>
