@@ -123,7 +123,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 					break;
 
 				default:
-					throw new NotImplementedException($"Type [{resultTypeName}] is not handled!");
+					throw new NotImplementedException($"Type [{resultTypeName}] is not handled in step {nameof(ThenTheResultIs)}!");
 			}
 		}
 
@@ -237,6 +237,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			var model = Helper.Types.PopulateModelFromRow(modelTypeName, dataTable.Rows[0], null);
 			Helper.ScenarioContexts.AddToContext(ScenarioContextKey.Model, model);
 		}
+
 		[When("I update the model {string}")]
 		public void WhenIUpdateTheModel(string modelTypeName, DataTable dataTable)
 		{

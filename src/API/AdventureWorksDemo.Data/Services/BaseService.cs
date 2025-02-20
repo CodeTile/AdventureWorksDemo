@@ -168,19 +168,20 @@ namespace AdventureWorksDemo.Data.Services
 
 		internal static string TransposeIfNotNull(string original, string mutated)
 		{
-			if (mutated != null && !original.Equals(mutated))
+			if ((original == null)
+				|| mutated != null && !original.Equals(mutated))
 				original = mutated;
 			return original;
 		}
 
 		internal static int TransposeIfNotNull(int original, int mutated)
 		{
-			return TransposeIfNotNull(original, mutated);
+			return (int)TransposeIfNotNull((int?)original, (int?)mutated);
 		}
 
 		internal static int? TransposeIfNotNull(int? original, int? mutated)
 		{
-			if (mutated != null && !original.Equals(mutated))
+			if (mutated != null && !original.Equals(mutated) && mutated != 0)
 				original = mutated;
 			return original;
 		}

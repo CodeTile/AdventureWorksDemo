@@ -11,8 +11,8 @@ Scenario: UpdateBatchAsync01
 	
 	When I populate a list of the model 'AdventureWorksDemo.Data.Models.AddressModel'
 		| AddressId | AddressLine1 |
-		| 640       | Ping         |
-		| 1092      | Pong         |
+		| 1         | Ping         |
+		| 2         | Pong         |
 	And I call the method 'UpdateAsync' with the parameter values
 		| Key    | Value      | TypeName                                                 |
 		| models | {{models}} | IEnumerable<AdventureWorksDemo.Data.Models.AddressModel> |
@@ -23,19 +23,19 @@ Scenario: UpdateBatchAsync01
 		| IsFailure | IsSuccess | Message |
 		| False     | True      |         |
 	And the results property 'Value' contains
-		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1 | AddressLine2 | City      | CountryRegion  | PostalCode | StateProvince |
-		| 640       | 5/24/2024 12:34:56 PM | 0e4ac5bb-be0d-4a96-a58e-064daec08e1a | Ping         |              | Wokingham | United Kingdom | RG41 1QW   | England       |
-		| 1092      | 5/24/2024 12:34:56 PM | 79cdd89c-3c91-48db-8277-46d04aad7251 | Pong         |              | Auburn    | United States  | 95603      | California    |
-	And the table 'SalesLT.Address' contains
-		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1                      | AddressLine2 | City                | CountryRegion  | PostalCode | StateProvince |
-		| 640       | 5/24/2024 12:34:56 PM | 0e4ac5bb-be0d-4a96-a58e-064daec08e1a | Ping                              |              | Wokingham           | United Kingdom | RG41 1QW   | England       |
-		| 652       | 9/1/2006 12:00:00 AM  | 54e20963-b0e9-41cf-ab7e-d50459a3325c | Wymbush                           |              | Milton Keynes       | United Kingdom | MK8 8DF    | England       |
-		| 669       | 12/1/2006 12:00:00 AM | 56baec2a-5cc5-4a90-bef9-ee57e82f2e69 | Internet House, 3399 Science Park |              | Cambridge           | United Kingdom | CB4 4BZ    | England       |
-		| 1034      | 9/1/2007 12:00:00 AM  | 300d2a6e-67b4-417b-83a9-2026818a21c6 | Oxnard Outlet                     |              | Oxnard              | United States  | 93030      | California    |
-		| 1038      | 9/1/2007 12:00:00 AM  | a86c8140-ad7d-4caa-9b40-4006bd9998e2 | 123 Camelia Avenue                |              | Oxnard              | United States  | 93030      | California    |
-		| 1090      | 9/1/2007 12:00:00 AM  | cf3ae92a-3e66-4af0-b683-731826e89cd1 | 25130 South State Street          |              | Sandy               | United States  | 84070      | Utah          |
-		| 1092      | 5/24/2024 12:34:56 PM | 79cdd89c-3c91-48db-8277-46d04aad7251 | Pong                              |              | Auburn              | United States  | 95603      | California    |
-		| 1111      | 9/1/2006 12:00:00 AM  | 00000000-1111-2222-0000-000000000001 | Orphan Record                     |              | Use In Delete Tests | United States  | 95603      | California    |
+		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1 | AddressLine2 | City       | PostalCode | StateProvinceId |
+		| 1         | 5/24/2024 12:34:56 PM | 2d53a7fc-8017-412d-a591-b10bac54f9b7 | Ping         |              | Paris      | 75009      | 1               |
+		| 2         | 5/24/2024 12:34:56 PM | df254102-23c7-4820-ae4a-6a9f0668c8ba | Pong         |              | Ingolstadt | 85049      | 3               |
+    
+	And the table 'Person.Address' contains
+		| AddressId | ModifiedDate           | Rowguid                              | AddressLine1     | AddressLine2 | City          | PostalCode | StateProvinceId |
+		| 1         | 5/24/2024 12:34:56 PM  | 2d53a7fc-8017-412d-a591-b10bac54f9b7 | Ping             |              | Paris         | 75009      | 1               |
+		| 2         | 5/24/2024 12:34:56 PM  | df254102-23c7-4820-ae4a-6a9f0668c8ba | Pong             |              | Ingolstadt    | 85049      | 3               |
+		| 3         | 6/23/2014 12:00:00 AM  | 513bf254-97b8-433b-b467-3079487a2bd4 | 9093 Gilardy Dr. |              | Milton Keynes | MK8 8ZD    | 4               |
+		| 4         | 10/19/2012 12:00:00 AM | 70764525-a746-4f90-b7bf-dd71d6de2bc9 | Celler Weg 504   |              | Poing         | 66041      | 3               |
+		| 5         | 1/17/2014 12:00:00 AM  | 9a804484-17af-4360-b83b-330cc89634ab | 3985 Dolores Way |              | Perth         | 6006       | 5               |
+		| 6         | 12/1/2013 12:00:00 AM  | a9121e78-13ea-476b-bda4-6c6f654e0d55 | Skywalker House  | Hoth         | Sky Town      | WA3        | 2               |
+		| 7         | 12/1/2013 12:00:00 AM  | a9121e78-dddd-dddd-bda4-6c6f654ecd55 | Delete Orphan    |              | Wakanda       | WA3        | 7               |
 
 Scenario: UpdateBatchAsyncNoRecords
 	Given I don't reset the database after the scenario
@@ -51,14 +51,13 @@ Scenario: UpdateBatchAsyncNoRecords
 		| IsFailure | IsSuccess | Message                               |
 		| True      | False     | Please select some records to update! |
 	And the results property 'Value' contains
-		| AddressId | ModifiedDate | Rowguid | AddressLine1 | AddressLine2 | City | CountryRegion | PostalCode | StateProvince |
-	And the table 'SalesLT.Address' contains
-		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1                      | AddressLine2 | City                | CountryRegion  | PostalCode | StateProvince |
-		| 640       | 9/1/2007 12:00:00 AM  | 0e4ac5bb-be0d-4a96-a58e-064daec08e1a | 251 The Metro Center              |              | Wokingham           | United Kingdom | RG41 1QW   | England       |
-		| 652       | 9/1/2006 12:00:00 AM  | 54e20963-b0e9-41cf-ab7e-d50459a3325c | Wymbush                           |              | Milton Keynes       | United Kingdom | MK8 8DF    | England       |
-		| 669       | 12/1/2006 12:00:00 AM | 56baec2a-5cc5-4a90-bef9-ee57e82f2e69 | Internet House, 3399 Science Park |              | Cambridge           | United Kingdom | CB4 4BZ    | England       |
-		| 1034      | 9/1/2007 12:00:00 AM  | 300d2a6e-67b4-417b-83a9-2026818a21c6 | Oxnard Outlet                     |              | Oxnard              | United States  | 93030      | California    |
-		| 1038      | 9/1/2007 12:00:00 AM  | a86c8140-ad7d-4caa-9b40-4006bd9998e2 | 123 Camelia Avenue                |              | Oxnard              | United States  | 93030      | California    |
-		| 1090      | 9/1/2007 12:00:00 AM  | cf3ae92a-3e66-4af0-b683-731826e89cd1 | 25130 South State Street          |              | Sandy               | United States  | 84070      | Utah          |
-		| 1092      | 9/1/2006 12:00:00 AM  | 79cdd89c-3c91-48db-8277-46d04aad7251 | 99700 Bell Road                   |              | Auburn              | United States  | 95603      | California    |
-		| 1111      | 9/1/2006 12:00:00 AM  | 00000000-1111-2222-0000-000000000001 | Orphan Record                     |              | Use In Delete Tests | United States  | 95603      | California    |
+		| AddressId | ModifiedDate | Rowguid | AddressLine1 | AddressLine2 | City | PostalCode | StateProvinceId |
+	And the table 'Person.Address' contains
+		| AddressId | ModifiedDate           | Rowguid                              | AddressLine1                     | AddressLine2 | City          | PostalCode | StateProvinceId |
+		| 1         | 12/21/2013 10:09:00 AM | 2d53a7fc-8017-412d-a591-b10bac54f9b7 | 568, avenue de l? Union Centrale |              | Paris         | 75009      | 1               |
+		| 2         | 8/15/2013 12:00:00 AM  | df254102-23c7-4820-ae4a-6a9f0668c8ba | Charlottenstr 844                |              | Ingolstadt    | 85049      | 3               |
+		| 3         | 6/23/2014 12:00:00 AM  | 513bf254-97b8-433b-b467-3079487a2bd4 | 9093 Gilardy Dr.                 |              | Milton Keynes | MK8 8ZD    | 4               |
+		| 4         | 10/19/2012 12:00:00 AM | 70764525-a746-4f90-b7bf-dd71d6de2bc9 | Celler Weg 504                   |              | Poing         | 66041      | 3               |
+		| 5         | 1/17/2014 12:00:00 AM  | 9a804484-17af-4360-b83b-330cc89634ab | 3985 Dolores Way                 |              | Perth         | 6006       | 5               |
+		| 6         | 12/1/2013 12:00:00 AM  | a9121e78-13ea-476b-bda4-6c6f654e0d55 | Skywalker House                  | Hoth         | Sky Town      | WA3        | 2               |
+		| 7         | 12/1/2013 12:00:00 AM  | a9121e78-dddd-dddd-bda4-6c6f654ecd55 | Delete Orphan                    |              | Wakanda       | WA3        | 7               |

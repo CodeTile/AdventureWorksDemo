@@ -37,8 +37,7 @@ namespace AdventureWorksDemo.Data.Services
 
 		internal override bool IsModelDirty(ProductCategoryModel original, ProductCategoryModel mutated)
 		{
-			return !original.Name.Equals(mutated.Name)
-				|| !original.ParentProductCategoryId.Equals(mutated.ParentProductCategoryId);
+			return !original.Name.Equals(mutated.Name);
 		}
 
 		internal override void PreDataMutation(ProductCategory entity)
@@ -50,7 +49,6 @@ namespace AdventureWorksDemo.Data.Services
 											  ProductCategoryModel mutated)
 		{
 			original.Name = mutated.Name;
-			original.ParentProductCategoryId = mutated.ParentProductCategoryId;
 		}
 	}
 }

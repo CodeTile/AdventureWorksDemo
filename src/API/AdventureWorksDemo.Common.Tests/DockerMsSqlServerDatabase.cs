@@ -67,6 +67,7 @@ namespace AdventureWorksDemo.Common.Tests
 			await db.CreateDatabase(cancellationToken);
 			await db.PrepareDataForTesting(cancellationToken);
 			CommonHelper.Configuration.DatabaseConnectionString = db.ConnectionString;
+
 			if (backupTestDatabase)
 				await db.BackUpTestDatabaseAsync(cancellationToken);
 			return db;
@@ -96,7 +97,8 @@ namespace AdventureWorksDemo.Common.Tests
 			foreach (string commandText in CommonHelper.Sql.SplitSqlQueryOnGo(query))
 			{
 				command.CommandText = commandText;
-				System.Diagnostics.Debug.WriteLine(command.CommandText);
+
+				DisplayCommandText(command.CommandText);
 				await command.ExecuteNonQueryAsync(cancellationToken);
 			}
 		}
@@ -137,7 +139,7 @@ namespace AdventureWorksDemo.Common.Tests
 			foreach (string commandText in CommonHelper.Sql.SplitSqlQueryOnGo(query))
 			{
 				command.CommandText = commandText;
-				System.Diagnostics.Debug.WriteLine(command.CommandText);
+				DisplayCommandText(command.CommandText);
 				await command.ExecuteNonQueryAsync(cancellationToken);
 			}
 		}
@@ -147,7 +149,8 @@ namespace AdventureWorksDemo.Common.Tests
 			var masterConnectionString =
 					 $"server=localhost,{PublicPort};User Id=sa;Password={Password};Initial Catalog={databaseName};Encrypt=false";
 			var connectionStringBuilder = new SqlConnectionStringBuilder(masterConnectionString);
-			System.Diagnostics.Debug.WriteLine($"\r\n\r\n\r\n{masterConnectionString}\r\n\r\n\r\n");
+
+			System.Diagnostics.Trace.WriteLine($"\r\n\r\n\r\n{masterConnectionString}\r\n\r\n\r\n");
 
 			return new SqlConnection(connectionStringBuilder.ConnectionString);
 		}
@@ -207,7 +210,6 @@ namespace AdventureWorksDemo.Common.Tests
 			{
 				try
 				{
-					await CloneBackUpFileAsync();
 					await semaphore.WaitAsync();
 
 					if (_sqlServerContainer == null)
@@ -271,7 +273,7 @@ namespace AdventureWorksDemo.Common.Tests
 				TimeSpan.FromSeconds(4),
 				TimeSpan.FromSeconds(6)
 				]);
-
+			DisplayCommandText(command.CommandText);
 			await CreatePolicy.ExecuteAsync(async () => { await command.ExecuteNonQueryAsync(cancellationToken); });
 		}
 
@@ -285,6 +287,7 @@ namespace AdventureWorksDemo.Common.Tests
 					   new SqlCommand($"ALTER DATABASE [{DatabaseName}] SET SINGLE_USER WITH ROLLBACK IMMEDIATE",
 						   connection))
 				{
+					DisplayCommandText(command.CommandText);
 					command.ExecuteNonQuery();
 				}
 
@@ -292,6 +295,7 @@ namespace AdventureWorksDemo.Common.Tests
 				{
 					try
 					{
+						DisplayCommandText(command.CommandText);
 						command.ExecuteNonQuery();
 					}
 					catch (SqlException ex)
@@ -302,6 +306,13 @@ namespace AdventureWorksDemo.Common.Tests
 			}
 
 			_deleted = true;
+		}
+
+		private void DisplayCommandText(string commandText)
+		{
+			string setting = AppSettings["Logging:TestContainers:SQLDBConfiguration"] ?? "";
+			if (!setting.Equals("None"))
+				System.Diagnostics.Debug.WriteLine(commandText);
 		}
 
 		private void OnStopping(object sender, EventArgs e)

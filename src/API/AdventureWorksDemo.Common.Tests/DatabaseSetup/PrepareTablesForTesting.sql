@@ -1,5 +1,5 @@
 
-
+set nocount on
 --USE [master]
 --ALTER DATABASE [AdventureWorks] SET  SINGLE_USER WITH ROLLBACK IMMEDIATE
 --GO
@@ -18,6 +18,7 @@
 --================================================================================================================
 
 use [$TARGET_DB_NAME];
+
 GO
 PRINT '
 *****************************************
@@ -45,7 +46,7 @@ SELECT @sql += N'ALTER TABLE ' + obj + N' NOCHECK CONSTRAINT ALL;
 EXEC sys.sp_executesql @sql;
 GO
 
-use [$TARGET_DB_NAME];
+--use [$TARGET_DB_NAME];
 GO
 -- -----
 DELETE FROM [Sales].[SalesOrderHeader];
@@ -154,6 +155,10 @@ DELETE FROM [Production].[ProductCategory];
 DELETE FROM [Production].[ProductModel];
 DELETE FROM [Production].[UnitMeasure];
 GO
+DELETE FROM [Person].[CountryRegion];
+delete from [Person].[StateProvince] ;
+DELETE FROM [Sales].[SalesTerritory]
+GO
 
 
 
@@ -187,6 +192,65 @@ GO
 PRINT '---------------------------
    Insert records into database.
 ---------------------------'
+
+GO
+
+INSERT INTO [Person].[CountryRegion] ([CountryRegionCode] ,[Name] ,[ModifiedDate])
+			VALUES    ('GB','Great Britan',			 '1 May 2007')
+					, ('FR','France',			 	 '1 May 2007')
+					, ('DE','Germany',			     '1 May 2007')
+					, ('CA','Canada',				 '1 May 2007')
+					, ('TK','Tokelau',				 '1 May 2007')
+					, ('AU','Australia',			 '1 May 2007')
+					, ('DD','For Delete Tests Only' ,'1 May 2007')
+
+-------------------------------------------------------------------
+GO
+SET IDENTITY_INSERT [Sales].[SalesTerritory] ON ;
+INSERT INTO [Sales].[SalesTerritory]
+           ([TerritoryID],	[Name]  ,[CountryRegionCode]    ,[Group]  ,[SalesYTD]  ,[SalesLastYear] ,[CostYTD] ,[CostLastYear]  ,[rowguid]  ,[ModifiedDate])
+     VALUES
+		(1,	'Canada',			'CA',	'North Canada',	6771829.14,	5693988.86,	0.00,	0.00,	'06B4AF8A-1639-476E-9266-110461D66B00',	'Apr 30 2008 12:00AM'),
+		(2,	'France',			'FR',	'Europe',		4772398.31,	2396539.76,	0.00,	0.00,	'BF806804-9B4C-4B07-9D19-706F2E689552',	'Apr 30 2008 12:00AM'),
+		(3,	'Germany',			'DE',	'Europe',		3805202.35,	1307949.79,	0.00,	0.00,	'6D2450DB-8159-414F-A917-E73EE91C38A9',	'Apr 30 2008 12:00AM'),
+		(4,	'Australia',		'AU',	'Pacific',		5977814.92,	2278548.98,	0.00,	0.00,	'602E612E-DFE9-41D9-B894-27E489747885',	'Apr 30 2008 12:00AM'),
+		(5,	'United Kingdom',	'GB',	'Europe',		5012905.37,	1635823.40,	0.00,	0.00,	'05FC7E1F-2DEA-414E-9ECD-09D150516FB5',	'Apr 30 2008 12:00AM'),
+		(6,	'Tokelau',			'TK',	'Pacific',		4325344.37,	2344344.40,	0.00,	0.00,	'05FC7E1F-2DEA-414E-9ECD-222222222222',	'Apr 30 2008 12:00AM'),
+		(7,	'Delete Orphan',	'DD',	'Delete Tests',       0.00,	      0.00,	0.00,	0.00,	'05FC7E1F-2DEA-414E-9ECD-111111111111',	'Apr 30 2008 12:00AM')
+		;
+
+SET IDENTITY_INSERT [Sales].[SalesTerritory] OFF;
+DBCC CHECKIDENT ('[Sales].[SalesTerritory]', RESEED, 5000);
+GO
+-------------------------------------------------------------------
+
+
+SET IDENTITY_INSERT [Person].[StateProvince] ON ;
+
+
+INSERT INTO [Person].[StateProvince]
+           (StateProvinceID
+		   ,[StateProvinceCode]
+           ,[CountryRegionCode]
+           ,[IsOnlyStateProvinceFlag]
+           ,[Name]
+           ,[TerritoryID]
+           ,[rowguid]
+           ,[ModifiedDate])
+     VALUES
+            (1,	'AB ','CA','0','Alberta',			'1','298C2880-AB1C-4982-A5AD-A36EB4BA0D34','Feb  8 2014 10:17AM'),
+			(2,	'BC ','CA','0','British Columbia',	'1','D27FCC6E-BB99-438B-BA86-285CEEB2FA53','Feb  8 2014 10:17AM'),
+			(3,	'BY ','DE','0','Bayern',			'3','D54E5000-A0DA-46D1-86B0-B8FE16C9F781','Feb  8 2014 10:17AM'),
+			(4,	'ENG','GB','1','England',			'5','3E3CB3F8-44B9-44D9-A1C3-CBFB11E0A7DA','Feb  8 2014 10:17AM'),
+			(5,	'FM ','AU','1','Australia',		    '4','3202DA35-AED4-40E2-9EC4-27C17F420170','Feb  8 2014 10:17AM'),
+			(6, 'HE ','DE','0','Hessen',			'5','834FC3DF-B60D-4F94-95BD-AEF8A9FB74E8','Feb  8 2014 10:17AM'),
+			(7, 'DD ','DD','0','Delete Test',		'7','33333333-2222-1111-0000-AEF8A9FB74E8','Feb  8 2014 10:17AM')
+
+SET IDENTITY_INSERT [Person].[StateProvince] OFF;
+DBCC CHECKIDENT ('[Person].[StateProvince]', RESEED, 5000);
+GO
+-------------------------------------------------------------------
+
 SET IDENTITY_INSERT [Person].[AddressType] ON ;
 Insert INTO [Person].[AddressType] ([AddressTypeID],[Name],[rowguid],[ModifiedDate])
 					VALUES    (1,'Billing',					'00000001-0000-0000-0000-000000000000','1 May 2007')
@@ -198,6 +262,7 @@ Insert INTO [Person].[AddressType] ([AddressTypeID],[Name],[rowguid],[ModifiedDa
 							, (7,'For Delete Tests Only',	'00000006-dddd-0000-0000-000000000000','1 May 2007');
 SET IDENTITY_INSERT [Person].[AddressType] OFF;
 DBCC CHECKIDENT ('Person.AddressType', RESEED, 5000);
+GO
 -------------------------------------------------------------------
 
 
@@ -217,16 +282,6 @@ DBCC CHECKIDENT ('Person.[ContactType]', RESEED, 5000);
 -------------------------------------------------------------------
 
 
-INSERT INTO [Person].[CountryRegion] ([CountryRegionCode] ,[Name] ,[ModifiedDate])
-			VALUES    ('GB','Great Britan',			 '1 May 2007')
-					, ('FO','Taiwan',				 '1 May 2007')
-					, ('MZ','Mozambique',			 '1 May 2007')
-					, ('LC','Saint Lucia',			 '1 May 2007')
-					, ('TK','Tokelau',				 '1 May 2007')
-					, ('AU','Australia',			 '1 May 2007')
-					, ('DD','For Delete Tests Only' ,'1 May 2007')
-
--------------------------------------------------------------------
 
 
 SET IDENTITY_INSERT [Person].[PhoneNumberType] ON ;
@@ -287,4 +342,30 @@ SET IDENTITY_INSERT [Production].[ProductCategory] OFF
 
 DBCC CHECKIDENT ('[Production].[ProductCategory]', RESEED, 5000);
 ------------------------------------------------------------------------------------
+GO
+
+SET IDENTITY_INSERT [Person].[Address] ON
+INSERT INTO [Person].[Address]
+           ( [AddressID]
+		   ,[AddressLine1]
+           ,[AddressLine2]
+           ,[City]
+           ,[StateProvinceID]
+           ,[PostalCode]
+           ,[SpatialLocation]
+           ,[rowguid]
+           ,[ModifiedDate])
+     VALUES
+ ( 1 , '568, avenue de l´ Union Centrale'	, NULL,		'Paris'			, 1	, '75009'	, 0xE6100000010CB29379698576484080D3196A34B00240, '2D53A7FC-8017-412D-A591-B10BAC54F9B7', 'Dec 21 2013 10:09AM')
+,( 2 , 'Charlottenstr 844'					, NULL,		'Ingolstadt'	, 3	, '85049'	, 0xE6100000010C79066342C6694840E2315709E9B72640, 'DF254102-23C7-4820-AE4A-6A9F0668C8BA', 'Aug 15 2013 12:00AM')
+,( 3 , '9093 Gilardy Dr.'					, NULL,		'Milton Keynes'	, 4	, 'MK8 8ZD' , 0xE6100000010CD94C1C1F15FE4940047C4899A541E7BF, '513BF254-97B8-433B-B467-3079487A2BD4', 'Jun 23 2014 12:00AM')
+,( 4 , 'Celler Weg 504'						, NULL,		'Poing'			, 3	, '66041'	, 0xE6100000010C00000000000000000000000000000000, '70764525-A746-4F90-B7BF-DD71D6DE2BC9', 'Oct 19 2012 12:00AM')
+,( 5 , '3985 Dolores Way'					, NULL,		'Perth'			, 5	, '6006'	, 0xE6100000010C7EEC03B2ACEE3FC0965FFABC6BF75C40, '9A804484-17AF-4360-B83B-330CC89634AB', 'Jan 17 2014 12:00AM')
+,( 6 , 'Skywalker House'					, 'Hoth',	'Sky Town'		, 2	, 'WA3'		, 0xE6100000010CF5586E1185CD4940D17D33328402D9BF, 'A9121E78-13EA-476B-BDA4-6C6F654E0D55', 'Dec  1 2013 12:00AM')
+,( 7 , 'Delete Orphan'						, NULL,		'Wakanda'		, 7	, 'WA3'		, 0xE6100000010C682356A0785F48405B59264AFD410540, 'A9121E78-DDDD-DDDD-BDA4-6C6F654ECD55', 'Dec  1 2013 12:00AM')
+
+
+SET IDENTITY_INSERT [Person].[Address] OFF
+
+DBCC CHECKIDENT ('[Person].[Address]', RESEED, 5000);
 

@@ -47,10 +47,10 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 			string location = AppSettings["Database:Location"]?
 														.Replace("<<sln>>", CommonHelper.IO.TryGetSolutionDirectoryInfo()?.FullName)
 														?? string.Empty;
-			string source = Path.Combine(location, AppSettings["Database:SourceDatabase"] ?? "<null>");
 			string destination = Path.Combine(location, AppSettings["Database:DataBaseForTesting"] ?? "<null>");
 			if (!File.Exists(destination))
 			{
+				string source = Path.Combine(location, AppSettings["Database:SourceDatabase"] ?? "<null>");
 				File.Copy(source, destination);
 				return true;
 			}

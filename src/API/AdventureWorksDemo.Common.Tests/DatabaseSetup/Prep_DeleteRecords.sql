@@ -33,65 +33,65 @@ declare @Customers as table(customerId int);
 insert  Into @Customers
 	select top 7  max(CustomerID) CustomerId
 	
-	from [AdventureWorks].[SalesLT].[SalesOrderDetail] [d]
-	Inner Join [AdventureWorks].[SalesLT].[SalesOrderHeader] [h] on h.SalesOrderID= d.SalesOrderID
+	from [AdventureWorks].[Production].[SalesOrderDetail] [d]
+	Inner Join [AdventureWorks].[Production].[SalesOrderHeader] [h] on h.SalesOrderID= d.SalesOrderID
 	GROUP by d.SalesOrderID
 	Having count([d].salesOrderDetailId) <10
 
 -- -- --
-PRINT 'Delete From [AdventureWorks].[SalesLT].[SalesOrderHeader]';
+PRINT 'Delete From [AdventureWorks].[Production].[SalesOrderHeader]';
 DELETE  
 	-- select *
-	from [AdventureWorks].[SalesLT].[SalesOrderHeader] where CustomerID not in (select CustomerId from @Customers);
+	from [AdventureWorks].[Production].[SalesOrderHeader] where CustomerID not in (select CustomerId from @Customers);
 -- -- --
---------PRINT 'Delete From [AdventureWorks].[SalesLT].[SalesOrderDetail]';
+--------PRINT 'Delete From [AdventureWorks].[Production].[SalesOrderDetail]';
 --------DELETE  
 --------	-- select *
---------	from [AdventureWorks].[SalesLT].[SalesOrderDetail] where SalesOrderID not in (select SalesOrderID from [AdventureWorks].[SalesLT].[SalesOrderHeader]);
+--------	from [AdventureWorks].[Production].[SalesOrderDetail] where SalesOrderID not in (select SalesOrderID from [AdventureWorks].[Production].[SalesOrderHeader]);
 -- -- --
-PRINT 'Delete From [AdventureWorks].[SalesLT].[CustomerAddress]';
+PRINT 'Delete From [AdventureWorks].[Production].[CustomerAddress]';
 DELETE  
 	-- select *
-	from [AdventureWorks].[SalesLT].[CustomerAddress] where CustomerID not in (select CustomerId from @Customers);
+	from [AdventureWorks].[Production].[CustomerAddress] where CustomerID not in (select CustomerId from @Customers);
 -- -- --
-PRINT 'Delete From [AdventureWorks].[SalesLT].[Address]';
+PRINT 'Delete From [AdventureWorks].[Production].[Address]';
 DELETE 
 	-- select *
-	from [AdventureWorks].[SalesLT].[Customer] where CustomerID not in (select CustomerId from @Customers);
+	from [AdventureWorks].[Production].[Customer] where CustomerID not in (select CustomerId from @Customers);
 -- -- --
-PRINT 'Delete From [AdventureWorks].[SalesLT].[Customer]';
+PRINT 'Delete From [AdventureWorks].[Production].[Customer]';
 DELETE
 	-- select *
-	from [AdventureWorks].[SalesLT].[Address] where AddressID not in (select AddressID from [AdventureWorks].[SalesLT].[CustomerAddress])
+	from [AdventureWorks].[Production].[Address] where AddressID not in (select AddressID from [AdventureWorks].[Production].[CustomerAddress])
 -- -- --
-PRINT 'Delete From [AdventureWorks].[SalesLT].[Product]';
+PRINT 'Delete From [AdventureWorks].[Production].[Product]';
 DELETE
 	-- select *
-	FROM [AdventureWorks].[SalesLT].[Product] where productId in 
-	(select top 99 percent productId from [AdventureWorks].[SalesLT].[Product] where ProductId not in (select ProductId from [AdventureWorks].[SalesLT].[SalesOrderDetail]) order by ProductId)
+	FROM [AdventureWorks].[Production].[Product] where productId in 
+	(select top 99 percent productId from [AdventureWorks].[Production].[Product] where ProductId not in (select ProductId from [AdventureWorks].[Production].[SalesOrderDetail]) order by ProductId)
 
 
 -- -- --
-PRINT 'Delete From [AdventureWorks].[SalesLT].[ProductModelProductDescription]';
+PRINT 'Delete From [AdventureWorks].[Production].[ProductModelProductDescription]';
 DELETE
 	-- select *
-	FROM [AdventureWorks].[SalesLT].[ProductModelProductDescription] where productModelId Not in (select productModelId from [AdventureWorks].[SalesLT].[Product] )
+	FROM [AdventureWorks].[Production].[ProductModelProductDescription] where productModelId Not in (select productModelId from [AdventureWorks].[Production].[Product] )
 																		   or [Culture] not in ('en','fr');
 -- -- --
-PRINT 'Delete From [AdventureWorks].[SalesLT].[ProductDescription]';
+PRINT 'Delete From [AdventureWorks].[Production].[ProductDescription]';
 DELETE
 	-- select *
-	FROM [AdventureWorks].[SalesLT].[ProductDescription] where [ProductDescriptionID] Not in (select [ProductDescriptionID] from [AdventureWorks].[SalesLT].[ProductModelProductDescription] )
+	FROM [AdventureWorks].[Production].[ProductDescription] where [ProductDescriptionID] Not in (select [ProductDescriptionID] from [AdventureWorks].[Production].[ProductModelProductDescription] )
 -- -- --
-PRINT 'Delete From [AdventureWorks].[SalesLT].[ProductModel]';
+PRINT 'Delete From [AdventureWorks].[Production].[ProductModel]';
 DELETE
 	-- select *
-	FROM [AdventureWorks].[SalesLT].[ProductModel] where productModelId Not in (select productModelId from [AdventureWorks].[SalesLT].[Product] )
+	FROM [AdventureWorks].[Production].[ProductModel] where productModelId Not in (select productModelId from [AdventureWorks].[Production].[Product] )
 -- -- --
-PRINT 'Delete From [AdventureWorks].[SalesLT].[ProductCategory]';
+PRINT 'Delete From [AdventureWorks].[Production].[ProductCategory]';
 DELETE
 	-- select *
-	FROM [AdventureWorks].[SalesLT].[ProductCategory] where ProductCategoryID Not in (select ProductCategoryID from [AdventureWorks].[SalesLT].[Product] )
+	FROM [AdventureWorks].[Production].[ProductCategory] where ProductCategoryID Not in (select ProductCategoryID from [AdventureWorks].[Production].[Product] )
 														   AND  ParentProductCategoryID = null
 
 GO

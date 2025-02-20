@@ -17,15 +17,15 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="9.0.2" />
     <PackageReference Include="Microsoft.Extensions.TimeProvider.Testing" Version="9.2.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
-    <PackageReference Include="MSTest.Analyzers" Version="3.8.1">
+    <PackageReference Include="MSTest.Analyzers" Version="3.8.2">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Polly" Version="8.5.2" />
     <PackageReference Include="Reqnroll.MsTest" Version="2.3.0" />
-    <PackageReference Include="MSTest.TestAdapter" Version="3.8.1" />
-    <PackageReference Include="MSTest.TestFramework" Version="3.8.1" />
-    <PackageReference Include="Testcontainers.MsSql" Version="4.2.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.8.2" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.8.2" />
+    <PackageReference Include="Testcontainers.MsSql" Version="4.3.0" />
   </ItemGroup>
 
   <ItemGroup>
