@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace AdventureWorksDemo.Common.Tests;
 
 [TestClass]
-public class StringExtesionsTests_PadRight
+public class StringExtentionsTests_PadRight
 {
 	[DataRow("{{PadRight:X:0}}", "X")]
 	[DataRow("{{PadRight:X:3}}", "XXX")]

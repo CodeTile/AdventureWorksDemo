@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Net;
+using System.Threading;
 
 using AdventureWorksDemo.Common.Tests.Helpers;
 
@@ -53,12 +54,12 @@ namespace AdventureWorksDemo.Common.Tests
 		internal Microsoft.Extensions.Configuration.IConfiguration AppSettings => CommonHelper.Configuration.GetConfiguration;
 		private static int PublicPort => _sqlServerContainer!.GetMappedPublicPort(ContainerPort);
 
-		private string? GetBackupFullName => Path.Combine(GetBackupLocation!, AppSettings["Database:FileName"]!);
+		private string? GetBackupFullName => Path.Combine(GetBackupLocation!, AppSettings["Database:DataBaseForTesting"]!);
 
 		private string? GetBackupLocation => AppSettings["Database:Location"]?
 														.Replace("<<sln>>", CommonHelper.IO.TryGetSolutionDirectoryInfo()?.FullName);
 
-		public static async Task<DockerMsSqlServerDatabase> Create(CancellationToken cancellationToken = default)
+		public static async Task<DockerMsSqlServerDatabase> Create(CancellationToken cancellationToken = default, bool backupTestDatabase = false)
 		{
 			var db = new DockerMsSqlServerDatabase();
 
@@ -66,7 +67,38 @@ namespace AdventureWorksDemo.Common.Tests
 			await db.CreateDatabase(cancellationToken);
 			await db.PrepareDataForTesting(cancellationToken);
 			CommonHelper.Configuration.DatabaseConnectionString = db.ConnectionString;
+			if (backupTestDatabase)
+				await db.BackUpTestDatabaseAsync(cancellationToken);
 			return db;
+		}
+
+		public async Task BackUpTestDatabaseAsync(CancellationToken cancellationToken)
+		{
+			string backupFileName = AppSettings["Database:BackupScriptName"]?
+														.Replace("<<sln>>", CommonHelper.IO.TryGetSolutionDirectoryInfo()?.FullName)
+														?? string.Empty;
+			if (!File.Exists(backupFileName))
+			{
+				throw new FileNotFoundException(backupFileName);
+			}
+
+			string query = File.ReadAllText(backupFileName)
+								.Replace("$TARGET_DB_NAME", DatabaseName)
+								.Replace("$BackupFileName", AppSettings["Database:DataBaseForTesting"]);
+
+			SqlConnection.ClearAllPools();
+
+			await using var connection = CreateConnection();
+			await connection.OpenAsync(cancellationToken);
+
+			await using var command = new SqlCommand("Select db_name();", connection);
+
+			foreach (string commandText in CommonHelper.Sql.SplitSqlQueryOnGo(query))
+			{
+				command.CommandText = commandText;
+				System.Diagnostics.Debug.WriteLine(command.CommandText);
+				await command.ExecuteNonQueryAsync(cancellationToken);
+			}
 		}
 
 		public ValueTask DisposeAsync()
@@ -96,10 +128,11 @@ namespace AdventureWorksDemo.Common.Tests
 
 			SqlConnection.ClearAllPools();
 
-			await using var connection = CreateConnection();
+			await using var connection = CreateConnection(DatabaseName);
+
 			await connection.OpenAsync(cancellationToken);
 
-			await using var command = new SqlCommand("Print 'Hello World';", connection);
+			await using var command = new SqlCommand("Select db_name();", connection);
 
 			foreach (string commandText in CommonHelper.Sql.SplitSqlQueryOnGo(query))
 			{
@@ -109,10 +142,10 @@ namespace AdventureWorksDemo.Common.Tests
 			}
 		}
 
-		private static SqlConnection CreateConnection()
+		private static SqlConnection CreateConnection(string databaseName = "master")
 		{
 			var masterConnectionString =
-					 $"server=localhost,{PublicPort};User Id=sa;Password={Password};Initial Catalog=master;Encrypt=false";
+					 $"server=localhost,{PublicPort};User Id=sa;Password={Password};Initial Catalog={databaseName};Encrypt=false";
 			var connectionStringBuilder = new SqlConnectionStringBuilder(masterConnectionString);
 			System.Diagnostics.Debug.WriteLine($"\r\n\r\n\r\n{masterConnectionString}\r\n\r\n\r\n");
 
@@ -219,7 +252,7 @@ namespace AdventureWorksDemo.Common.Tests
 				throw new FileNotFoundException(filename);
 			}
 			var restoreQuery = File.ReadAllText(filename)
-								.Replace("$BackupFileName", AppSettings["Database:FileName"])
+								.Replace("$BackupFileName", AppSettings["Database:DataBaseForTesting"])
 								.Replace("$TARGET_DB_NAME", DatabaseName);
 			SqlConnection.ClearAllPools();
 
