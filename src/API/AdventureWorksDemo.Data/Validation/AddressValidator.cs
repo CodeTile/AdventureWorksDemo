@@ -11,8 +11,8 @@ namespace AdventureWorksDemo.Data.Validation
 			RuleFor(m => m.AddressLine1).Length(3, 60);
 			RuleFor(m => m.AddressLine2).Length(3, 60);
 			RuleFor(m => m.City).Length(3, 30);
-			RuleFor(m => m.StateProvince).Length(3, 50);
-			RuleFor(m => m.CountryRegion).Length(3, 50);
+			RuleFor(m => m.StateProvinceId).GreaterThan(0).WithMessage("State province is required!");
+
 			RuleFor(m => m.PostalCode).Length(3, 15);
 		}
 	}

@@ -8,13 +8,11 @@ Background:
 	Given The service to test is 'AdventureWorksDemo.Data.Services.IAddressService'
 	And I don't reset the database after the scenario
 
-
-
 Scenario: AddAsync
 	Given I reset the database after the scenario
 	When I populate the model 'AdventureWorksDemo.Data.Models.AddressModel'
-		| AddressLine1       | AddressLine2 | City    | CountryRegion  | PostalCode | StateProvince | Rowguid                              |
-		| Wind in the Willow |              | Fiction | United Kingdom | AB11 1XX   | England       | 00000000-0000-0000-0000-000000000001 |
+		| AddressLine1       | AddressLine2 | City    | StateProvinceId | PostalCode | Rowguid                              |
+		| Wind in the Willow | Ping Pong    | Fiction | 1               | AB11 1XX   | 00000000-0000-0000-1111-000000000000 |
 	And I call the method 'AddAsync' with the parameter values
 		| Key   | Value     | TypeName                                    |
 		| model | {{model}} | AdventureWorksDemo.Data.Models.AddressModel |
@@ -25,57 +23,25 @@ Scenario: AddAsync
 		| IsFailure | IsSuccess | Message |
 		| False     | True      |         |
 	And the results property 'Value' contains
-		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1       | AddressLine2 | City    | CountryRegion  | PostalCode | StateProvince |
-		| 5001      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000001 | Wind in the Willow |              | Fiction | United Kingdom | AB11 1XX   | England       |
-	And the table 'SalesLT.Address' contains
-		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1                      | AddressLine2 | City                | CountryRegion  | PostalCode | StateProvince |
-		| 640       | 9/1/2007 12:00:00 AM  | 0e4ac5bb-be0d-4a96-a58e-064daec08e1a | 251 The Metro Center              |              | Wokingham           | United Kingdom | RG41 1QW   | England       |
-		| 652       | 9/1/2006 12:00:00 AM  | 54e20963-b0e9-41cf-ab7e-d50459a3325c | Wymbush                           |              | Milton Keynes       | United Kingdom | MK8 8DF    | England       |
-		| 669       | 12/1/2006 12:00:00 AM | 56baec2a-5cc5-4a90-bef9-ee57e82f2e69 | Internet House, 3399 Science Park |              | Cambridge           | United Kingdom | CB4 4BZ    | England       |
-		| 1034      | 9/1/2007 12:00:00 AM  | 300d2a6e-67b4-417b-83a9-2026818a21c6 | Oxnard Outlet                     |              | Oxnard              | United States  | 93030      | California    |
-		| 1038      | 9/1/2007 12:00:00 AM  | a86c8140-ad7d-4caa-9b40-4006bd9998e2 | 123 Camelia Avenue                |              | Oxnard              | United States  | 93030      | California    |
-		| 1090      | 9/1/2007 12:00:00 AM  | cf3ae92a-3e66-4af0-b683-731826e89cd1 | 25130 South State Street          |              | Sandy               | United States  | 84070      | Utah          |
-		| 1092      | 9/1/2006 12:00:00 AM  | 79cdd89c-3c91-48db-8277-46d04aad7251 | 99700 Bell Road                   |              | Auburn              | United States  | 95603      | California    |
-		| 1111      | 9/1/2006 12:00:00 AM  | 00000000-1111-2222-0000-000000000001 | Orphan Record                     |              | Use In Delete Tests | United States  | 95603      | California    |
-		| 5001      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000001 | Wind in the Willow                |              | Fiction             | United Kingdom | AB11 1XX   | England       |
-
-		
-		
-Scenario: AddAsyncShortAddressLine1
-	Given I reset the database after the scenario
-	When I populate the model 'AdventureWorksDemo.Data.Models.AddressModel'
-		| AddressLine1     | AddressLine2 | City    | CountryRegion  | PostalCode | StateProvince |
-		| {{PadRight:X:2}} |              | Fiction | United Kingdom | AB11 1XX   | England       |
-	And I call the method 'AddAsync' with the parameter values
-		| Key   | Value     | TypeName                                    |
-		| model | {{model}} | AdventureWorksDemo.Data.Models.AddressModel |
-	Then the result is of type
-		| Expected                                                                                  |
-		| AdventureWorksDemo.Data.Models.ServiceResult<AdventureWorksDemo.Data.Models.AddressModel> |
-	And the result is
-		| IsFailure | IsSuccess | Message                                                                        |
-		| True      | False     | 'Address Line1' must be between 3 and 60 characters. You entered 2 characters. |
-
-	And the results property 'Value' contains
-		| AddressId | ModifiedDate         | Rowguid                              | AddressLine1 | AddressLine2 | City    | CountryRegion  | PostalCode | StateProvince |
-		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000000 | XX           |              | Fiction | United Kingdom | AB11 1XX   | England       |
-	And the table 'SalesLT.Address' contains
-		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1                      | AddressLine2 | City                | CountryRegion  | PostalCode | StateProvince |
-		| 640       | 9/1/2007 12:00:00 AM  | 0e4ac5bb-be0d-4a96-a58e-064daec08e1a | 251 The Metro Center              |              | Wokingham           | United Kingdom | RG41 1QW   | England       |
-		| 652       | 9/1/2006 12:00:00 AM  | 54e20963-b0e9-41cf-ab7e-d50459a3325c | Wymbush                           |              | Milton Keynes       | United Kingdom | MK8 8DF    | England       |
-		| 669       | 12/1/2006 12:00:00 AM | 56baec2a-5cc5-4a90-bef9-ee57e82f2e69 | Internet House, 3399 Science Park |              | Cambridge           | United Kingdom | CB4 4BZ    | England       |
-		| 1034      | 9/1/2007 12:00:00 AM  | 300d2a6e-67b4-417b-83a9-2026818a21c6 | Oxnard Outlet                     |              | Oxnard              | United States  | 93030      | California    |
-		| 1038      | 9/1/2007 12:00:00 AM  | a86c8140-ad7d-4caa-9b40-4006bd9998e2 | 123 Camelia Avenue                |              | Oxnard              | United States  | 93030      | California    |
-		| 1090      | 9/1/2007 12:00:00 AM  | cf3ae92a-3e66-4af0-b683-731826e89cd1 | 25130 South State Street          |              | Sandy               | United States  | 84070      | Utah          |
-		| 1092      | 9/1/2006 12:00:00 AM  | 79cdd89c-3c91-48db-8277-46d04aad7251 | 99700 Bell Road                   |              | Auburn              | United States  | 95603      | California    |
-		| 1111      | 9/1/2006 12:00:00 AM  | 00000000-1111-2222-0000-000000000001 | Orphan Record                     |              | Use In Delete Tests | United States  | 95603      | California    |
+		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1       | AddressLine2 | City    | PostalCode | StateProvinceId |
+		| 5001      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-1111-000000000000 | Wind in the Willow | Ping Pong    | Fiction | AB11 1XX   | 1               |
+	And the table 'Person.Address' contains
+		| AddressId | ModifiedDate           | Rowguid                              | AddressLine1                     | AddressLine2 | City          | PostalCode | StateProvinceId |
+		| 1         | 12/21/2013 10:09:00 AM | 2d53a7fc-8017-412d-a591-b10bac54f9b7 | 568, avenue de l? Union Centrale |              | Paris         | 75009      | 1               |
+		| 2         | 8/15/2013 12:00:00 AM  | df254102-23c7-4820-ae4a-6a9f0668c8ba | Charlottenstr 844                |              | Ingolstadt    | 85049      | 3               |
+		| 3         | 6/23/2014 12:00:00 AM  | 513bf254-97b8-433b-b467-3079487a2bd4 | 9093 Gilardy Dr.                 |              | Milton Keynes | MK8 8ZD    | 4               |
+		| 4         | 10/19/2012 12:00:00 AM | 70764525-a746-4f90-b7bf-dd71d6de2bc9 | Celler Weg 504                   |              | Poing         | 66041      | 3               |
+		| 5         | 1/17/2014 12:00:00 AM  | 9a804484-17af-4360-b83b-330cc89634ab | 3985 Dolores Way                 |              | Perth         | 6006       | 5               |
+		| 6         | 12/1/2013 12:00:00 AM  | a9121e78-13ea-476b-bda4-6c6f654e0d55 | Skywalker House                  | Hoth         | Sky Town      | WA3        | 2               |
+		| 7         | 12/1/2013 12:00:00 AM  | a9121e78-dddd-dddd-bda4-6c6f654ecd55 | Delete Orphan                    |              | Wakanda       | WA3        | 7               |
+		| 5001      | 5/24/2024 12:34:56 PM  | 00000000-0000-0000-1111-000000000000 | Wind in the Willow               | Ping Pong    | Fiction       | AB11 1XX   | 1               |
 
 		
 Scenario: AddAsyncLongAddressLine1
 	Given I reset the database after the scenario
 	When I populate the model 'AdventureWorksDemo.Data.Models.AddressModel'
-		| AddressLine1        | AddressLine2 | City    | CountryRegion  | PostalCode | StateProvince |
-		| {{PadRight:X:1234}} |              | Fiction | United Kingdom | AB11 1XX   | England       |
+		| AddressLine1        | AddressLine2 | City    | StateProvinceId | PostalCode | Rowguid                              |
+		| {{PadRight:X:1234}} | Ping Pong    | Fiction | 1               | AB11 1XX   | 00000000-0000-0000-1111-000000000000 |
 	And I call the method 'AddAsync' with the parameter values
 		| Key   | Value     | TypeName                                    |
 		| model | {{model}} | AdventureWorksDemo.Data.Models.AddressModel |
@@ -87,29 +53,57 @@ Scenario: AddAsyncLongAddressLine1
 		| True      | False     | 'Address Line1' must be between 3 and 60 characters. You entered 1234 characters. |
 
 	Then the results property 'Value' contains
-		| AddressId | ModifiedDate         | Rowguid                              | AddressLine1        | AddressLine2 | City    | CountryRegion  | PostalCode | StateProvince |
-		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000000 | {{PadRight:X:1234}} |              | Fiction | United Kingdom | AB11 1XX   | England       |
+		| AddressId | ModifiedDate         | Rowguid                              | AddressLine1                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | AddressLine2 | City    | PostalCode | StateProvinceId |
+		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-1111-000000000000 | XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX | Ping Pong    | Fiction | AB11 1XX   | 1               |
+    
+	And the table 'Person.Address' contains
+		| AddressId | ModifiedDate           | Rowguid                              | AddressLine1                     | AddressLine2 | City          | PostalCode | StateProvinceId |
+		| 1         | 12/21/2013 10:09:00 AM | 2d53a7fc-8017-412d-a591-b10bac54f9b7 | 568, avenue de l? Union Centrale |              | Paris         | 75009      | 1               |
+		| 2         | 8/15/2013 12:00:00 AM  | df254102-23c7-4820-ae4a-6a9f0668c8ba | Charlottenstr 844                |              | Ingolstadt    | 85049      | 3               |
+		| 3         | 6/23/2014 12:00:00 AM  | 513bf254-97b8-433b-b467-3079487a2bd4 | 9093 Gilardy Dr.                 |              | Milton Keynes | MK8 8ZD    | 4               |
+		| 4         | 10/19/2012 12:00:00 AM | 70764525-a746-4f90-b7bf-dd71d6de2bc9 | Celler Weg 504                   |              | Poing         | 66041      | 3               |
+		| 5         | 1/17/2014 12:00:00 AM  | 9a804484-17af-4360-b83b-330cc89634ab | 3985 Dolores Way                 |              | Perth         | 6006       | 5               |
+		| 6         | 12/1/2013 12:00:00 AM  | a9121e78-13ea-476b-bda4-6c6f654e0d55 | Skywalker House                  | Hoth         | Sky Town      | WA3        | 2               |
+		| 7         | 12/1/2013 12:00:00 AM  | a9121e78-dddd-dddd-bda4-6c6f654ecd55 | Delete Orphan                    |              | Wakanda       | WA3        | 7               |
 
-	And the table 'SalesLT.Address' contains
-		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1                      | AddressLine2 | City                | CountryRegion  | PostalCode | StateProvince |
-		| 640       | 9/1/2007 12:00:00 AM  | 0e4ac5bb-be0d-4a96-a58e-064daec08e1a | 251 The Metro Center              |              | Wokingham           | United Kingdom | RG41 1QW   | England       |
-		| 652       | 9/1/2006 12:00:00 AM  | 54e20963-b0e9-41cf-ab7e-d50459a3325c | Wymbush                           |              | Milton Keynes       | United Kingdom | MK8 8DF    | England       |
-		| 669       | 12/1/2006 12:00:00 AM | 56baec2a-5cc5-4a90-bef9-ee57e82f2e69 | Internet House, 3399 Science Park |              | Cambridge           | United Kingdom | CB4 4BZ    | England       |
-		| 1034      | 9/1/2007 12:00:00 AM  | 300d2a6e-67b4-417b-83a9-2026818a21c6 | Oxnard Outlet                     |              | Oxnard              | United States  | 93030      | California    |
-		| 1038      | 9/1/2007 12:00:00 AM  | a86c8140-ad7d-4caa-9b40-4006bd9998e2 | 123 Camelia Avenue                |              | Oxnard              | United States  | 93030      | California    |
-		| 1090      | 9/1/2007 12:00:00 AM  | cf3ae92a-3e66-4af0-b683-731826e89cd1 | 25130 South State Street          |              | Sandy               | United States  | 84070      | Utah          |
-		| 1092      | 9/1/2006 12:00:00 AM  | 79cdd89c-3c91-48db-8277-46d04aad7251 | 99700 Bell Road                   |              | Auburn              | United States  | 95603      | California    |
-		| 1111      | 9/1/2006 12:00:00 AM  | 00000000-1111-2222-0000-000000000001 | Orphan Record                     |              | Use In Delete Tests | United States  | 95603      | California    |
+		
+Scenario: AddAsyncShortAddressLine1
+	Given I reset the database after the scenario
+	When I populate the model 'AdventureWorksDemo.Data.Models.AddressModel'
+		| AddressLine1     | AddressLine2 | City    | StateProvinceId | PostalCode | Rowguid                              |
+		| {{PadRight:X:2}} | Ping Pong    | Fiction | 1               | AB11 1XX   | 00000000-0000-0000-1111-000000000000 |
+	And I call the method 'AddAsync' with the parameter values
+		| Key   | Value     | TypeName                                    |
+		| model | {{model}} | AdventureWorksDemo.Data.Models.AddressModel |
+	Then the result is of type
+		| Expected                                                                                  |
+		| AdventureWorksDemo.Data.Models.ServiceResult<AdventureWorksDemo.Data.Models.AddressModel> |
+	And the result is
+		| IsFailure | IsSuccess | Message                                                                        |
+		| True      | False     | 'Address Line1' must be between 3 and 60 characters. You entered 2 characters. |
+
+	And the results property 'Value' contains
+		| AddressId | ModifiedDate         | Rowguid                              | AddressLine1 | AddressLine2 | City    | PostalCode | StateProvinceId |
+		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-1111-000000000000 | XX           | Ping Pong    | Fiction | AB11 1XX   | 1               |
+	And the table 'Person.Address' contains
+		| AddressId | ModifiedDate           | Rowguid                              | AddressLine1                     | AddressLine2 | City          | PostalCode | StateProvinceId |
+		| 1         | 12/21/2013 10:09:00 AM | 2d53a7fc-8017-412d-a591-b10bac54f9b7 | 568, avenue de l? Union Centrale |              | Paris         | 75009      | 1               |
+		| 2         | 8/15/2013 12:00:00 AM  | df254102-23c7-4820-ae4a-6a9f0668c8ba | Charlottenstr 844                |              | Ingolstadt    | 85049      | 3               |
+		| 3         | 6/23/2014 12:00:00 AM  | 513bf254-97b8-433b-b467-3079487a2bd4 | 9093 Gilardy Dr.                 |              | Milton Keynes | MK8 8ZD    | 4               |
+		| 4         | 10/19/2012 12:00:00 AM | 70764525-a746-4f90-b7bf-dd71d6de2bc9 | Celler Weg 504                   |              | Poing         | 66041      | 3               |
+		| 5         | 1/17/2014 12:00:00 AM  | 9a804484-17af-4360-b83b-330cc89634ab | 3985 Dolores Way                 |              | Perth         | 6006       | 5               |
+		| 6         | 12/1/2013 12:00:00 AM  | a9121e78-13ea-476b-bda4-6c6f654e0d55 | Skywalker House                  | Hoth         | Sky Town      | WA3        | 2               |
+		| 7         | 12/1/2013 12:00:00 AM  | a9121e78-dddd-dddd-bda4-6c6f654ecd55 | Delete Orphan                    |              | Wakanda       | WA3        | 7               |
 
 
 Scenario: AddBatchAsync
 	Given I reset the database after the scenario
 	When I populate a list of the model 'AdventureWorksDemo.Data.Models.AddressModel'
-		| AddressLine1 | AddressLine2 | City    | CountryRegion  | PostalCode | StateProvince | Rowguid                              |
-		| How          |              | Fiction | United Kingdom | AB11 1XX   | England       | 00000000-0000-0000-0000-000000000001 |
-		| Now          |              | Fiction | United Kingdom | AB11 1XX   | England       | 00000000-0000-0000-0000-000000000002 |
-		| Brown        |              | Fiction | United Kingdom | AB11 1XX   | England       | 00000000-0000-0000-0000-000000000003 |
-		| Cow          |              | Fiction | United Kingdom | AB11 1XX   | England       | 00000000-0000-0000-0000-000000000004 |
+		| AddressLine1 | AddressLine2 | City    | PostalCode | StateProvinceId | Rowguid                              |
+		| How          |              | Fiction | AB11 1XX   | 2               | 00000000-0000-0000-0000-000000000001 |
+		| Now          |              | Fiction | AB11 1XX   | 3               | 00000000-0000-0000-0000-000000000002 |
+		| Brown        |              | Fiction | AB11 1XX   | 4               | 00000000-0000-0000-0000-000000000003 |
+		| Cow          |              | Fiction | AB11 1XX   | 5               | 00000000-0000-0000-0000-000000000004 |
 	And I call the method 'AddBatchAsync' with the parameter values
 		| Key   | Value             | TypeName                                                                            |
 		| model | {{ListOfObjects}} | System.Collections.Generic.IEnumerable<AdventureWorksDemo.Data.Models.AddressModel> |
@@ -121,37 +115,34 @@ Scenario: AddBatchAsync
 		| false     | true      |         |
 	
 	And the results property 'Value' contains
-		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1 | AddressLine2 | City    | CountryRegion  | PostalCode | StateProvince |
-		| 5001      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000001 | How          |              | Fiction | United Kingdom | AB11 1XX   | England       |
-		| 5002      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000002 | Now          |              | Fiction | United Kingdom | AB11 1XX   | England       |
-		| 5003      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000003 | Brown        |              | Fiction | United Kingdom | AB11 1XX   | England       |
-		| 5004      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000004 | Cow          |              | Fiction | United Kingdom | AB11 1XX   | England       |
-
-
-	And the table 'SalesLT.Address' contains
-		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1                      | AddressLine2 | City                | CountryRegion  | PostalCode | StateProvince |
-		| 640       | 9/1/2007 12:00:00 AM  | 0e4ac5bb-be0d-4a96-a58e-064daec08e1a | 251 The Metro Center              |              | Wokingham           | United Kingdom | RG41 1QW   | England       |
-		| 652       | 9/1/2006 12:00:00 AM  | 54e20963-b0e9-41cf-ab7e-d50459a3325c | Wymbush                           |              | Milton Keynes       | United Kingdom | MK8 8DF    | England       |
-		| 669       | 12/1/2006 12:00:00 AM | 56baec2a-5cc5-4a90-bef9-ee57e82f2e69 | Internet House, 3399 Science Park |              | Cambridge           | United Kingdom | CB4 4BZ    | England       |
-		| 1034      | 9/1/2007 12:00:00 AM  | 300d2a6e-67b4-417b-83a9-2026818a21c6 | Oxnard Outlet                     |              | Oxnard              | United States  | 93030      | California    |
-		| 1038      | 9/1/2007 12:00:00 AM  | a86c8140-ad7d-4caa-9b40-4006bd9998e2 | 123 Camelia Avenue                |              | Oxnard              | United States  | 93030      | California    |
-		| 1090      | 9/1/2007 12:00:00 AM  | cf3ae92a-3e66-4af0-b683-731826e89cd1 | 25130 South State Street          |              | Sandy               | United States  | 84070      | Utah          |
-		| 1092      | 9/1/2006 12:00:00 AM  | 79cdd89c-3c91-48db-8277-46d04aad7251 | 99700 Bell Road                   |              | Auburn              | United States  | 95603      | California    |
-		| 1111      | 9/1/2006 12:00:00 AM  | 00000000-1111-2222-0000-000000000001 | Orphan Record                     |              | Use In Delete Tests | United States  | 95603      | California    |
-		| 5001      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000001 | How                               |              | Fiction             | United Kingdom | AB11 1XX   | England       |
-		| 5002      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000002 | Now                               |              | Fiction             | United Kingdom | AB11 1XX   | England       |
-		| 5003      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000003 | Brown                             |              | Fiction             | United Kingdom | AB11 1XX   | England       |
-		| 5004      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000004 | Cow                               |              | Fiction             | United Kingdom | AB11 1XX   | England       |
+		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1 | AddressLine2 | City    | PostalCode | StateProvinceId |
+		| 5001      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000001 | How          |              | Fiction | AB11 1XX   | 2               |
+		| 5002      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000002 | Now          |              | Fiction | AB11 1XX   | 3               |
+		| 5003      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000003 | Brown        |              | Fiction | AB11 1XX   | 4               |
+		| 5004      | 5/24/2024 12:34:56 PM | 00000000-0000-0000-0000-000000000004 | Cow          |              | Fiction | AB11 1XX   | 5               |
+	And the table 'Person.Address' contains
+		| AddressId | ModifiedDate           | Rowguid                              | AddressLine1                     | AddressLine2 | City          | PostalCode | StateProvinceId |
+		| 1         | 12/21/2013 10:09:00 AM | 2d53a7fc-8017-412d-a591-b10bac54f9b7 | 568, avenue de l? Union Centrale |              | Paris         | 75009      | 1               |
+		| 2         | 8/15/2013 12:00:00 AM  | df254102-23c7-4820-ae4a-6a9f0668c8ba | Charlottenstr 844                |              | Ingolstadt    | 85049      | 3               |
+		| 3         | 6/23/2014 12:00:00 AM  | 513bf254-97b8-433b-b467-3079487a2bd4 | 9093 Gilardy Dr.                 |              | Milton Keynes | MK8 8ZD    | 4               |
+		| 4         | 10/19/2012 12:00:00 AM | 70764525-a746-4f90-b7bf-dd71d6de2bc9 | Celler Weg 504                   |              | Poing         | 66041      | 3               |
+		| 5         | 1/17/2014 12:00:00 AM  | 9a804484-17af-4360-b83b-330cc89634ab | 3985 Dolores Way                 |              | Perth         | 6006       | 5               |
+		| 6         | 12/1/2013 12:00:00 AM  | a9121e78-13ea-476b-bda4-6c6f654e0d55 | Skywalker House                  | Hoth         | Sky Town      | WA3        | 2               |
+		| 7         | 12/1/2013 12:00:00 AM  | a9121e78-dddd-dddd-bda4-6c6f654ecd55 | Delete Orphan                    |              | Wakanda       | WA3        | 7               |
+		| 5001      | 5/24/2024 12:34:56 PM  | 00000000-0000-0000-0000-000000000001 | How                              |              | Fiction       | AB11 1XX   | 2               |
+		| 5002      | 5/24/2024 12:34:56 PM  | 00000000-0000-0000-0000-000000000002 | Now                              |              | Fiction       | AB11 1XX   | 3               |
+		| 5003      | 5/24/2024 12:34:56 PM  | 00000000-0000-0000-0000-000000000003 | Brown                            |              | Fiction       | AB11 1XX   | 4               |
+		| 5004      | 5/24/2024 12:34:56 PM  | 00000000-0000-0000-0000-000000000004 | Cow                              |              | Fiction       | AB11 1XX   | 5               |
 
 
 Scenario: AddBatchAsync2ShortAddressLine1
 	Given I reset the database after the scenario
 	When I populate a list of the model 'AdventureWorksDemo.Data.Models.AddressModel'
-		| AddressLine1     | AddressLine2 | City    | CountryRegion  | PostalCode | StateProvince | Rowguid                              |
-		| How              |              | Fiction | United Kingdom | AB11 1XX   | England       | 00000000-0000-0000-0000-000000000001 |
-		| {{PadRight:X:2}} |              | Fiction | United Kingdom | AB11 1XX   | England       | 00000000-0000-0000-0000-000000000002 |
-		| Brown            |              | Fiction | United Kingdom | AB11 1XX   | England       | 00000000-0000-0000-0000-000000000003 |
-		| {{PadRight:X:1}} |              | Fiction | United Kingdom | AB11 1XX   | England       | 00000000-0000-0000-0000-000000000004 |
+		| AddressLine1     | AddressLine2 | City    | PostalCode | StateProvinceId | Rowguid                              |
+		| How              |              | Fiction | AB11 1XX   | 1               | 00000000-0000-0000-0000-000000000001 |
+		| {{PadRight:X:2}} |              | Fiction | AB11 1XX   | 2               | 00000000-0000-0000-0000-000000000002 |
+		| Brown            |              | Fiction | AB11 1XX   | 3               | 00000000-0000-0000-0000-000000000003 |
+		| {{PadRight:X:1}} |              | Fiction | AB11 1XX   | 4               | 00000000-0000-0000-0000-000000000004 |
 	And I call the method 'AddBatchAsync' with the parameter values
 		| Key   | Value             | TypeName                                                                            |
 		| model | {{ListOfObjects}} | System.Collections.Generic.IEnumerable<AdventureWorksDemo.Data.Models.AddressModel> |
@@ -167,31 +158,30 @@ Scenario: AddBatchAsync2ShortAddressLine1
 		| 'Address Line1' must be between 3 and 60 characters. You entered 1 characters. |
 
 	And the results property 'Value' contains
-		| AddressId | ModifiedDate         | Rowguid                              | AddressLine1 | AddressLine2 | City    | CountryRegion  | PostalCode | StateProvince |
-		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000001 | How          |              | Fiction | United Kingdom | AB11 1XX   | England       |
-		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000002 | XX           |              | Fiction | United Kingdom | AB11 1XX   | England       |
-		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000003 | Brown        |              | Fiction | United Kingdom | AB11 1XX   | England       |
-		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000004 | X            |              | Fiction | United Kingdom | AB11 1XX   | England       |
+		| AddressId | ModifiedDate         | Rowguid                              | AddressLine1 | AddressLine2 | City    | PostalCode | StateProvinceId |
+		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000001 | How          |              | Fiction | AB11 1XX   | 1               |
+		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000002 | XX           |              | Fiction | AB11 1XX   | 2               |
+		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000003 | Brown        |              | Fiction | AB11 1XX   | 3               |
+		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000004 | X            |              | Fiction | AB11 1XX   | 4               |
+    
+	And the table 'Person.Address' contains
+		| AddressId | ModifiedDate           | Rowguid                              | AddressLine1                     | AddressLine2 | City          | PostalCode | StateProvinceId |
+		| 1         | 12/21/2013 10:09:00 AM | 2d53a7fc-8017-412d-a591-b10bac54f9b7 | 568, avenue de l? Union Centrale |              | Paris         | 75009      | 1               |
+		| 2         | 8/15/2013 12:00:00 AM  | df254102-23c7-4820-ae4a-6a9f0668c8ba | Charlottenstr 844                |              | Ingolstadt    | 85049      | 3               |
+		| 3         | 6/23/2014 12:00:00 AM  | 513bf254-97b8-433b-b467-3079487a2bd4 | 9093 Gilardy Dr.                 |              | Milton Keynes | MK8 8ZD    | 4               |
+		| 4         | 10/19/2012 12:00:00 AM | 70764525-a746-4f90-b7bf-dd71d6de2bc9 | Celler Weg 504                   |              | Poing         | 66041      | 3               |
+		| 5         | 1/17/2014 12:00:00 AM  | 9a804484-17af-4360-b83b-330cc89634ab | 3985 Dolores Way                 |              | Perth         | 6006       | 5               |
+		| 6         | 12/1/2013 12:00:00 AM  | a9121e78-13ea-476b-bda4-6c6f654e0d55 | Skywalker House                  | Hoth         | Sky Town      | WA3        | 2               |
+		| 7         | 12/1/2013 12:00:00 AM  | a9121e78-dddd-dddd-bda4-6c6f654ecd55 | Delete Orphan                    |              | Wakanda       | WA3        | 7               |
 
-	And the table 'SalesLT.Address' contains
-		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1                      | AddressLine2 | City                | CountryRegion  | PostalCode | StateProvince |
-		| 640       | 9/1/2007 12:00:00 AM  | 0e4ac5bb-be0d-4a96-a58e-064daec08e1a | 251 The Metro Center              |              | Wokingham           | United Kingdom | RG41 1QW   | England       |
-		| 652       | 9/1/2006 12:00:00 AM  | 54e20963-b0e9-41cf-ab7e-d50459a3325c | Wymbush                           |              | Milton Keynes       | United Kingdom | MK8 8DF    | England       |
-		| 669       | 12/1/2006 12:00:00 AM | 56baec2a-5cc5-4a90-bef9-ee57e82f2e69 | Internet House, 3399 Science Park |              | Cambridge           | United Kingdom | CB4 4BZ    | England       |
-		| 1034      | 9/1/2007 12:00:00 AM  | 300d2a6e-67b4-417b-83a9-2026818a21c6 | Oxnard Outlet                     |              | Oxnard              | United States  | 93030      | California    |
-		| 1038      | 9/1/2007 12:00:00 AM  | a86c8140-ad7d-4caa-9b40-4006bd9998e2 | 123 Camelia Avenue                |              | Oxnard              | United States  | 93030      | California    |
-		| 1090      | 9/1/2007 12:00:00 AM  | cf3ae92a-3e66-4af0-b683-731826e89cd1 | 25130 South State Street          |              | Sandy               | United States  | 84070      | Utah          |
-		| 1092      | 9/1/2006 12:00:00 AM  | 79cdd89c-3c91-48db-8277-46d04aad7251 | 99700 Bell Road                   |              | Auburn              | United States  | 95603      | California    |
-		| 1111      | 9/1/2006 12:00:00 AM  | 00000000-1111-2222-0000-000000000001 | Orphan Record                     |              | Use In Delete Tests | United States  | 95603      | California    |
-
-Scenario: AddBatchAsync2LongAddressLine1
+Scenario: AddBatchAsync2LongAddressLine2
 	Given I reset the database after the scenario
 	When I populate a list of the model 'AdventureWorksDemo.Data.Models.AddressModel'
-		| AddressLine1         | AddressLine2 | City    | CountryRegion  | PostalCode | StateProvince | Rowguid                              |
-		| How                  |              | Fiction | United Kingdom | AB11 1XX   | England       | 00000000-0000-0000-0000-000000000001 |
-		| {{PadRight:X:12345}} |              | Fiction | United Kingdom | AB11 1XX   | England       | 00000000-0000-0000-0000-000000000002 |
-		| Brown                |              | Fiction | United Kingdom | AB11 1XX   | England       | 00000000-0000-0000-0000-000000000003 |
-		| {{PadRight:X:1234}}  |              | Fiction | United Kingdom | AB11 1XX   | England       | 00000000-0000-0000-0000-000000000004 |
+		| AddressLine1       | AddressLine2       | City    | PostalCode | StateProvinceId | Rowguid                              |
+		| How                |                    | Fiction | AB11 1XX   | 1               | 00000000-0000-0000-0000-000000000001 |
+		| {{PadRight:X:61}}  | {{PadRight:X:62}}  | Fiction | AB11 1XX   | 2               | 00000000-0000-0000-0000-000000000002 |
+		| Brown              |                    | Fiction | AB11 1XX   | 3               | 00000000-0000-0000-0000-000000000003 |
+		| {{PadRight:X:234}} | {{PadRight:X:123}} | Fiction | AB11 1XX   | 4               | 00000000-0000-0000-0000-000000000004 |
 	And I call the method 'AddBatchAsync' with the parameter values
 		| Key   | Value             | TypeName                                                                            |
 		| model | {{ListOfObjects}} | System.Collections.Generic.IEnumerable<AdventureWorksDemo.Data.Models.AddressModel> |
@@ -202,23 +192,24 @@ Scenario: AddBatchAsync2LongAddressLine1
 		| IsFailure | IsSuccess |
 		| True      | False     |
 	And the results property 'Message' contains
-		| Expected                                                                           |
-		| 'Address Line1' must be between 3 and 60 characters. You entered 12345 characters. |
-		| 'Address Line1' must be between 3 and 60 characters. You entered 1234 characters.  |
+		| Expected                                                                         |
+		| 'Address Line2' must be between 3 and 60 characters. You entered 62 characters.  |
+		| 'Address Line2' must be between 3 and 60 characters. You entered 123 characters. |
+		| 'Address Line1' must be between 3 and 60 characters. You entered 61 characters.  |
+		| 'Address Line1' must be between 3 and 60 characters. You entered 234 characters. |
 	And the results property 'Value' contains
-		| AddressId | ModifiedDate         | Rowguid                              | AddressLine1         | AddressLine2 | City    | CountryRegion  | PostalCode | StateProvince |
-		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000001 | How                  |              | Fiction | United Kingdom | AB11 1XX   | England       |
-		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000002 | {{PadRight:X:12345}} |              | Fiction | United Kingdom | AB11 1XX   | England       |
-		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000003 | Brown                |              | Fiction | United Kingdom | AB11 1XX   | England       |
-		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000004 | {{PadRight:X:1234}}  |              | Fiction | United Kingdom | AB11 1XX   | England       |
-	And the table 'SalesLT.Address' contains
-		| AddressId | ModifiedDate          | Rowguid                              | AddressLine1                      | AddressLine2 | City                | CountryRegion  | PostalCode | StateProvince |
-		| 640       | 9/1/2007 12:00:00 AM  | 0e4ac5bb-be0d-4a96-a58e-064daec08e1a | 251 The Metro Center              |              | Wokingham           | United Kingdom | RG41 1QW   | England       |
-		| 652       | 9/1/2006 12:00:00 AM  | 54e20963-b0e9-41cf-ab7e-d50459a3325c | Wymbush                           |              | Milton Keynes       | United Kingdom | MK8 8DF    | England       |
-		| 669       | 12/1/2006 12:00:00 AM | 56baec2a-5cc5-4a90-bef9-ee57e82f2e69 | Internet House, 3399 Science Park |              | Cambridge           | United Kingdom | CB4 4BZ    | England       |
-		| 1034      | 9/1/2007 12:00:00 AM  | 300d2a6e-67b4-417b-83a9-2026818a21c6 | Oxnard Outlet                     |              | Oxnard              | United States  | 93030      | California    |
-		| 1038      | 9/1/2007 12:00:00 AM  | a86c8140-ad7d-4caa-9b40-4006bd9998e2 | 123 Camelia Avenue                |              | Oxnard              | United States  | 93030      | California    |
-		| 1090      | 9/1/2007 12:00:00 AM  | cf3ae92a-3e66-4af0-b683-731826e89cd1 | 25130 South State Street          |              | Sandy               | United States  | 84070      | Utah          |
-		| 1092      | 9/1/2006 12:00:00 AM  | 79cdd89c-3c91-48db-8277-46d04aad7251 | 99700 Bell Road                   |              | Auburn              | United States  | 95603      | California    |
-		| 1111      | 9/1/2006 12:00:00 AM  | 00000000-1111-2222-0000-000000000001 | Orphan Record                     |              | Use In Delete Tests | United States  | 95603      | California    |
+		| AddressId | ModifiedDate         | Rowguid                              | AddressLine1       | AddressLine2       | City    | PostalCode | StateProvinceId |
+		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000001 | How                |                    | Fiction | AB11 1XX   | 1               |
+		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000002 | {{PadRight:X:61}}  | {{PadRight:X:62}}  | Fiction | AB11 1XX   | 2               |
+		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000003 | Brown              |                    | Fiction | AB11 1XX   | 3               |
+		| 0         | 1/1/0001 12:00:00 AM | 00000000-0000-0000-0000-000000000004 | {{PadRight:X:234}} | {{PadRight:X:123}} | Fiction | AB11 1XX   | 4               |
+	And the table 'Person.Address' contains
+		| AddressId | ModifiedDate           | Rowguid                              | AddressLine1                     | AddressLine2 | City          | PostalCode | StateProvinceId |
+		| 1         | 12/21/2013 10:09:00 AM | 2d53a7fc-8017-412d-a591-b10bac54f9b7 | 568, avenue de l? Union Centrale |              | Paris         | 75009      | 1               |
+		| 2         | 8/15/2013 12:00:00 AM  | df254102-23c7-4820-ae4a-6a9f0668c8ba | Charlottenstr 844                |              | Ingolstadt    | 85049      | 3               |
+		| 3         | 6/23/2014 12:00:00 AM  | 513bf254-97b8-433b-b467-3079487a2bd4 | 9093 Gilardy Dr.                 |              | Milton Keynes | MK8 8ZD    | 4               |
+		| 4         | 10/19/2012 12:00:00 AM | 70764525-a746-4f90-b7bf-dd71d6de2bc9 | Celler Weg 504                   |              | Poing         | 66041      | 3               |
+		| 5         | 1/17/2014 12:00:00 AM  | 9a804484-17af-4360-b83b-330cc89634ab | 3985 Dolores Way                 |              | Perth         | 6006       | 5               |
+		| 6         | 12/1/2013 12:00:00 AM  | a9121e78-13ea-476b-bda4-6c6f654e0d55 | Skywalker House                  | Hoth         | Sky Town      | WA3        | 2               |
+		| 7         | 12/1/2013 12:00:00 AM  | a9121e78-dddd-dddd-bda4-6c6f654ecd55 | Delete Orphan                    |              | Wakanda       | WA3        | 7               |
 

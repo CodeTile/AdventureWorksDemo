@@ -41,8 +41,7 @@ namespace AdventureWorksDemo.Data.Services
 		{
 			return !original.AddressLine1.Equals(mutated.AddressLine1)
 				|| !original.AddressLine2.Equals(mutated.AddressLine2)
-				|| !original.StateProvince.Equals(mutated.StateProvince)
-				|| !original.CountryRegion.Equals(mutated.CountryRegion)
+				|| !original.StateProvinceId.Equals(mutated.StateProvinceId)
 				|| !original.City.Equals(mutated.City)
 				|| !original.PostalCode.Equals(mutated.PostalCode);
 		}
@@ -56,8 +55,7 @@ namespace AdventureWorksDemo.Data.Services
 		{
 			original.AddressLine1 = TransposeIfNotNull(original.AddressLine1, mutated.AddressLine1);
 			original.AddressLine2 = TransposeIfNotNull(original.AddressLine2, mutated.AddressLine2);
-			original.StateProvince = TransposeIfNotNull(original.StateProvince, mutated.StateProvince);
-			original.CountryRegion = TransposeIfNotNull(original.CountryRegion, mutated.CountryRegion);
+			original.StateProvinceId = TransposeIfNotNull(original.StateProvinceId, mutated.StateProvinceId);
 			original.PostalCode = TransposeIfNotNull(original.PostalCode, mutated.PostalCode);
 			original.City = TransposeIfNotNull(original.City, mutated.City);
 		}
