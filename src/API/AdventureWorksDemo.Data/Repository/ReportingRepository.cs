@@ -5,22 +5,28 @@ namespace AdventureWorksDemo.Data.Repository
 {
 	public interface IReportingRepository
 	{
-		IQueryable<SalesSummaryByYear> ReportOnLineVsOffLine();
+		IQueryable<SalesSummary> ReportOnLineVsOffLine();
 	}
 
 	public class ReportingRepository(AdventureWorksContext _context) : IReportingRepository
 	{
-		public IQueryable<SalesSummaryByYear> ReportOnLineVsOffLine()
+		public IQueryable<SalesSummary> ReportOnLineVsOffLine()
 		{
 			return _context.SalesOrderHeaders
-						.GroupBy(o => new { OrderYear = o.OrderDate.Year, o.OnlineOrderFlag })
-						  .Select(g => new SalesSummaryByYear
+						.GroupBy(o => new
+						{
+							Year = o.OrderDate.Year,
+							Month = o.OrderDate.Month,
+							o.OnlineOrderFlag
+						})
+						  .Select(g => new SalesSummary
 						  {
-							  OrderYear = g.Key.OrderYear,
+							  Year = g.Key.Year,
+							  Month = g.Key.Month,
 							  OnlineOrderFlag = g.Key.OnlineOrderFlag,
 							  SalesCount = g.Count()
 						  })
-						.OrderByDescending(x => x.OrderYear)
+						.OrderByDescending(x => x.Year)
 						.ThenBy(x => x.OnlineOrderFlag);
 		}
 	}

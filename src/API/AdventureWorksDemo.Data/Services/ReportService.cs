@@ -5,11 +5,11 @@ namespace AdventureWorksDemo.Data.Services
 {
 	public interface IReportService
 	{
-		IQueryable<SalesSummaryByYear> ReportOnlineVsOffLine();
+		IQueryable<SalesSummary> ReportOnlineVsOffLine();
 	}
 
 	public class ReportService(IReportingRepository _repository) : IReportService
 	{
-		public IQueryable<SalesSummaryByYear> ReportOnlineVsOffLine() => _repository.ReportOnLineVsOffLine();
+		public IQueryable<SalesSummary> ReportOnlineVsOffLine() => _repository.ReportOnLineVsOffLine();
 	}
 }

@@ -1,8 +1,9 @@
 ﻿namespace AdventureWorksDemo.Data.Models.Reports
 {
-	public record SalesSummaryByYear
+	public record SalesSummary
 	{
-		public int OrderYear { get; set; }
+		public int Year { get; set; }
+		public int Month { get; set; }
 		public bool OnlineOrderFlag { get; set; }
 		public int SalesCount { get; set; }
 	}

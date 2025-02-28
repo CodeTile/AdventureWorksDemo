@@ -13,6 +13,8 @@ namespace AdventureWorksDemo.MudBlazor.Common
 	{
 		Task<GridData<T>> FindAllAsync<T>(GridState<T> state, string defaultSorting, HttpClient httpClient);
 
+		Task ReportOnlineVsOfflineSales(HttpClient httpClient, int isOnline);
+
 		Task<IServiceResult<T>> UpdateAsync<T>(T item, HttpClient httpClient);
 	}
 
@@ -46,6 +48,11 @@ namespace AdventureWorksDemo.MudBlazor.Common
 				TotalItems = paging.TotalCount,
 				Items = data,
 			};
+		}
+
+		public async Task ReportOnlineVsOfflineSales(HttpClient httpClient, int isOnline)
+		{
+			var url = Url.Report_OnlineVsOffLine;
 		}
 
 		public async Task<IServiceResult<T>> UpdateAsync<T>(T item, HttpClient httpClient)
