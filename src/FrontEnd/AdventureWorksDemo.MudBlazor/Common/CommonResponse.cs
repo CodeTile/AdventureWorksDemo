@@ -7,13 +7,16 @@ using AdventureWorksDemo.MudBlazor.Models;
 
 using MudBlazor;
 
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using static MudBlazor.CategoryTypes;
+
 namespace AdventureWorksDemo.MudBlazor.Common
 {
 	public interface ICommonResponseGet
 	{
 		Task<GridData<T>> FindAllAsync<T>(GridState<T> state, string defaultSorting, HttpClient httpClient);
 
-		Task ReportOnlineVsOfflineSales(HttpClient httpClient, int isOnline);
+		////Task<TimeSeriesChartSeries> ReportOnlineVsOfflineSalesAsync(HttpClient httpClient, bool isOnline);
 
 		Task<IServiceResult<T>> UpdateAsync<T>(T item, HttpClient httpClient);
 	}
@@ -50,10 +53,32 @@ namespace AdventureWorksDemo.MudBlazor.Common
 			};
 		}
 
-		public async Task ReportOnlineVsOfflineSales(HttpClient httpClient, int isOnline)
-		{
-			var url = Url.Report_OnlineVsOffLine;
-		}
+		////public async Task<TimeSeriesChartSeries> ReportOnlineVsOfflineSalesAsync(HttpClient httpClient, bool isOnline)
+		////{
+		////	var result = new TimeSeriesChartSeries()
+		////	{
+		////		Index = isOnline ? 0 : 1,
+		////		Name = isOnline ? "Online" : "Offline",
+		////		IsVisible = true,
+		////		Type = TimeSeriesDisplayType.Line,
+		////	};
+		////	var request = new HttpRequestMessage
+		////	{
+		////		Method = HttpMethod.Get,
+		////		RequestUri = new Uri(Url.Report_OnlineVsOffLine),
+		////	};
+
+		////	var response = await httpClient.SendAsync(request).ConfigureAwait(false);
+		////	if (response.IsSuccessStatusCode)
+		////	{
+		////		var data = (await response!.Content!.ReadFromJsonAsync<IEnumerable<SalesSummary>>()) ?? [];
+		////		result.Data = [.. data.Where(m => m.OnlineOrderFlag == isOnline)
+		////						 !.OrderBy(m => m.GetHashCode())
+		////							.Select(x => new TimeSeriesChartSeries.TimeValue(x.Period, x.SalesCount))];
+		////	}
+
+		////	return result;
+		////}
 
 		public async Task<IServiceResult<T>> UpdateAsync<T>(T item, HttpClient httpClient)
 		{
