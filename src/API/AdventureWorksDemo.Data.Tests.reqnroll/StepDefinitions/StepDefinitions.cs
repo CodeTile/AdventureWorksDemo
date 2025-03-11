@@ -5,6 +5,7 @@ using AdventureWorksDemo.Common.Tests;
 
 using AdventureWorksDemo.Common.Tests.Extensions;
 using AdventureWorksDemo.Data.Models;
+using AdventureWorksDemo.Data.Models.Reports;
 using AdventureWorksDemo.Data.Paging;
 using AdventureWorksDemo.Data.Services;
 using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
@@ -38,6 +39,11 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 					Helper.ScenarioContexts.AddToContext(ScenarioContextKey.UOT, Helper.Ioc.ResolveObject<IAddressService>());
 					break;
 
+				case "AdventureWorksDemo.Data.Services.IReportService":
+				case "AdventureWorksDemo.Data.Services.ReportService":
+					Helper.ScenarioContexts.AddToContext(ScenarioContextKey.UOT, Helper.Ioc.ResolveObject<IReportService>());
+					break;
+
 				case "AdventureWorksDemo.Data.Services.IProductCategoryService":
 				case "AdventureWorksDemo.Data.Services.ProductCategoryService":
 					Helper.ScenarioContexts.AddToContext(ScenarioContextKey.UOT, Helper.Ioc.ResolveObject<IProductCategoryService>());
@@ -69,7 +75,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 		public void ThenThePagedListValuesAre(DataTable expected)
 		{
 			IPagedList actual = (IPagedList)Helper.ScenarioContexts.GetResult;
-			List<IPagedList> actualAsList = new() { actual };
+			List<IPagedList> actualAsList = [actual];
 
 			expected.CompareToSet(actualAsList);
 		}
@@ -80,15 +86,14 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			var contextResult = Helper.ScenarioContexts.GetResult;
 
 			string? resultTypeName = contextResult.GetType().FullNameReadable();
-
 			switch (contextResult)
 			{
 				case bool:
-					table.CompareToSet(new List<ValueExpectedResult>() { new ValueExpectedResult() { Expected = ((bool)contextResult).ToString() } });
+					table.CompareToSet([new ValueExpectedResult() { Expected = ((bool)contextResult).ToString() }]);
 					break;
 
 				case Exception:
-					table.CompareToSet(new List<string>() { resultTypeName });
+					table.CompareToSet([resultTypeName]);
 					break;
 
 				case AdventureWorksDemo.Data.Models.AddressModel:
@@ -123,7 +128,9 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 					break;
 
 				default:
+					//table.CompareToSet(contextResult);
 					throw new NotImplementedException($"Type [{resultTypeName}] is not handled in step {nameof(ThenTheResultIs)}!");
+					break;
 			}
 		}
 
@@ -190,19 +197,29 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			CompareResults(table, true);
 		}
 
-		[When("I call the method {string} with the parameter values")]
-		public async Task WhenICallTheMethodWithTheParameterValuesAsync(string methodName, DataTable table)
+		[When("I call the method {string}")]
+		public async Task WhenICallTheMethodAsync(string methodName)
 		{
-			if (table.Rows.Count == 0)
+			await WhenICallTheMethodWithTheParameterValuesAsync(methodName, null);
+		}
+
+		[When("I call the method {string} with the parameter values")]
+		public async Task WhenICallTheMethodWithTheParameterValuesAsync(string methodName, DataTable? table)
+		{
+			if (table?.Rows.Count == 0)
 			{
 				throw new Exception("Table is empty");
 			}
-			var methodParameters = GetParametersFromDataTable(table);
+			KeyValueTypeName[] methodParameters = [];
+			if (table != null)
+			{
+				methodParameters = GetParametersFromDataTable(table);
+			}
 			var uot = Helper.ScenarioContexts.GetUot;
 
 			var result = await GetMethodValueForObjectAsync(uot,
-															methodName,
-															methodParameters);
+														   methodName,
+														   methodParameters);
 			if (result.Item1.FullName.Contains("Task"))
 			{
 				var t = result.Item1.GenericTypeArguments.FirstOrDefault();
@@ -221,16 +238,6 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			Helper.ScenarioContexts.AddToContext(ScenarioContextKey.ListOfObjects, models);
 		}
 
-		//[When("I populate a list of type {string}")]
-		//public void WhenIPopulateAListOfStrings(string typeName, DataTable dataTable)
-		//{
-		//	var list = Helper.Types.CreateListByTypeName(typeName);
-		//	for (int i = 0; i < dataTable.Rows.Count; i++)
-		//	{
-		//		list.Add(dataTable.Rows[i][0]);
-		//	}
-		//	Helper.ScenarioContexts.AddToContext(ScenarioContextKey.ListOfObjects, list);
-		//}
 		[When("I populate the model {string}")]
 		public void WhenIPopulateTheModel(string modelTypeName, DataTable dataTable)
 		{
@@ -285,6 +292,8 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			{
 				case "System.Exception": table.CompareToSet([resultTypeName]); break;
 				case "AdventureWorksDemo.Data.Models.AddressModel": table.CompareToSet((IEnumerable<AddressModel>)actual, compareSorted); break;
+				case "AdventureWorksDemo.Data.Models.Reports.SalesSummary": table.CompareToSet((IEnumerable<SalesSummary>)actual, compareSorted); break;
+				case "AdventureWorksDemo.Data.Models.Reports.SaleByTerritory": table.CompareToSet((IEnumerable<SaleByTerritory>)actual, compareSorted); break;
 				case "AdventureWorksDemo.Data.Models.ProductCategoryModel": table.CompareToSet((IEnumerable<ProductCategoryModel>)actual, compareSorted); break;
 				case "AdventureWorksDemo.Data.Models.ProductDescriptionModel": table.CompareToSet((IEnumerable<ProductDescriptionModel>)actual, compareSorted); break;
 				default: throw new NotImplementedException($"Type [{resultTypeName}] is not implemented!");
@@ -334,9 +343,9 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 
 		private async Task<Tuple<Type, object>> GetMethodValueForObjectAsync(dynamic target,
 														string methodName,
-														KeyValueTypeName[] arguments)
+														KeyValueTypeName[]? arguments)
 		{
-			if (target == null) throw new ArgumentNullException("target");
+			ArgumentNullException.ThrowIfNull(target);
 			Tuple<Type, object> retval = null;
 			await Task.Delay(0);
 			Type t = target.GetType();
@@ -383,37 +392,58 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			return args.ToArray();
 		}
 
-		private async Task<dynamic> InvokeMethod(object target, object[] args, dynamic method)
+		private async Task<object> InvokeMethod(object target, object[] args, MethodInfo method)
 		{
-			dynamic actionResult;
-			if (await IsMethodAsync(method))
+			if (method == null) throw new ArgumentNullException(nameof(method));
+			if (target == null) throw new ArgumentNullException(nameof(target));
+
+			object actionResult;
+
+			try
 			{
-				actionResult = await method.Invoke(target, args);
-			}
-			else
-			{
-				var nonAsyncResult = method.Invoke(target, args);
-				try
+				if (IsMethodAsynchronous(method))
 				{
-					if (!typeof(IEnumerable).IsAssignableFrom(nonAsyncResult))
+					var result = method.Invoke(target, args);
+					if (result is Task task)
 					{
-						actionResult = nonAsyncResult;
+						await task.ConfigureAwait(false);
+						actionResult = task.GetType().IsGenericType ? ((dynamic)task).Result : null;
 					}
 					else
 					{
-						actionResult = nonAsyncResult.Expression.Value;
+						actionResult = result;
 					}
 				}
-				catch (Exception)
+				else
 				{
-					actionResult = nonAsyncResult;
+					var nonAsyncResult = method.Invoke(target, args);
+					actionResult = nonAsyncResult is IEnumerable enumerable ? enumerable : nonAsyncResult;
 				}
+			}
+			catch (Exception ex)
+			{
+				// Log exception (if needed)
+				throw new InvalidOperationException($"Error invoking method {method.Name}.", ex);
 			}
 
 			return actionResult;
 		}
 
-		private async Task<Tuple<Type, object>> InvokeMethodReturnValue(object target, object[] args, dynamic method)
+		//private async Task<dynamic> InvokeMethod(object target, object[] args, dynamic method)
+		//{
+		//	ArgumentNullException.ThrowIfNull(method);
+		//	ArgumentNullException.ThrowIfNull(target);
+
+		// dynamic actionResult; if (IsMethodAsynchronous(method)) { actionResult = await
+		// method.Invoke(target, args); } else { var nonAsyncResult = method.Invoke(target, args);
+		// try { if (!typeof(IEnumerable).IsAssignableFrom(nonAsyncResult)) { actionResult =
+		// nonAsyncResult; } else { actionResult = nonAsyncResult.Expression.Value; } } catch
+		// (Exception) { actionResult = nonAsyncResult; } }
+
+		//	return actionResult;
+		//}
+
+		private async Task<Tuple<Type, object>> InvokeMethodReturnValue(object target, object[]? args, dynamic method)
 		{
 			dynamic actionResult = await InvokeMethod(target, args, method);
 
@@ -428,9 +458,8 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.StepDefinitions
 			}
 		}
 
-		private async Task<bool> IsMethodAsync(dynamic method)
+		private bool IsMethodAsynchronous(dynamic method)
 		{
-			await Task.Delay(0);
 			IReadOnlyCollection<CustomAttributeData> r = method.CustomAttributes;
 			return r.Any(w => w.AttributeType?.Name == "AsyncStateMachineAttribute");
 		}

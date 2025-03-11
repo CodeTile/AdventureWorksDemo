@@ -12,8 +12,8 @@ namespace AdventureWorksDemo.Data.Services
 
 	public class ReportService(IReportingRepository _repository) : IReportService
 	{
-		public IQueryable<SalesSummary> ReportOnlineVsOffLine() => _repository.ReportOnLineVsOffLine();
+		public IQueryable<SalesSummary> ReportOnlineVsOffLine() => _repository.ReportOnLineVsOffLine().AsQueryable<SalesSummary>();
 
-		public IQueryable<SaleByTerritory> ReportSalesByTerritory() => _repository.ReportSalesByTerritory();
+		public IQueryable<SaleByTerritory> ReportSalesByTerritory() => _repository.ReportSalesByTerritory().AsQueryable<SaleByTerritory>();
 	}
 }

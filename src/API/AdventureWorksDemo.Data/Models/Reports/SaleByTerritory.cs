@@ -1,4 +1,4 @@
-﻿namespace AdventureWorksDemo.Data.Repository
+﻿namespace AdventureWorksDemo.Data.Models.Reports
 {
 	public record SaleByTerritory
 	{

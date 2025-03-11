@@ -1,5 +1,4 @@
 ﻿using AdventureWorksDemo.Data.Models.Reports;
-using AdventureWorksDemo.Data.Repository;
 using AdventureWorksDemo.Data.Services;
 
 using Microsoft.AspNetCore.Mvc;
