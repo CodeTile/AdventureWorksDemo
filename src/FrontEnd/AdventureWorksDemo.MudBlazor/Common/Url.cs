@@ -8,6 +8,7 @@ namespace AdventureWorksDemo.MudBlazor.Common
 	{
 		string Administration_ProductDescription { get; }
 		string Report_OnlineVsOffLine { get; }
+		string Report_SalesByTerritory { get; }
 
 		Uri GetByModelType(Type T);
 	}
@@ -16,6 +17,7 @@ namespace AdventureWorksDemo.MudBlazor.Common
 	{
 		public string Administration_ProductDescription => $"{configuration["Api:base"]}{configuration["Api:productdescription"]}";
 		public string Report_OnlineVsOffLine => $"{configuration["Api:Base"]}{configuration["Api:Reports:Base"]}{configuration["Api:Reports:OnlineVsOffLine"]}";
+		public string Report_SalesByTerritory => $"{configuration["Api:Base"]}{configuration["Api:Reports:Base"]}{configuration["Api:Reports:SalesByTerritory"]}";
 
 		public Uri GetByModelType(Type T)
 		{

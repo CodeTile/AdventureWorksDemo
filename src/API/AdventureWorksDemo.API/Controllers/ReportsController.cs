@@ -1,5 +1,5 @@
-﻿using AdventureWorksDemo.Data.Entities;
-using AdventureWorksDemo.Data.Models.Reports;
+﻿using AdventureWorksDemo.Data.Models.Reports;
+using AdventureWorksDemo.Data.Repository;
 using AdventureWorksDemo.Data.Services;
 
 using Microsoft.AspNetCore.Mvc;
@@ -17,8 +17,16 @@ namespace AdventureWorksDemo.API.Controllers
 		[ProducesResponseType<SalesSummary>(StatusCodes.Status200OK)]
 		public virtual async Task<IActionResult> ReportOnlineVsOffLine()
 		{
-			return Ok(await Task.Run(() =>
-		_service.ReportOnlineVsOffLine()));
+			WriteToTraceLog(nameof(AdventureWorksDemo.API.Controllers), nameof(ReportOnlineVsOffLine));
+			return Ok(await Task.Run(() => _service.ReportOnlineVsOffLine()));
+		}
+
+		[HttpGet("salesbyterritory")]
+		[ProducesResponseType<SaleByTerritory>(StatusCodes.Status200OK)]
+		public virtual async Task<IActionResult> ReportSalesByTerritory()
+		{
+			WriteToTraceLog(nameof(AdventureWorksDemo.API.Controllers), nameof(ReportSalesByTerritory));
+			return Ok(await Task.Run(() => _service.ReportSalesByTerritory()));
 		}
 
 		internal void WriteToTraceLog(string namespaceName, string methodName, string parmeterNames = "")

@@ -1,22 +1,14 @@
 ﻿@page "/"
-@using AdventureWorksDemo.MudBlazor.Common
 @using global::MudBlazor
-@inject Common.ICommonResponseGet response
-@inject IUrl Url
-@using Microsoft.Extensions.Caching.Memory;
+@using AdventureWorksDemo.MudBlazor.Components.Pages.Charts;
 <PageTitle>Home</PageTitle>
 
 <MudText Typo="Typo.h3" GutterBottom="true">Adventure Works</MudText>
 
 
-
-@* <br />
-<div>
-    
-</div> *@
 <MudContainer Class="mt-16 px-8" MaxWidth="MaxWidth.False">
     <MudGrid>
-        <MudItem xs="12" sm="6" md="4">
+@*         <MudItem xs="12" sm="6" md="4">
             <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
         </MudItem>
         <MudItem xs="12" sm="6" md="4">
@@ -24,16 +16,16 @@
         </MudItem>
         <MudItem xs="12" sm="12" md="4">
             <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-        </MudItem>
+        </MudItem> *@
         <MudItem xs="12" sm="6" >
             <MudTooltip Text="Online vs Online sales">
-            <MudTimeSeriesChart ChartSeries="@_series" @bind-SelectedIndex="Index" Width="100%" Height="350px" ChartOptions="@_options" CanHideSeries TimeLabelSpacing="TimeSpan.FromDays(120)" TimeLabelFormat="MMM yyyy" />
+           <ChartOnlineVsOffline/>
             </MudTooltip>
         </MudItem>
         <MudItem xs="12" sm="6">
-            <MudPaper Elevation="2" Class="pa-4" Style="height: 100%"></MudPaper>
+                <ChartSalesByTerritory/>
         </MudItem>
-        <MudItem xs="12" sm="6" md="4">
+        @* <MudItem xs="12" sm="6" md="4">
             <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
         </MudItem>
         <MudItem xs="12" sm="6" md="4">
@@ -41,61 +33,8 @@
         </MudItem>
         <MudItem xs="12" sm="12" md="4">
             <MudPaper Elevation="2" Class="pa-4" Style="height: 200px;"></MudPaper>
-        </MudItem>
+        </MudItem> *@
     </MudGrid>
 </MudContainer>
 @code {
-    MemoryCache memoryCache = new MemoryCache(new MemoryCacheOptions());
-    IJsonDataService service;
-    private int Index = -1; //default value cannot be 0 -> first selectedindex is 0.
-    private ChartOptions _options = new ChartOptions
-        {
-            YAxisLines = false,
-            YAxisTicks = 500,
-            MaxNumYAxisTicks = 10,
-            YAxisRequireZeroPoint = true,
-            XAxisLines = false,
-            LineStrokeWidth = 1,
-            ShowLegend=true,
-        };
-
-    // private TimeSeriesChartSeries _chart1 = new();
-    // private TimeSeriesChartSeries _chart2 = new();
-
-    private List<TimeSeriesChartSeries> _series = new();
-
-    private readonly Random _random = new Random();
-
-    protected async override Task OnInitializedAsync()
-    {          
-        service = new JsonDataService(httpClient, memoryCache);
-
-        // _chart1 = await GetTimeSeriesAsync( true);
-        // _chart2 = await GetTimeSeriesAsync( false);
-
-        _series.Add(await GetTimeSeriesAsync(true));
-        _series.Add(await GetTimeSeriesAsync(false));
-
-        StateHasChanged();
-        await base.OnInitializedAsync();
-    }
-
-    private async Task<TimeSeriesChartSeries> GetTimeSeriesAsync (bool isOnline)
-    {
-        var result = new TimeSeriesChartSeries()
-            {
-                Index = isOnline ? 0 : 1,
-                Name = isOnline ? "Online" : "Offline",
-                IsVisible = true,
-                Type = TimeSeriesDisplayType.Line,
-            };
-        IEnumerable<SalesSummary> data = await service.GetDataAsync<IEnumerable<SalesSummary>?>(Url.Report_OnlineVsOffLine) ?? [];
-        if (data != null && data.Any())
-        {
-            result.Data = [.. data.Where(m => m.OnlineOrderFlag == isOnline)
-                             !.OrderBy(m => m.Period.Ticks)
-                                .Select(x => new TimeSeriesChartSeries.TimeValue(x.Period, x.SalesCount))];
-        }
-        return result;
-    }
 }

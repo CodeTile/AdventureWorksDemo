@@ -6,9 +6,11 @@ namespace AdventureWorksDemo.Data.Repository
 	public interface IReportingRepository
 	{
 		IQueryable<SalesSummary> ReportOnLineVsOffLine();
+
+		IQueryable<SaleByTerritory> ReportSalesByTerritory();
 	}
 
-	public class ReportingRepository(AdventureWorksContext _context) : IReportingRepository
+	public partial class ReportingRepository(AdventureWorksContext _context) : IReportingRepository
 	{
 		public IQueryable<SalesSummary> ReportOnLineVsOffLine()
 		{
@@ -28,6 +30,18 @@ namespace AdventureWorksDemo.Data.Repository
 						  })
 						.OrderByDescending(x => x.Year)
 						.ThenBy(x => x.OnlineOrderFlag);
+		}
+
+		public IQueryable<SaleByTerritory> ReportSalesByTerritory()
+		{
+			return _context.SalesTerritories
+				.Select(m => new SaleByTerritory
+				{
+					CountryRegion = m.Name,
+					SalesYTD = m.SalesYtd,
+					SalesLastYear = m.SalesLastYear
+				})
+				.OrderBy(m => m.CountryRegion);
 		}
 	}
 }

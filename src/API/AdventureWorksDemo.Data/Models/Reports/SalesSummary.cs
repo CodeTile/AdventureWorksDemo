@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualBasic;
-
-namespace AdventureWorksDemo.Data.Models.Reports
+﻿namespace AdventureWorksDemo.Data.Models.Reports
 {
 	public record SalesSummary
 	{
