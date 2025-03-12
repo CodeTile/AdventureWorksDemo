@@ -3,15 +3,13 @@
 @using global::MudBlazor
 @inject Common.ICommonResponseGet response
 @inject IUrl Url
-@using Microsoft.Extensions.Caching.Memory;
+@inject IJsonDataService _jsonDataService
 <PageTitle>Online vs Offline</PageTitle>
 
             <MudTooltip Text="Online vs Online sales">
                 <MudTimeSeriesChart ChartSeries="@_series" @bind-SelectedIndex="Index" Width="100%" Height="350px" ChartOptions="@_options" CanHideSeries TimeLabelSpacing="TimeSpan.FromDays(120)" TimeLabelFormat="MMM yyyy" />
             </MudTooltip>
 @code {
-    MemoryCache memoryCache = new MemoryCache(new MemoryCacheOptions());
-    IJsonDataService service;
     private int Index = -1; //default value cannot be 0 -> first selectedindex is 0.
     private ChartOptions _options = new ChartOptions
         {
@@ -29,7 +27,6 @@
 
     protected async override Task OnInitializedAsync()
     {
-        service = new JsonDataService(httpClient, memoryCache);
 
 
         _series.Add(await GetTimeSeriesAsync(true));
@@ -48,7 +45,7 @@
                 IsVisible = true,
                 Type = TimeSeriesDisplayType.Line,
             };
-        IEnumerable<SalesSummary> data = await service.GetDataAsync<IEnumerable<SalesSummary>?>(Url.Report_OnlineVsOffLine) ?? [];
+        IEnumerable<SalesSummary> data = await _jsonDataService.GetDataAsync<IEnumerable<SalesSummary>?>(Url.Report_OnlineVsOffLine,httpClient) ?? [];
         if (data != null && data.Any())
         {
             result.Data = [.. data.Where(m => m.OnlineOrderFlag == isOnline)

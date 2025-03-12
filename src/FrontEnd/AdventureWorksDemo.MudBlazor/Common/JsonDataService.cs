@@ -4,30 +4,22 @@ namespace AdventureWorksDemo.MudBlazor.Common
 {
 	public interface IJsonDataService
 	{
-		Task<T?> GetDataAsync<T>(string url);
+		Task<T?> GetDataAsync<T>(string url, HttpClient httpClient);
 	}
 
-	public class JsonDataService : IJsonDataService
+	public class JsonDataService(IMemoryCache _cache) : IJsonDataService
 	{
-		public JsonDataService(HttpClient httpClient, IMemoryCache cache)
-		{
-			_httpClient = httpClient;
-			_cache = cache;
-		}
-
-		private readonly IMemoryCache _cache;
 		private readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(1);
-		private readonly HttpClient _httpClient;
 
 		// Cache duration
-		public async Task<T?> GetDataAsync<T>(string url)
+		public async Task<T?> GetDataAsync<T>(string url, HttpClient httpClient)
 		{
 			if (_cache.TryGetValue(url, out T cachedData))
 			{
 				return cachedData; // Return cached data if available
 			}
 
-			T? data = await _httpClient.GetFromJsonAsync<T>(url);
+			T? data = await httpClient.GetFromJsonAsync<T>(url);
 
 			if (data != null)
 			{
