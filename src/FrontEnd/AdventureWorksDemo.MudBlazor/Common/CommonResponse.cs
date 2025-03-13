@@ -72,7 +72,7 @@ namespace AdventureWorksDemo.MudBlazor.Common
 
 		private static JsonSerializerOptions DeserialiseOptions() => new()
 		{
-			PropertyNameCaseInsensitive = true // ✅ Allows matching lowercase JSON keys
+			PropertyNameCaseInsensitive = true // Allows matching lowercase JSON keys
 		};
 	}
 }
