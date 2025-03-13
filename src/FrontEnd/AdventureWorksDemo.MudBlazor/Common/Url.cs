@@ -16,8 +16,8 @@ namespace AdventureWorksDemo.MudBlazor.Common
 	public class Url(IConfiguration configuration) : IUrl
 	{
 		public string Administration_ProductDescription => $"{configuration["Api:base"]}{configuration["Api:productdescription"]}";
-		public string Report_OnlineVsOffLine => $"{configuration["Api:Base"]}{configuration["Api:Reports:Base"]}{configuration["Api:Reports:OnlineVsOffLine"]}";
-		public string Report_SalesByTerritory => $"{configuration["Api:Base"]}{configuration["Api:Reports:Base"]}{configuration["Api:Reports:SalesByTerritory"]}";
+		public string Report_OnlineVsOffLine => $"{configuration["Api:base"]}{configuration["Api:Reports:Base"]}{configuration["Api:Reports:OnlineVsOffLine"]}";
+		public string Report_SalesByTerritory => $"{configuration["Api:base"]}{configuration["Api:Reports:Base"]}{configuration["Api:Reports:SalesByTerritory"]}";
 
 		public Uri GetByModelType(Type T)
 		{
