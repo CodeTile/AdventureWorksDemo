@@ -18,9 +18,9 @@ namespace AdventureWorksDemo.MudBlazor.Tests.Common
 	[TestClass]
 	public class CommonResponseTests
 	{
-		private CommonResponse _commonResponse;
-		private HttpClient _httpClient;
-		private Mock<IUrl> _mockUrl;
+		private CommonResponse? _commonResponse;
+		private HttpClient? _httpClient;
+		private Mock<IUrl>? _mockUrl;
 
 		[TestMethod]
 		public async Task FindAllAsync_ReturnsGridData_WhenResponseIsSuccessful()
