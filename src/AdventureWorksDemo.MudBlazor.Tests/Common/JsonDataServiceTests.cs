@@ -72,7 +72,7 @@ namespace AdventureWorksDemo.MudBlazor.Tests.Common
 			_mockCacheEntry = new MockCacheEntry();
 			_mockHttpMessageHandler = new MockHttpMessageHandler();
 			_httpClient = new HttpClient(_mockHttpMessageHandler);
-			_jsonDataService = new JsonDataService(_mockCache.Object);
+			_jsonDataService = new JsonDataService(_mockCache.Object, null);
 		}
 
 		// Custom class to mock CacheEntry
@@ -80,9 +80,9 @@ namespace AdventureWorksDemo.MudBlazor.Tests.Common
 		{
 			public DateTimeOffset? AbsoluteExpiration { get; set; }
 			public TimeSpan? AbsoluteExpirationRelativeToNow { get; set; }
-			public IList<IChangeToken> ExpirationTokens { get; } = new List<IChangeToken>();
+			public IList<IChangeToken> ExpirationTokens { get; } = [];
 			public object Key { get; set; }
-			public IList<PostEvictionCallbackRegistration> PostEvictionCallbacks { get; } = new List<PostEvictionCallbackRegistration>();
+			public IList<PostEvictionCallbackRegistration> PostEvictionCallbacks { get; } = [];
 			public CacheItemPriority Priority { get; set; }
 			public long? Size { get; set; }
 			public TimeSpan? SlidingExpiration { get; set; }
