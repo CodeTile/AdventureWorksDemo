@@ -18,8 +18,6 @@ namespace AdventureWorksDemo.API.Controllers
 		internal readonly IService _service = service;
 
 		[HttpPost()]
-		[ProducesResponseType<Product>(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public virtual async Task<IActionResult> AddAsync([FromBody] TModel model)
 		{
 			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(AddAsync));
@@ -31,8 +29,6 @@ namespace AdventureWorksDemo.API.Controllers
 		}
 
 		[HttpDelete("id")]
-		[ProducesResponseType<Product>(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status400BadRequest)]
 		public virtual async Task<IActionResult> DeleteAsync(int id)
 		{
 			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(DeleteAsync));
@@ -43,8 +39,6 @@ namespace AdventureWorksDemo.API.Controllers
 		}
 
 		[HttpGet()]
-		[ProducesResponseType<Product>(StatusCodes.Status200OK)]
-		[ProducesResponseType(StatusCodes.Status404NotFound)]
 		public virtual async Task<IActionResult> FindAllAsync([FromBody] PageingFilter pageingFilter)
 		{
 			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(FindAllAsync), "pageingFilter");
@@ -58,7 +52,6 @@ namespace AdventureWorksDemo.API.Controllers
 		}
 
 		[HttpGet("id")]
-		[ProducesResponseType<Product>(StatusCodes.Status200OK)]
 		public virtual async Task<IActionResult?> FindAsync(int id)
 		{
 			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(FindAllAsync));
@@ -66,7 +59,6 @@ namespace AdventureWorksDemo.API.Controllers
 		}
 
 		[HttpPut()]
-		[ProducesResponseType<Product>(StatusCodes.Status200OK)]
 		public virtual async Task<IActionResult> UpdateAsync([FromBody] TModel model)
 		{
 			WriteToTraceLog(nameof(GenericControllerBase<TModel>), nameof(UpdateAsync), "model");

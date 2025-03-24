@@ -1,11 +1,13 @@
 using AdventureWorksDemo.MudBlazor.Common;
 using AdventureWorksDemo.MudBlazor.Components;
 
+using Microsoft.Extensions.Caching.Memory;
+
 using MudBlazor.Services;
 
 namespace AdventureWorksDemo.MudBlazor
 {
-	public class Program
+	public static class Program
 	{
 		public static void Main(string[] args)
 		{
@@ -23,9 +25,12 @@ namespace AdventureWorksDemo.MudBlazor
 			{
 				BaseAddress = new Uri(builder.Configuration["Api:Base"] ?? "")
 			});
+			// add singleton's
 			builder.Services.AddSingleton(typeof(IUrl), typeof(Url));
+			builder.Services.AddScoped(typeof(IMemoryCache), typeof(MemoryCache));
+			builder.Services.AddScoped(typeof(IJsonDataService), typeof(JsonDataService));
 			builder.Services.AddScoped(typeof(ICommonResponseGet), typeof(CommonResponse));
-			
+
 			var app = builder.Build();
 
 			// Configure the HTTP request pipeline.

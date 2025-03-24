@@ -1,5 +1,4 @@
-﻿using System.Net;
-using System.Net.Mime;
+﻿using System.Net.Mime;
 using System.Text;
 using System.Text.Json;
 
@@ -73,7 +72,7 @@ namespace AdventureWorksDemo.MudBlazor.Common
 
 		private static JsonSerializerOptions DeserialiseOptions() => new()
 		{
-			PropertyNameCaseInsensitive = true // ✅ Allows matching lowercase JSON keys
+			PropertyNameCaseInsensitive = true // Allows matching lowercase JSON keys
 		};
 	}
 }

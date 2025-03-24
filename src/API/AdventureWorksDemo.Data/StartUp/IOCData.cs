@@ -36,6 +36,9 @@ namespace AdventureWorksDemo.Data.StartUp
 			services.AddScoped<IGenericCrudRepository<Address>, GenericCrudRepository<Address>>();
 			services.AddScoped<IGenericCrudRepository<ProductCategory>, GenericCrudRepository<ProductCategory>>();
 			services.AddScoped<IGenericCrudRepository<ProductDescription>, GenericCrudRepository<ProductDescription>>();
+
+			services.AddTransient<IReportingRepository, ReportingRepository>();
+			services.AddTransient<IReportService, ReportService>();
 			// Add Singleton's
 			services.AddSingleton(TimeProvider.System);
 			// Add validators
