@@ -45,7 +45,7 @@ namespace AdventureWorksDemo.Data.Repository
 		Task<IServiceResult<IEnumerable<TEntity>>> UpdateAsync(IEnumerable<TEntity> entities);
 	}
 
-	public class GenericCrudRepository<TEntity>(AdventureWorksDbContext context) : IGenericCrudRepository<TEntity> where TEntity : class
+	public class GenericCrudRepository<TEntity>(AdventureWorksContext context) : IGenericCrudRepository<TEntity> where TEntity : class
 	{
 		// ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		// Class is based on https://medium.com/@abdulwariis/building-a-generic-service-for-crud-operations-in-c-net-core-3db40c2c8c8a

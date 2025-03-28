@@ -14,21 +14,19 @@ namespace AdventureWorksDemo.Common.Tests.Helpers
 			public static DataTable GetDataTable(string query)
 			{
 				var sqlConn = new SqlConnection(DockerMsSqlServerDatabase.Current!.ConnectionString);
-
-				DataTable dt = null;
+				sqlConn.Open();
 				using (sqlConn)
 				using (var cmd = new SqlCommand(query, sqlConn))
 				{
-					sqlConn.Open();
 					// create data adapter
-					SqlDataAdapter da = new SqlDataAdapter(cmd);
+					SqlDataAdapter da = new(cmd);
 					// this will query your database and return the result to your datatable
-					dt = new DataTable();
+					DataTable dt = new();
 					da.Fill(dt);
-					sqlConn.Close();
+					//sqlConn.Close();
 					da.Dispose();
+					return dt;
 				}
-				return dt;
 			}
 
 			public static List<T> GetDataTableAsList<T>(string query)

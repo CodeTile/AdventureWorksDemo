@@ -36,11 +36,7 @@ namespace AdventureWorksDemo.Data.Models
 		/// </summary>
 		[Required]
 		[StringLength(50)]
-		public string StateProvince { get; set; }
-
-		[Required]
-		[StringLength(50)]
-		public string CountryRegion { get; set; }
+		public int StateProvinceId { get; set; }
 
 		/// <summary>
 		/// Postal code for the street address.

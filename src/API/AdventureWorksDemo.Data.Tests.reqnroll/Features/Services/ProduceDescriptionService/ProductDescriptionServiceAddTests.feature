@@ -26,12 +26,12 @@ Scenario: AddAsync
 	And the results property 'Value' contains
 		| ProductDescriptionId | ModifiedDate          | Rowguid                              | Description |
 		| 5001                 | 5/24/2024 12:34:56 PM | 00000000-1111-0000-0000-000000000002 | PingPong    |
-	And the table 'SalesLT.ProductDescription' filtered by 'ProductDescriptionId > 1598' contains
-		| ProductDescriptionId | ModifiedDate          | Rowguid                              | Description                                                                                                                                                                                                                                                                   |
-		| 1599                 | 6/1/2007 12:00:00 AM  | 4aae6d4f-8320-4f32-99de-bb3b1b13f1ef | Maillot de cycliste en microfibre avec le logo de l'�quipe AWV, manches longues, unisexe.                                                                                                                                                                                     |
-		| 1600                 | 6/1/2020 12:00:00 AM  | 4aae6d4f-1111-4f32-99de-bb3b1b13f1ef | Orphan record to deletion test                                                                                                                                                                                                                                                |
-		| 1605                 | 6/1/2007 12:00:00 AM  | 9cfed570-180a-44ea-8233-55116a0ddcb9 | Chaque cadre est fabriqu� artisanalement dans notre atelier de Bordeaux afin d'obtenir le diam�tre et l'�paisseur adapt�s � un v�lo tout-terrain de premier choix. Le cadre en aluminium soud� � chaud pr�sente un tube d'un plus grand diam�tre, afin d'absorber les bosses. |
-		| 5001                 | 5/24/2024 12:34:56 PM | 00000000-1111-0000-0000-000000000002 | PingPong                                                                                                                                                                                                                                                                      |
+	And the table 'Production.ProductDescription' filtered by 'ProductDescriptionId > 4' contains
+		| ProductDescriptionId | ModifiedDate          | Rowguid                              | Description                                                                                                                                                                               |
+		| 555                  | 6/1/2007 12:00:00 AM  | 741eae59-5e59-4dbc-9086-2633392c2582 | All-occasion value bike with our basic comfort and safety features. Offers wider, more stable tires for a ride around town or weekend trip.                                               |
+		| 666                  | 6/1/2007 12:00:00 AM  | ddc955b2-843e-49ce-8f7b-54870f6135eb | The plush custom saddle keeps you riding all day,  and there's plenty of space to add panniers and bike bags to the newly-redesigned carrier.  This bike has stability when fully-loaded. |
+		| 777                  | 6/1/2007 12:00:00 AM  | 9cfed570-180a-44ea-8233-55116a0ddcb9 | For Delete Tests Only                                                                                                                                                                     |
+		| 5001                 | 5/24/2024 12:34:56 PM | 00000000-1111-0000-0000-000000000002 | PingPong                                                                                                                                                                                  |
 
 
 		
@@ -55,11 +55,11 @@ Scenario: AddAsyncShortName
 		| ProductDescriptionId | ModifiedDate         | Rowguid                              | Description |
 		| 0                    | 1/1/0001 12:00:00 AM | 00000000-1111-0000-0000-000000000002 | XX          |
 
-	And the table 'SalesLT.ProductDescription' filtered by 'ProductDescriptionId > 1598' contains
-		| ProductDescriptionId | ModifiedDate         | Rowguid                              | Description                                                                                                                                                                                                                                                                   |
-		| 1599                 | 6/1/2007 12:00:00 AM | 4aae6d4f-8320-4f32-99de-bb3b1b13f1ef | Maillot de cycliste en microfibre avec le logo de l'�quipe AWV, manches longues, unisexe.                                                                                                                                                                                     |
-		| 1600                 | 6/1/2020 12:00:00 AM | 4aae6d4f-1111-4f32-99de-bb3b1b13f1ef | Orphan record to deletion test                                                                                                                                                                                                                                                |
-		| 1605                 | 6/1/2007 12:00:00 AM | 9cfed570-180a-44ea-8233-55116a0ddcb9 | Chaque cadre est fabriqu� artisanalement dans notre atelier de Bordeaux afin d'obtenir le diam�tre et l'�paisseur adapt�s � un v�lo tout-terrain de premier choix. Le cadre en aluminium soud� � chaud pr�sente un tube d'un plus grand diam�tre, afin d'absorber les bosses. |
+	And the table 'Production.ProductDescription' filtered by 'ProductDescriptionId > 4' contains
+		| ProductDescriptionId | ModifiedDate         | Rowguid                              | Description                                                                                                                                                                               |
+		| 555                  | 6/1/2007 12:00:00 AM | 741eae59-5e59-4dbc-9086-2633392c2582 | All-occasion value bike with our basic comfort and safety features. Offers wider, more stable tires for a ride around town or weekend trip.                                               |
+		| 666                  | 6/1/2007 12:00:00 AM | ddc955b2-843e-49ce-8f7b-54870f6135eb | The plush custom saddle keeps you riding all day,  and there's plenty of space to add panniers and bike bags to the newly-redesigned carrier.  This bike has stability when fully-loaded. |
+		| 777                  | 6/1/2007 12:00:00 AM | 9cfed570-180a-44ea-8233-55116a0ddcb9 | For Delete Tests Only                                                                                                                                                                     |
 		
 		
 Scenario: AddAsyncLongName
@@ -81,11 +81,11 @@ Scenario: AddAsyncLongName
 		| ProductDescriptionId | ModifiedDate         | Rowguid                              | Description        |
 		| 0                    | 1/1/0001 12:00:00 AM | 00000000-1111-0000-0000-000000000002 | {{PadRight:X:401}} |
 
-	And the table 'SalesLT.ProductDescription' filtered by 'ProductDescriptionId > 1598' contains
-		| ProductDescriptionId | ModifiedDate         | Rowguid                              | Description                                                                                                                                                                                                                                                                   |
-		| 1599                 | 6/1/2007 12:00:00 AM | 4aae6d4f-8320-4f32-99de-bb3b1b13f1ef | Maillot de cycliste en microfibre avec le logo de l'�quipe AWV, manches longues, unisexe.                                                                                                                                                                                     |
-		| 1600                 | 6/1/2020 12:00:00 AM | 4aae6d4f-1111-4f32-99de-bb3b1b13f1ef | Orphan record to deletion test                                                                                                                                                                                                                                                |
-		| 1605                 | 6/1/2007 12:00:00 AM | 9cfed570-180a-44ea-8233-55116a0ddcb9 | Chaque cadre est fabriqu� artisanalement dans notre atelier de Bordeaux afin d'obtenir le diam�tre et l'�paisseur adapt�s � un v�lo tout-terrain de premier choix. Le cadre en aluminium soud� � chaud pr�sente un tube d'un plus grand diam�tre, afin d'absorber les bosses. |
+	And the table 'Production.ProductDescription' filtered by 'ProductDescriptionId > 4' contains
+		| ProductDescriptionId | ModifiedDate         | Rowguid                              | Description                                                                                                                                                                               |
+		| 555                  | 6/1/2007 12:00:00 AM | 741eae59-5e59-4dbc-9086-2633392c2582 | All-occasion value bike with our basic comfort and safety features. Offers wider, more stable tires for a ride around town or weekend trip.                                               |
+		| 666                  | 6/1/2007 12:00:00 AM | ddc955b2-843e-49ce-8f7b-54870f6135eb | The plush custom saddle keeps you riding all day,  and there's plenty of space to add panniers and bike bags to the newly-redesigned carrier.  This bike has stability when fully-loaded. |
+		| 777                  | 6/1/2007 12:00:00 AM | 9cfed570-180a-44ea-8233-55116a0ddcb9 | For Delete Tests Only                                                                                                                                                                     |
 
 
 Scenario: AddBatchAsync
@@ -114,16 +114,16 @@ Scenario: AddBatchAsync
 		| 5004                 | 5/24/2024 12:34:56 PM | 00000000-1111-1111-0000-000000000004 | Cow         |
 
 
-	And the table 'SalesLT.ProductDescription' filtered by 'ProductDescriptionId > 1598' contains
-		| ProductDescriptionId | ModifiedDate          | Rowguid                              | Description                                                                                                                                                                                                                                                                   |
-		| 1600                 | 6/1/2020 12:00:00 AM  | 4aae6d4f-1111-4f32-99de-bb3b1b13f1ef | Orphan record to deletion test                                                                                                                                                                                                                                                |
-		| 5001                 | 5/24/2024 12:34:56 PM | 00000000-1111-1111-0000-000000000001 | How                                                                                                                                                                                                                                                                           |
-		| 5002                 | 5/24/2024 12:34:56 PM | 00000000-1111-1111-0000-000000000002 | Now                                                                                                                                                                                                                                                                           |
-		| 5003                 | 5/24/2024 12:34:56 PM | 00000000-1111-1111-0000-000000000003 | Brown                                                                                                                                                                                                                                                                         |
-		| 5004                 | 5/24/2024 12:34:56 PM | 00000000-1111-1111-0000-000000000004 | Cow                                                                                                                                                                                                                                                                           |
-		| 1599                 | 6/1/2007 12:00:00 AM  | 4aae6d4f-8320-4f32-99de-bb3b1b13f1ef | Maillot de cycliste en microfibre avec le logo de l'�quipe AWV, manches longues, unisexe.                                                                                                                                                                                     |
-		| 1605                 | 6/1/2007 12:00:00 AM  | 9cfed570-180a-44ea-8233-55116a0ddcb9 | Chaque cadre est fabriqu� artisanalement dans notre atelier de Bordeaux afin d'obtenir le diam�tre et l'�paisseur adapt�s � un v�lo tout-terrain de premier choix. Le cadre en aluminium soud� � chaud pr�sente un tube d'un plus grand diam�tre, afin d'absorber les bosses. |
-		
+	And the table 'Production.ProductDescription' filtered by 'ProductDescriptionId > 4' contains
+		| ProductDescriptionId | ModifiedDate          | Rowguid                              | Description                                                                                                                                                                               |
+		| 555                  | 6/1/2007 12:00:00 AM  | 741eae59-5e59-4dbc-9086-2633392c2582 | All-occasion value bike with our basic comfort and safety features. Offers wider, more stable tires for a ride around town or weekend trip.                                               |
+		| 666                  | 6/1/2007 12:00:00 AM  | ddc955b2-843e-49ce-8f7b-54870f6135eb | The plush custom saddle keeps you riding all day,  and there's plenty of space to add panniers and bike bags to the newly-redesigned carrier.  This bike has stability when fully-loaded. |
+		| 777                  | 6/1/2007 12:00:00 AM  | 9cfed570-180a-44ea-8233-55116a0ddcb9 | For Delete Tests Only                                                                                                                                                                     |
+		| 5001                 | 5/24/2024 12:34:56 PM | 00000000-1111-1111-0000-000000000001 | How                                                                                                                                                                                       |
+		| 5002                 | 5/24/2024 12:34:56 PM | 00000000-1111-1111-0000-000000000002 | Now                                                                                                                                                                                       |
+		| 5003                 | 5/24/2024 12:34:56 PM | 00000000-1111-1111-0000-000000000003 | Brown                                                                                                                                                                                     |
+		| 5004                 | 5/24/2024 12:34:56 PM | 00000000-1111-1111-0000-000000000004 | Cow                                                                                                                                                                                       |
+
 Scenario: AddBatchAsync2ShortName
 	Given I reset the database after the scenario
 	When I populate a list of the model 'AdventureWorksDemo.Data.Models.ProductDescriptionModel'
@@ -153,11 +153,11 @@ Scenario: AddBatchAsync2ShortName
 		| 0                    | 1/1/0001 12:00:00 AM | 00000000-1111-1111-0000-000000000003 | Brown       |
 		| 0                    | 1/1/0001 12:00:00 AM | 00000000-1111-1111-0000-000000000004 | It          |
 
-	And the table 'SalesLT.ProductDescription' filtered by 'ProductDescriptionId > 1598' contains
-		| ProductDescriptionId | ModifiedDate         | Rowguid                              | Description                                                                                                                                                                                                                                                                   |
-		| 1599                 | 6/1/2007 12:00:00 AM | 4aae6d4f-8320-4f32-99de-bb3b1b13f1ef | Maillot de cycliste en microfibre avec le logo de l'�quipe AWV, manches longues, unisexe.                                                                                                                                                                                     |
-		| 1600                 | 6/1/2020 12:00:00 AM | 4aae6d4f-1111-4f32-99de-bb3b1b13f1ef | Orphan record to deletion test                                                                                                                                                                                                                                                |
-		| 1605                 | 6/1/2007 12:00:00 AM | 9cfed570-180a-44ea-8233-55116a0ddcb9 | Chaque cadre est fabriqu� artisanalement dans notre atelier de Bordeaux afin d'obtenir le diam�tre et l'�paisseur adapt�s � un v�lo tout-terrain de premier choix. Le cadre en aluminium soud� � chaud pr�sente un tube d'un plus grand diam�tre, afin d'absorber les bosses. |
+	And the table 'Production.ProductDescription' filtered by 'ProductDescriptionId > 4' contains
+		| ProductDescriptionId | ModifiedDate         | Rowguid                              | Description                                                                                                                                                                               |
+		| 555                  | 6/1/2007 12:00:00 AM | 741eae59-5e59-4dbc-9086-2633392c2582 | All-occasion value bike with our basic comfort and safety features. Offers wider, more stable tires for a ride around town or weekend trip.                                               |
+		| 666                  | 6/1/2007 12:00:00 AM | ddc955b2-843e-49ce-8f7b-54870f6135eb | The plush custom saddle keeps you riding all day,  and there's plenty of space to add panniers and bike bags to the newly-redesigned carrier.  This bike has stability when fully-loaded. |
+		| 777                  | 6/1/2007 12:00:00 AM | 9cfed570-180a-44ea-8233-55116a0ddcb9 | For Delete Tests Only                                                                                                                                                                     |
 
 Scenario: AddBatchAsync2LongName
 	Given I reset the database after the scenario
@@ -186,8 +186,8 @@ Scenario: AddBatchAsync2LongName
 		| 0                    | 1/1/0001 12:00:00 AM | 00000000-1111-1111-0000-000000000003 | {{PadRight:X:1234}} |
 		| 0                    | 1/1/0001 12:00:00 AM | 00000000-1111-1111-0000-000000000004 | Les Contamines      |
 
-	And the table 'SalesLT.ProductDescription' filtered by 'ProductDescriptionId > 1598' contains
-		| ProductDescriptionId | ModifiedDate         | Rowguid                              | Description                                                                                                                                                                                                                                                                   |
-		| 1599                 | 6/1/2007 12:00:00 AM | 4aae6d4f-8320-4f32-99de-bb3b1b13f1ef | Maillot de cycliste en microfibre avec le logo de l'�quipe AWV, manches longues, unisexe.                                                                                                                                                                                     |
-		| 1600                 | 6/1/2020 12:00:00 AM | 4aae6d4f-1111-4f32-99de-bb3b1b13f1ef | Orphan record to deletion test                                                                                                                                                                                                                                                |
-		| 1605                 | 6/1/2007 12:00:00 AM | 9cfed570-180a-44ea-8233-55116a0ddcb9 | Chaque cadre est fabriqu� artisanalement dans notre atelier de Bordeaux afin d'obtenir le diam�tre et l'�paisseur adapt�s � un v�lo tout-terrain de premier choix. Le cadre en aluminium soud� � chaud pr�sente un tube d'un plus grand diam�tre, afin d'absorber les bosses. |
+	And the table 'Production.ProductDescription' filtered by 'ProductDescriptionId > 4' contains
+		| ProductDescriptionId | ModifiedDate         | Rowguid                              | Description                                                                                                                                                                               |
+		| 555                  | 6/1/2007 12:00:00 AM | 741eae59-5e59-4dbc-9086-2633392c2582 | All-occasion value bike with our basic comfort and safety features. Offers wider, more stable tires for a ride around town or weekend trip.                                               |
+		| 666                  | 6/1/2007 12:00:00 AM | ddc955b2-843e-49ce-8f7b-54870f6135eb | The plush custom saddle keeps you riding all day,  and there's plenty of space to add panniers and bike bags to the newly-redesigned carrier.  This bike has stability when fully-loaded. |
+		| 777                  | 6/1/2007 12:00:00 AM | 9cfed570-180a-44ea-8233-55116a0ddcb9 | For Delete Tests Only                                                                                                                                                                     |

@@ -8,14 +8,14 @@ namespace AdventureWorksDemo.Data.Extentions
 	public static class IQueryableExtensions
 	{
 		#region ApplyFilters
+
 		public static IQueryable<T>? ApplyFilters<T>(this IQueryable<T> query, PageingFilter? pagingfilter)
 		{
 			if (pagingfilter == null || query == null || !query!.Any()
-					|| pagingfilter.Filter==null)
+					|| pagingfilter.Filter == null)
 				return query;
 
 			pagingfilter.Sanitise();
-
 
 			foreach (var filter in pagingfilter.Filter!)
 			{
@@ -31,6 +31,7 @@ namespace AdventureWorksDemo.Data.Extentions
 			}
 			return query;
 		}
+
 		private static IQueryable<T> ApplyFilter<T>(IQueryable<T> query, string propertyName, string expression, string value)
 		{
 			var parameter = Expression.Parameter(typeof(T), "x");
@@ -56,14 +57,15 @@ namespace AdventureWorksDemo.Data.Extentions
 			var lambda = Expression.Lambda<Func<T, bool>>(comparison, parameter);
 			return query.Where(lambda);
 		}
-		#endregion
+
+		#endregion ApplyFilters
 
 		public static IQueryable<T>? ApplyPageing<T>(this IQueryable<T>? query, PageingFilter? filter) //where T : class
 		{
 			if (filter == null)
 				return query;
 			if (query == null || !query.Any())
-				return default!;
+				return query!;
 
 			filter.Sanitise();
 
@@ -87,9 +89,8 @@ namespace AdventureWorksDemo.Data.Extentions
 				bool descending = parts.Length > 1 && parts[1].Equals("DESC", StringComparison.OrdinalIgnoreCase);
 
 				// Get the property info
-				var property = typeof(T).GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase) 
+				var property = typeof(T).GetProperty(propertyName, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase)
 								?? throw new ArgumentException($"Property '{propertyName}' not found on type '{typeof(T).Name}'.");
-
 
 				// Build the sorting expression dynamically
 				var parameter = Expression.Parameter(typeof(T), "x");

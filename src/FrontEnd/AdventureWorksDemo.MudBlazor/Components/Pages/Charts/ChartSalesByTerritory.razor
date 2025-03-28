@@ -1,0 +1,48 @@
+﻿@page "/ChartSalesByTerritory"
+@using AdventureWorksDemo.MudBlazor.Common
+@using global::MudBlazor
+@inject Common.ICommonResponseGet response
+@inject IUrl Url
+@inject IJsonDataService _jsonDataService
+<PageTitle>Sales by Territory</PageTitle>
+
+<MudTooltip Text="Sales by Territory (per million)">
+    <MudChart ChartType="ChartType.Bar" ChartSeries="@_series" @bind-SelectedIndex="Index" XAxisLabels="@_XAxisLabels" 
+    Width="100%" Height="350px"
+    ChartOptions="@_options" ></MudChart>
+</MudTooltip>
+@code {
+    IJsonDataService? service;
+
+    private ChartOptions _options = new ChartOptions
+        {
+            YAxisLines = false,
+            YAxisTicks = 1,
+            MaxNumYAxisTicks = 10,
+            YAxisRequireZeroPoint = false,
+            XAxisLines = false,
+            LineStrokeWidth = 3,
+            ShowLegend = true,
+            ShowToolTips=true,
+            ShowLabels= true,
+        };
+    private int Index = -1; //default value cannot be 0 -> first selectedindex is 0.
+    private readonly List<ChartSeries> _series = new();
+
+    private readonly string?[] _XAxisLabels= { "","Year to Date","Last Year",""};
+    protected async override Task OnInitializedAsync()
+    {
+        var rawData = await _jsonDataService.GetDataAsync<IEnumerable<SaleByTerritory>?>(Url.Report_SalesByTerritory,httpClient);
+        if (rawData != null && rawData.Any())
+        {
+            foreach (SaleByTerritory item in rawData)
+            {
+                _series.Add(new ChartSeries() { Name = item.CountryRegion ?? "???", 
+                                                Data = new double[] {0,item.SalesYTDToDisplay,item.SalesLastYearToDisplay,0 } });
+            }
+        }
+
+        StateHasChanged();
+        await base.OnInitializedAsync();
+    }
+ }

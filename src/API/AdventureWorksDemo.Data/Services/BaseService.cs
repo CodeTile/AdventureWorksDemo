@@ -83,9 +83,9 @@ namespace AdventureWorksDemo.Data.Services
 		public virtual async Task<PagedList<TModel>> FindAllAsync(PageingFilter pagingfilter,
 																   Expression<Func<TEntity, bool>>? predicate)
 		{
-			IQueryable<TEntity>? query = _repository.FindEntities(predicate)!
-													.ApplyFilters(pagingfilter)
-													.ApplySorting(pagingfilter);
+			IQueryable<TEntity>? query = _repository.FindEntities(predicate)!.ApplyFilters(pagingfilter)
+													.ApplySorting(pagingfilter)
+													;
 			if (query == null)
 				return [];
 
@@ -168,7 +168,20 @@ namespace AdventureWorksDemo.Data.Services
 
 		internal static string TransposeIfNotNull(string original, string mutated)
 		{
-			if (mutated != null && !original.Equals(mutated))
+			if ((original == null)
+				|| mutated != null && !original.Equals(mutated))
+				original = mutated;
+			return original;
+		}
+
+		internal static int TransposeIfNotNull(int original, int mutated)
+		{
+			return (int)TransposeIfNotNull((int?)original, (int?)mutated);
+		}
+
+		internal static int? TransposeIfNotNull(int? original, int? mutated)
+		{
+			if (mutated != null && !original.Equals(mutated) && mutated != 0)
 				original = mutated;
 			return original;
 		}

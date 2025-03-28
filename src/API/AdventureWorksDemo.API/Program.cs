@@ -3,8 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 using AdventureWorksDemo.API.Exceptions;
 using AdventureWorksDemo.Data.StartUp;
 
-using Microsoft.Extensions.DependencyInjection;
-
 using Scalar.AspNetCore;
 
 namespace AdventureWorksDemo.API
@@ -16,21 +14,30 @@ namespace AdventureWorksDemo.API
 		{
 			var builder = WebApplication.CreateBuilder(args);
 
-			//Exception handling
+			////Exception handling
 			builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 			builder.Services.AddProblemDetails();
+			// Add child DI objects
+			new IocData(builder.Configuration).ConfigureServices(builder.Services);
 			// Add controllers
 			builder.Services.AddControllers();
-			// Add child projects
-			new IocData(builder.Configuration).ConfigureServices(builder.Services);
+			// Add Cache Timeout
+			builder.Services.AddOutputCache(options =>
+			{
+				options.AddBasePolicy(policy => policy.Expire(TimeSpan.FromMinutes(10)));
+			});
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddOpenApi();
 
 			var app = builder.Build();
 
+			app.UseOutputCache();
+
+			app.UseExceptionHandler();
 			if (app.Environment.IsDevelopment())
 			{
-				app.MapOpenApi();
+				app.MapOpenApi()
+					.CacheOutput();
 				app.MapScalarApiReference();
 			}
 
@@ -39,8 +46,6 @@ namespace AdventureWorksDemo.API
 			app.UseAuthorization();
 
 			app.MapControllers();
-
-			app.UseExceptionHandler();
 
 			app.Run();
 		}

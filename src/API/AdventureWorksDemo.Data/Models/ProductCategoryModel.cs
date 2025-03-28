@@ -1,7 +1,5 @@
 ﻿#nullable disable
 
-using System.Diagnostics.CodeAnalysis;
-
 namespace AdventureWorksDemo.Data.Models;
 
 /// <summary>
@@ -9,6 +7,10 @@ namespace AdventureWorksDemo.Data.Models;
 /// </summary>
 public sealed record ProductCategoryModel
 {
+	/// <summary>
+	/// Primary key for ProductCategory records.
+	/// </summary>
+	public int ProductCategoryId { get; set; }
 	/// <summary>
 	/// Date and time the record was last updated.
 	/// </summary>
@@ -20,16 +22,6 @@ public sealed record ProductCategoryModel
 	public string Name { get; set; }
 
 	/// <summary>
-	/// Product category identification number of immediate ancestor category. Foreign key to ProductCategory.ProductCategoryID.
-	/// </summary>
-	public int? ParentProductCategoryId { get; set; }
-
-	/// <summary>
-	/// Primary key for ProductCategory records.
-	/// </summary>
-	public int ProductCategoryId { get; set; }
-
-	/// <summary>
 	/// ROWGUIDCOL number uniquely identifying the record. Used to support a merge replication sample.
 	/// </summary>
 	public Guid Rowguid { get; set; }
@@ -37,8 +29,7 @@ public sealed record ProductCategoryModel
 	public bool Equals(ProductCategoryModel revised)
 	{
 		return revised != null
-				&& Name.Equals(revised.Name)
-			   && ParentProductCategoryId.Equals(revised.ParentProductCategoryId);
+				&& Name.Equals(revised.Name);
 	}
 	public override int GetHashCode() => ProductCategoryId.GetHashCode();
 }

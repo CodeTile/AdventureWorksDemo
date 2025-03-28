@@ -1,6 +1,7 @@
 namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 {
 	using AdventureWorksDemo.Common.Tests;
+	using AdventureWorksDemo.Common.Tests.Helpers;
 	using AdventureWorksDemo.Data.Tests.reqnroll.Helpers;
 	using AdventureWorksDemo.Data.Tests.reqnroll.ValueRetrievers;
 
@@ -9,6 +10,8 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 	[Binding]
 	public sealed class DatabaseHooks : IDisposable
 	{
+		internal static Microsoft.Extensions.Configuration.IConfiguration AppSettings => CommonHelper.Configuration.GetConfiguration;
+
 		[BeforeTestRun(Order = 1)]
 		public static void BeforeTestRun()
 		{
@@ -29,7 +32,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 		[BeforeTestRun(Order = 10)]
 		public static async Task DatabaseBeforeTestRunAsync()
 		{
-			DockerMsSqlServerDatabase.Current = await DockerMsSqlServerDatabase.Create();
+			DockerMsSqlServerDatabase.Current = await DockerMsSqlServerDatabase.Create(default, CreateTestingDatabaseBakFile());
 			Helper.ScenarioContexts.UpdateFlag(ScenarioContextKey.FlagResetDatabase, false);
 			Helper.DateTimeHelpers.SetTimeProvider();
 		}
@@ -37,6 +40,21 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Hooks
 		public void Dispose()
 		{
 			Task.Run(async () => { await DockerMsSqlServerDatabase.Current!.DisposeAsync(); });
+		}
+
+		private static bool CreateTestingDatabaseBakFile()
+		{
+			string location = AppSettings["Database:Location"]?
+														.Replace("<<sln>>", CommonHelper.IO.TryGetSolutionDirectoryInfo()?.FullName)
+														?? string.Empty;
+			string destination = Path.Combine(location, AppSettings["Database:DataBaseForTesting"] ?? "<null>");
+			if (!File.Exists(destination))
+			{
+				string source = Path.Combine(location, AppSettings["Database:SourceDatabase"] ?? "<null>");
+				File.Copy(source, destination);
+				return true;
+			}
+			return false;
 		}
 	}
 }

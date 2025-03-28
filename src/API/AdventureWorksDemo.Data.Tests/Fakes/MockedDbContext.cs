@@ -8,9 +8,9 @@ namespace AdventureWorksDemo.Data.Tests.Fakes
 {
 	internal static class MockedDbContext
 	{
-		internal static Mock<DbContexts.AdventureWorksDbContext> MockedDbContextAllData()
+		internal static Mock<DbContexts.AdventureWorksContext> MockedDbContextAllData()
 		{
-			Mock<DbContexts.AdventureWorksDbContext> dbContext = new();
+			Mock<DbContexts.AdventureWorksContext> dbContext = new();
 			// //
 
 			dbContext.Setup(m => m.Set<Address>()).Returns(FakeDbContext.FakeAddresses.BuildMockDbSet<Address>().Object);

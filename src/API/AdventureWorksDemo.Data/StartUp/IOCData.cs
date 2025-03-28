@@ -26,7 +26,7 @@ namespace AdventureWorksDemo.Data.StartUp
 			/// * https://henriquesd.medium.com/dependency-injection-and-service-lifetimes-in-net-core-ab9189349420
 			/// </summary>
 
-			services.AddDbContext<AdventureWorksDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Target")));
+			services.AddDbContext<AdventureWorksContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Target")));
 			services.AddAutoMapper(typeof(MappingProfile));
 			//Add Transient services to the container.
 			services.AddTransient<IAddressService, AddressService>();
@@ -36,6 +36,9 @@ namespace AdventureWorksDemo.Data.StartUp
 			services.AddScoped<IGenericCrudRepository<Address>, GenericCrudRepository<Address>>();
 			services.AddScoped<IGenericCrudRepository<ProductCategory>, GenericCrudRepository<ProductCategory>>();
 			services.AddScoped<IGenericCrudRepository<ProductDescription>, GenericCrudRepository<ProductDescription>>();
+
+			services.AddTransient<IReportingRepository, ReportingRepository>();
+			services.AddTransient<IReportService, ReportService>();
 			// Add Singleton's
 			services.AddSingleton(TimeProvider.System);
 			// Add validators
