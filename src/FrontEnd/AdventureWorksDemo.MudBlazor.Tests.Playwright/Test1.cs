@@ -5,6 +5,18 @@ namespace AdventureWorksDemo.MudBlazor.Tests.Playwright
 	[TestClass]
 	public class Test1 : PageTest
 	{
+		[AssemblyCleanup]
+		public static void AssemblyCleanup()
+		{
+			// This method is called once for the test assembly, after all tests are run.
+		}
+
+		[AssemblyInitialize]
+		public static void AssemblyInit(TestContext context)
+		{
+			// This method is called once for the test assembly, before any tests are run.
+		}
+
 		[TestMethod]
 		public async Task HomepageHasPlaywrightInTitleAndGetStartedLinkLinkingToTheIntroPage()
 		{
