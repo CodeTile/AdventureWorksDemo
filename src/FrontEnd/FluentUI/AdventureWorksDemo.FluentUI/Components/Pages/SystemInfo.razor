@@ -1,0 +1,53 @@
+﻿@page "/systemInfo"
+@using System.Collections
+
+<PageTitle>System Information</PageTitle>
+
+
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="#">
+        Home
+    </FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>System</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+
+<FluentDataGrid Id="componentsGrid" Items="@SystemComponents" GridTemplateColumns="1fr 1fr 1fr 2fr" Loading="@(SystemComponents == null)" Style="height:204px;" TGridItem="ComponentInfo">
+    <PropertyColumn Title="Name" Property="@(c => c!.Name)" Align="Align.Start" />
+    <PropertyColumn Title="Value" Property="@(c => c!.Value)" Align="Align.Start" />
+</FluentDataGrid>
+
+@code {
+    private IQueryable<ComponentInfo>? SystemComponents;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Task.Delay(0);
+        SystemComponents = new List<ComponentInfo>()
+        {
+            new ComponentInfo("User name",Environment.UserName),
+            new ComponentInfo("Operating system",Environment.OSVersion.ToString()),
+
+            new ComponentInfo("Machine Name",Environment.MachineName),
+            new ComponentInfo(".net",Environment.Version.ToString()),
+            new ComponentInfo("Tick count",Environment.TickCount.ToString()),
+            new ComponentInfo("App started",Environment.GetEnvironmentVariable("AppStartTime")??""),
+            new ComponentInfo("Has shut down started",Environment.HasShutdownStarted.ToString()),
+        }
+        .AsQueryable();
+
+            }
+
+    
+
+    sealed class ComponentInfo
+    {
+        public ComponentInfo(string name, string value)
+        {
+            Name = name;
+            Value = value;
+        }
+        public string Name { get; set; }
+        public string Value { get; set; }
+       
+    }
+}
