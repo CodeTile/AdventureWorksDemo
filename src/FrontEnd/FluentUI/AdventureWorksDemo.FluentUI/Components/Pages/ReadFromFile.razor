@@ -1,0 +1,39 @@
+﻿@page "/readFromFile"
+@rendermode InteractiveServer
+<FluentBreadcrumb>
+    <FluentBreadcrumbItem Href="#">
+        Home
+    </FluentBreadcrumbItem>
+    <FluentBreadcrumbItem>Read From File</FluentBreadcrumbItem>
+</FluentBreadcrumb>
+
+<PageTitle>Read From File</PageTitle>
+<FluentStack>
+
+<FluentCard Width="400px" Height="300px" >
+    <p>@textContent1.</p>
+</FluentCard>
+<FluentCard Width="400px" Height="300px" >
+    <p>@textContent2.</p>
+	</FluentCard>
+</FluentStack>
+<FluentCard Width="500px" Height="500px">
+    <p>@GetSettingsContents()</p>
+</FluentCard>
+
+
+
+
+@code {
+    string  textContent1 = "Aliquam vel risus ante. Suspendisse laoreet orci id leo iaculis sodales. Nullam at hendrerit elit. Nam eros ex, rhoncus sit amet porttitor vel, pulvinar consequat lectus. Donec at quam sapien. Praesent orci mi, malesuada non luctus at, aliquam ac tellus. Pellentesque nec metus non dolor placerat placerat. Curabitur maximus ipsum at ornare sodales. Aliquam tempus sit amet orci at egestas. Sed dignissim lacinia ligula, sollicitudin semper dui gravida sit amet. Quisque nec tincidunt ipsum. Aliquam pellentesque non urna nec dignissim. Duis mattis sed augue a mollis. Nullam et enim sed nisl dapibus blandit eu elementum lectus. Pellentesque maximus placerat dapibus. In elementum tellus at dapibus viverra.";
+    string  textContent2 = "Mauris iaculis dui sed laoreet dictum. Integer posuere tempus pretium. Fusce interdum dignissim finibus. Curabitur vel blandit nunc. Fusce vitae condimentum metus, ac blandit ex. Praesent justo urna, vehicula eu elit ac, dictum placerat tellus. Suspendisse aliquet erat nisl, auctor elementum lectus tempus sit amet. Vivamus sit amet laoreet enim. Pellentesque accumsan risus turpis, id sagittis est porttitor in. Nulla rhoncus sem sit amet condimentum congue. Suspendisse luctus dui a enim interdum rhoncus. Praesent quis ex mi. Mauris ligula ipsum, posuere vitae odio id, commodo imperdiet leo.";
+
+    public string GetSettingsContents()
+    {
+        var fi = new FileInfo("appsettings.json");
+        if (fi.Exists)
+            return File.ReadAllText(fi.Name);
+        return string.Empty;
+    }
+
+}
