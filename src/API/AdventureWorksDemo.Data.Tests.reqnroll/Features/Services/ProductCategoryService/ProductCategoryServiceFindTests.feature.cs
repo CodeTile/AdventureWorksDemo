@@ -10,15 +10,13 @@
 // ------------------------------------------------------------------------------
 #region Designer generated code
 #pragma warning disable
+using Reqnroll;
 namespace AdventureWorksDemo.Data.Tests.reqnroll.Features.Services.ProductCategoryService
 {
-    using Reqnroll;
-    using System;
-    using System.Linq;
     
     
-    [System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
-    [System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Reqnroll", "2.0.0.0")]
+    [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     [Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute()]
     public partial class ProductCategoryServiceFindTestsFeature
     {
@@ -29,7 +27,7 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Features.Services.ProductCatego
         
         private static string[] featureTags = ((string[])(null));
         
-        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new System.Globalization.CultureInfo("en-US"), "Features/Services/ProductCategoryService", "ProductCategoryServiceFindTests", "System tests for the ProductCategoryService\r\nTesting the methods FindAsync and Fi" +
+        private static global::Reqnroll.FeatureInfo featureInfo = new global::Reqnroll.FeatureInfo(new global::System.Globalization.CultureInfo("en-US"), "Features/Services/ProductCategoryService", "ProductCategoryServiceFindTests", "System tests for the ProductCategoryService\r\nTesting the methods FindAsync and Fi" +
                 "ndAllAsync", global::Reqnroll.ProgrammingLanguage.CSharp, featureTags);
         
 #line 1 "ProductCategoryServiceFindTests.feature"
@@ -48,35 +46,57 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Features.Services.ProductCatego
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassInitializeAttribute()]
-        public static async System.Threading.Tasks.Task FeatureSetupAsync(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
+        public static async global::System.Threading.Tasks.Task FeatureSetupAsync(Microsoft.VisualStudio.TestTools.UnitTesting.TestContext testContext)
         {
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupAttribute(Microsoft.VisualStudio.TestTools.UnitTesting.ClassCleanupBehavior.EndOfClass)]
-        public static async System.Threading.Tasks.Task FeatureTearDownAsync()
+        public static async global::System.Threading.Tasks.Task FeatureTearDownAsync()
         {
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestInitializeAttribute()]
-        public async System.Threading.Tasks.Task TestInitializeAsync()
+        public async global::System.Threading.Tasks.Task TestInitializeAsync()
         {
             testRunner = global::Reqnroll.TestRunnerManager.GetTestRunnerForAssembly(featureHint: featureInfo);
-            if (((testRunner.FeatureContext != null) 
-                        && (testRunner.FeatureContext.FeatureInfo.Equals(featureInfo) == false)))
+            try
             {
-                await testRunner.OnFeatureEndAsync();
+                if (((testRunner.FeatureContext != null) 
+                            && (testRunner.FeatureContext.FeatureInfo.Equals(featureInfo) == false)))
+                {
+                    await testRunner.OnFeatureEndAsync();
+                }
             }
-            if ((testRunner.FeatureContext == null))
+            finally
             {
-                await testRunner.OnFeatureStartAsync(featureInfo);
+                if (((testRunner.FeatureContext != null) 
+                            && testRunner.FeatureContext.BeforeFeatureHookFailed))
+                {
+                    throw new global::Reqnroll.ReqnrollException("Scenario skipped because of previous before feature hook error");
+                }
+                if ((testRunner.FeatureContext == null))
+                {
+                    await testRunner.OnFeatureStartAsync(featureInfo);
+                }
             }
         }
         
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestCleanupAttribute()]
-        public async System.Threading.Tasks.Task TestTearDownAsync()
+        public async global::System.Threading.Tasks.Task TestTearDownAsync()
         {
-            await testRunner.OnScenarioEndAsync();
-            global::Reqnroll.TestRunnerManager.ReleaseTestRunner(testRunner);
+            if ((testRunner == null))
+            {
+                return;
+            }
+            try
+            {
+                await testRunner.OnScenarioEndAsync();
+            }
+            finally
+            {
+                global::Reqnroll.TestRunnerManager.ReleaseTestRunner(testRunner);
+                testRunner = null;
+            }
         }
         
         public void ScenarioInitialize(global::Reqnroll.ScenarioInfo scenarioInfo)
@@ -85,17 +105,17 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Features.Services.ProductCatego
             testRunner.ScenarioContext.ScenarioContainer.RegisterInstanceAs<Microsoft.VisualStudio.TestTools.UnitTesting.TestContext>(_testContext);
         }
         
-        public async System.Threading.Tasks.Task ScenarioStartAsync()
+        public async global::System.Threading.Tasks.Task ScenarioStartAsync()
         {
             await testRunner.OnScenarioStartAsync();
         }
         
-        public async System.Threading.Tasks.Task ScenarioCleanupAsync()
+        public async global::System.Threading.Tasks.Task ScenarioCleanupAsync()
         {
             await testRunner.CollectScenarioErrorsAsync();
         }
         
-        public virtual async System.Threading.Tasks.Task FeatureBackgroundAsync()
+        public virtual async global::System.Threading.Tasks.Task FeatureBackgroundAsync()
         {
 #line 7
 #line hidden
@@ -108,10 +128,10 @@ namespace AdventureWorksDemo.Data.Tests.reqnroll.Features.Services.ProductCatego
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAsync01")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAsync01()
+        public async global::System.Threading.Tasks.Task FindAsync01()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAsync01", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 10
 this.ScenarioInitialize(scenarioInfo);
@@ -164,10 +184,10 @@ await this.FeatureBackgroundAsync();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAsync04")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAsync04()
+        public async global::System.Threading.Tasks.Task FindAsync04()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAsync04", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 21
 this.ScenarioInitialize(scenarioInfo);
@@ -220,10 +240,10 @@ await this.FeatureBackgroundAsync();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAllAsync_0_5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAllAsync_0_5()
+        public async global::System.Threading.Tasks.Task FindAllAsync_0_5()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAllAsync_0_5", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 32
 this.ScenarioInitialize(scenarioInfo);
@@ -319,10 +339,10 @@ await this.FeatureBackgroundAsync();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAllAsync_0_0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAllAsync_0_0()
+        public async global::System.Threading.Tasks.Task FindAllAsync_0_0()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAllAsync_0_0", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 54
 this.ScenarioInitialize(scenarioInfo);
@@ -428,10 +448,10 @@ await this.FeatureBackgroundAsync();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAllAsync_0_500")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAllAsync_0_500()
+        public async global::System.Threading.Tasks.Task FindAllAsync_0_500()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAllAsync_0_500", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 79
 this.ScenarioInitialize(scenarioInfo);
@@ -537,10 +557,10 @@ await this.FeatureBackgroundAsync();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAllAsync_0_500_Sort_ProductCategoryId")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAllAsync_0_500_Sort_ProductCategoryId()
+        public async global::System.Threading.Tasks.Task FindAllAsync_0_500_Sort_ProductCategoryId()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAllAsync_0_500_Sort_ProductCategoryId", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 103
 this.ScenarioInitialize(scenarioInfo);
@@ -648,10 +668,10 @@ await this.FeatureBackgroundAsync();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAllAsync_0_500_Sort_ProductCategoryIdDesc")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAllAsync_0_500_Sort_ProductCategoryIdDesc()
+        public async global::System.Threading.Tasks.Task FindAllAsync_0_500_Sort_ProductCategoryIdDesc()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAllAsync_0_500_Sort_ProductCategoryIdDesc", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 127
 this.ScenarioInitialize(scenarioInfo);
@@ -759,10 +779,10 @@ await this.FeatureBackgroundAsync();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAllAsync_0_500_Sort_ProductCategoryIdASC")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAllAsync_0_500_Sort_ProductCategoryIdASC()
+        public async global::System.Threading.Tasks.Task FindAllAsync_0_500_Sort_ProductCategoryIdASC()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAllAsync_0_500_Sort_ProductCategoryIdASC", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 151
 this.ScenarioInitialize(scenarioInfo);
@@ -870,10 +890,10 @@ await this.FeatureBackgroundAsync();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAsync1234")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAsync1234()
+        public async global::System.Threading.Tasks.Task FindAsync1234()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAsync1234", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 174
 this.ScenarioInitialize(scenarioInfo);
@@ -916,10 +936,10 @@ await this.FeatureBackgroundAsync();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAllAsync_1_5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAllAsync_1_5()
+        public async global::System.Threading.Tasks.Task FindAllAsync_1_5()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAllAsync_1_5", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 184
 this.ScenarioInitialize(scenarioInfo);
@@ -1000,10 +1020,10 @@ await this.FeatureBackgroundAsync();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAllAsync_2_5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAllAsync_2_5()
+        public async global::System.Threading.Tasks.Task FindAllAsync_2_5()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAllAsync_2_5", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 202
 this.ScenarioInitialize(scenarioInfo);
@@ -1084,10 +1104,10 @@ await this.FeatureBackgroundAsync();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAllAsync_2_8")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAllAsync_2_8()
+        public async global::System.Threading.Tasks.Task FindAllAsync_2_8()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAllAsync_2_8", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 220
 this.ScenarioInitialize(scenarioInfo);
@@ -1193,10 +1213,10 @@ await this.FeatureBackgroundAsync();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAllAsync_1234_5")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAllAsync_1234_5()
+        public async global::System.Threading.Tasks.Task FindAllAsync_1234_5()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAllAsync_1234_5", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 243
 this.ScenarioInitialize(scenarioInfo);
@@ -1277,10 +1297,10 @@ await this.FeatureBackgroundAsync();
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute()]
         [Microsoft.VisualStudio.TestTools.UnitTesting.DescriptionAttribute("FindAllAsync_5_0")]
         [Microsoft.VisualStudio.TestTools.UnitTesting.TestPropertyAttribute("FeatureTitle", "ProductCategoryServiceFindTests")]
-        public async System.Threading.Tasks.Task FindAllAsync_5_0()
+        public async global::System.Threading.Tasks.Task FindAllAsync_5_0()
         {
             string[] tagsOfScenario = ((string[])(null));
-            System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new System.Collections.Specialized.OrderedDictionary();
+            global::System.Collections.Specialized.OrderedDictionary argumentsOfScenario = new global::System.Collections.Specialized.OrderedDictionary();
             global::Reqnroll.ScenarioInfo scenarioInfo = new global::Reqnroll.ScenarioInfo("FindAllAsync_5_0", null, tagsOfScenario, argumentsOfScenario, featureTags);
 #line 261
 this.ScenarioInitialize(scenarioInfo);
