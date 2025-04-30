@@ -14,7 +14,7 @@
         </FluentBodyContent>
     </FluentStack>
     <FluentFooter>
-        <a href="https://www.fluentui-blazor.net" target="_blank">Documentation and demos</a>
+        Version @GetVersion()
         <FluentSpacer />
         <a href="https://learn.microsoft.com/en-us/aspnet/core/blazor" target="_blank">About Blazor</a>
     </FluentFooter>
@@ -25,3 +25,13 @@
     <a href="." class="reload">Reload</a>
     <span class="dismiss">🗙</span>
 </div>
+
+@code {
+   
+public string GetVersion()
+    {
+    var assembly = System.Reflection.Assembly.GetExecutingAssembly();
+    var version = assembly.GetName().Version.ToString();
+    return version;
+    }
+}
